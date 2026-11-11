@@ -187,6 +187,41 @@
     </div>
   </div>
 
+  <!-- فلتر «رسم بالخطوط» لمقاطع الأهداف: كل تلميح يخلط شوي من الصورة الأصلية -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <filter id="sketch0" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%">
+        <feColorMatrix in="SourceGraphic" type="saturate" values="0" result="g"/>
+        <feConvolveMatrix in="g" order="3" kernelMatrix="-1 -1 -1 -1 8 -1 -1 -1 -1" preserveAlpha="true" result="e"/>
+        <feComponentTransfer in="e" result="ink"><feFuncR type="linear" slope="-7" intercept="1"/><feFuncG type="linear" slope="-7" intercept="1"/><feFuncB type="linear" slope="-7" intercept="1"/></feComponentTransfer>
+        <feComposite in="ink" in2="SourceGraphic" operator="arithmetic" k1="0" k2="1.00" k3="0.00" k4="0"/>
+      </filter>
+      <filter id="sketch1" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%">
+        <feColorMatrix in="SourceGraphic" type="saturate" values="0" result="g"/>
+        <feConvolveMatrix in="g" order="3" kernelMatrix="-1 -1 -1 -1 8 -1 -1 -1 -1" preserveAlpha="true" result="e"/>
+        <feComponentTransfer in="e" result="ink"><feFuncR type="linear" slope="-7" intercept="1"/><feFuncG type="linear" slope="-7" intercept="1"/><feFuncB type="linear" slope="-7" intercept="1"/></feComponentTransfer>
+        <feComposite in="ink" in2="SourceGraphic" operator="arithmetic" k1="0" k2="0.80" k3="0.20" k4="0"/>
+      </filter>
+      <filter id="sketch2" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%">
+        <feColorMatrix in="SourceGraphic" type="saturate" values="0" result="g"/>
+        <feConvolveMatrix in="g" order="3" kernelMatrix="-1 -1 -1 -1 8 -1 -1 -1 -1" preserveAlpha="true" result="e"/>
+        <feComponentTransfer in="e" result="ink"><feFuncR type="linear" slope="-7" intercept="1"/><feFuncG type="linear" slope="-7" intercept="1"/><feFuncB type="linear" slope="-7" intercept="1"/></feComponentTransfer>
+        <feComposite in="ink" in2="SourceGraphic" operator="arithmetic" k1="0" k2="0.60" k3="0.40" k4="0"/>
+      </filter>
+      <filter id="sketch3" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%">
+        <feColorMatrix in="SourceGraphic" type="saturate" values="0" result="g"/>
+        <feConvolveMatrix in="g" order="3" kernelMatrix="-1 -1 -1 -1 8 -1 -1 -1 -1" preserveAlpha="true" result="e"/>
+        <feComponentTransfer in="e" result="ink"><feFuncR type="linear" slope="-7" intercept="1"/><feFuncG type="linear" slope="-7" intercept="1"/><feFuncB type="linear" slope="-7" intercept="1"/></feComponentTransfer>
+        <feComposite in="ink" in2="SourceGraphic" operator="arithmetic" k1="0" k2="0.40" k3="0.60" k4="0"/>
+      </filter>
+      <filter id="sketch4" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%">
+        <feColorMatrix in="SourceGraphic" type="saturate" values="0" result="g"/>
+        <feConvolveMatrix in="g" order="3" kernelMatrix="-1 -1 -1 -1 8 -1 -1 -1 -1" preserveAlpha="true" result="e"/>
+        <feComponentTransfer in="e" result="ink"><feFuncR type="linear" slope="-7" intercept="1"/><feFuncG type="linear" slope="-7" intercept="1"/><feFuncB type="linear" slope="-7" intercept="1"/></feComponentTransfer>
+        <feComposite in="ink" in2="SourceGraphic" operator="arithmetic" k1="0" k2="0.40" k3="0.60" k4="0"/>
+      </filter>
+    </defs>
+  </svg>
   <div class="toast" id="toast" role="status" hidden></div>
 
   <script src="js/data.js"></script>

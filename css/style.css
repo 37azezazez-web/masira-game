@@ -221,7 +221,7 @@ legend { font-weight: 800; margin-bottom: 10px; font-family: var(--display); }
 .stage.is-clip { aspect-ratio: 16 / 9; background: var(--ink); }
 .stage video {
   width: 100%; height: 100%; object-fit: contain; display: block;
-  filter: blur(var(--blur, 8px)) saturate(.35);
+  filter: url(#sketch0);
   transform: scale(1.08); /* يخفي أطراف البلور */
   transition: filter .6s ease, transform .6s ease;
 }
@@ -240,8 +240,7 @@ legend { font-weight: 800; margin-bottom: 10px; font-family: var(--display); }
 .stage.is-yt { aspect-ratio: 16 / 9; background: var(--ink); }
 .yt-wrap {
   position: absolute; inset: 0; overflow: hidden;
-  filter: blur(var(--blur, 8px)) saturate(.35);
-  transition: filter .6s ease;
+  filter: url(#sketch0);
 }
 .yt-wrap.clear { filter: none; }
 /* نكبر المشغل شوي عشان نخفي عنوان المقطع وشعار يوتيوب تحت التظليل */
@@ -259,3 +258,8 @@ legend { font-weight: 800; margin-bottom: 10px; font-family: var(--display); }
   position: absolute; inset-inline: 10px; bottom: 10px; text-align: center; pointer-events: none;
   background: var(--yellow); color: var(--ink); border: 2px solid var(--ink); border-radius: 10px; padding: 4px 10px; font-size: .85rem; font-weight: 700;
 }
+/* فلتر الرسم حسب التلميحات */
+[data-sketch="1"] { filter: url(#sketch1) !important; }
+[data-sketch="2"] { filter: url(#sketch2) !important; }
+[data-sketch="3"], [data-sketch="4"] { filter: url(#sketch3) !important; }
+.yt-wrap.clear, .stage video.clear { filter: none !important; }

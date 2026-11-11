@@ -10,8 +10,6 @@
     for (const k in attrs) n.setAttribute(k, attrs[k]);
     return n;
   };
-  // تظليل المقطع حسب عدد التلميحات (بكسل)
-  const BLUR = [8, 5.5, 3.5, 2, 2];
   const YT_HOST = "https://www.youtube-nocookie.com";
   // تطبيق الآيفون يشتغل من capacitor:// ويوتيوب يرفضه، فنمر عبر صفحة وسيطة على GitHub Pages (yt.html)
   const RELAY_HOST = "https://37azezazez-web.github.io";
@@ -229,7 +227,8 @@
     function setBlur(lv) {
       level = lv;
       if (!media) return;
-      media.style.setProperty("--blur", (lv < 0 ? 0 : BLUR[Math.min(lv, BLUR.length - 1)]) + "px");
+      // مستوى فلتر الرسم: ٠ خطوط بس، وكل تلميح يبين من الصورة أكثر
+      media.dataset.sketch = lv < 0 ? "" : String(Math.min(lv, 4));
       media.classList.toggle("clear", lv < 0);
     }
 
