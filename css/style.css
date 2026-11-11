@@ -263,3 +263,4 @@ legend { font-weight: 800; margin-bottom: 10px; font-family: var(--display); }
 [data-sketch="2"] { filter: url(#sketch2) !important; }
 [data-sketch="3"], [data-sketch="4"] { filter: url(#sketch3) !important; }
 .yt-wrap.clear, .stage video.clear { filter: none !important; }
+.svg-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
