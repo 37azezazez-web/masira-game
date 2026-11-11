@@ -221,7 +221,7 @@ legend { font-weight: 800; margin-bottom: 10px; font-family: var(--display); }
 .stage.is-clip { aspect-ratio: 16 / 9; background: var(--ink); }
 .stage video {
   width: 100%; height: 100%; object-fit: contain; display: block;
-  filter: blur(var(--blur, 18px)) grayscale(1) brightness(.75) contrast(1.15);
+  filter: blur(var(--blur, 8px)) saturate(.35);
   transform: scale(1.08); /* يخفي أطراف البلور */
   transition: filter .6s ease, transform .6s ease;
 }
@@ -240,7 +240,7 @@ legend { font-weight: 800; margin-bottom: 10px; font-family: var(--display); }
 .stage.is-yt { aspect-ratio: 16 / 9; background: var(--ink); }
 .yt-wrap {
   position: absolute; inset: 0; overflow: hidden;
-  filter: blur(var(--blur, 20px)) grayscale(1) brightness(.75) contrast(1.15);
+  filter: blur(var(--blur, 8px)) saturate(.35);
   transition: filter .6s ease;
 }
 .yt-wrap.clear { filter: none; }
