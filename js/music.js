@@ -151,31 +151,103 @@
   }
 
   let ctx, band, timer, playing = false;
+  // أغنية يختارها المستخدم من جواله (تنحفظ في الجهاز فقط)
+  let customEl = null, customGain = null, customUrl = null, customName = "";
+
+  function ensureCtx() {
+    if (!ctx) { ctx = new (window.AudioContext || window.webkitAudioContext)(); band = createBand(ctx); }
+    if (ctx.state === "suspended") ctx.resume();
+  }
+  const out = () => (customEl ? customGain : band.master);
+  const LEVEL = () => (customEl ? 0.8 : 0.42);
+
+  // ===== حفظ الأغنية في IndexedDB =====
+  const DB = "intiqalat", STORE = "files";
+  function db() {
+    return new Promise((res, rej) => {
+      const r = indexedDB.open(DB, 1);
+      r.onupgradeneeded = () => r.result.createObjectStore(STORE);
+      r.onsuccess = () => res(r.result);
+      r.onerror = () => rej(r.error);
+    });
+  }
+  async function dbPut(key, val) {
+    const d = await db();
+    return new Promise((res, rej) => {
+      const tx = d.transaction(STORE, "readwrite");
+      val == null ? tx.objectStore(STORE).delete(key) : tx.objectStore(STORE).put(val, key);
+      tx.oncomplete = res; tx.onerror = () => rej(tx.error);
+    });
+  }
+  async function dbGet(key) {
+    const d = await db();
+    return new Promise((res, rej) => {
+      const r = d.transaction(STORE).objectStore(STORE).get(key);
+      r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+    });
+  }
+
+  function useBlob(blob, name) {
+    const wasPlaying = playing;
+    if (wasPlaying) Music.stop(true);
+    if (customEl) { customEl.pause(); customEl.removeAttribute("src"); customEl = null; }
+    if (customUrl) URL.revokeObjectURL(customUrl);
+    customUrl = null; customName = "";
+    if (blob) {
+      ensureCtx();
+      customUrl = URL.createObjectURL(blob);
+      customName = name || "";
+      customEl = new Audio(customUrl);
+      customEl.loop = true;
+      customEl.setAttribute("playsinline", "");
+      customGain = ctx.createGain();
+      customGain.gain.value = 0;
+      ctx.createMediaElementSource(customEl).connect(customGain);
+      customGain.connect(ctx.destination);
+    }
+    if (wasPlaying) Music.start();
+  }
+
   const Music = {
     get playing() { return playing; },
+    get customName() { return customEl ? customName || "أغنيتك" : ""; },
     start() {
       try {
-        if (!ctx) { ctx = new (window.AudioContext || window.webkitAudioContext)(); band = createBand(ctx); }
-        if (ctx.state === "suspended") ctx.resume();
+        ensureCtx();
         if (playing) return;
         playing = true;
-        band.reset(ctx.currentTime + 0.1);
-        band.master.gain.cancelScheduledValues(ctx.currentTime);
-        band.master.gain.setTargetAtTime(0.42, ctx.currentTime, 0.6);
+        const g = out().gain;
+        g.cancelScheduledValues(ctx.currentTime);
+        g.setTargetAtTime(LEVEL(), ctx.currentTime, 0.6);
         clearInterval(timer);
+        if (customEl) { customEl.play().catch(() => { playing = false; }); return; }
+        band.reset(ctx.currentTime + 0.1);
         timer = setInterval(() => band.schedule(ctx.currentTime + 0.15), 40);
       } catch { playing = false; }
     },
-    stop() {
+    stop(now) {
       if (!ctx || !playing) return;
       playing = false;
-      band.master.gain.setTargetAtTime(0, ctx.currentTime, 0.2);
-      setTimeout(() => { if (!playing) clearInterval(timer); }, 600);
+      const el = customEl, g = out().gain;
+      g.setTargetAtTime(0, ctx.currentTime, now ? 0.01 : 0.2);
+      setTimeout(() => { if (!playing) { clearInterval(timer); if (el) el.pause(); } }, now ? 30 : 600);
     },
     /** يخفض الموسيقى شوي وقت آخر ثواني المؤقت */
     duck(on) {
       if (!ctx || !playing) return;
-      band.master.gain.setTargetAtTime(on ? 0.2 : 0.42, ctx.currentTime, 0.3);
+      out().gain.setTargetAtTime(on ? LEVEL() / 2 : LEVEL(), ctx.currentTime, 0.3);
+    },
+    /** أغنية من جوال المستخدم: تنحفظ في الجهاز وتشتغل بدل اللحن الافتراضي */
+    async setCustom(file) {
+      useBlob(file, file && file.name);
+      try { await dbPut("music", file ? { blob: file, name: file.name } : null); } catch { /* التخزين مقفل */ }
+    },
+    async loadSaved() {
+      try {
+        const v = await dbGet("music");
+        if (v && v.blob) useBlob(v.blob, v.name);
+      } catch { /* */ }
+      return Music.customName;
     },
     /** يسجّل مقطع بدون تشغيل (للاختبار والمعاينة) */
     preview(seconds, rate = 44100) {

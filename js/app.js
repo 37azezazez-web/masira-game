@@ -60,6 +60,28 @@
   }));
   syncMusicButtons();
   // المتصفح ما يسمح بالصوت إلا بعد أول لمسة
+  // أغنية من الجوال بدل اللحن الافتراضي
+  function syncMusicName() {
+    const n = Music.customName;
+    $("#music-name").textContent = n ? n.replace(/\.[a-z0-9]+$/i, "").slice(0, 40) : "اللحن الافتراضي";
+    $("#music-reset").hidden = !n;
+  }
+  Music.loadSaved().then(syncMusicName);
+  $("#music-file").addEventListener("change", async (e) => {
+    const f = e.target.files[0];
+    e.target.value = "";
+    if (!f || !f.type.startsWith("audio/")) return;
+    await Music.setCustom(f);
+    syncMusicName();
+    if (musicOn) Music.start();
+    toast("صارت موسيقى اللعبة 🎵");
+  });
+  $("#music-reset").addEventListener("click", async () => {
+    await Music.setCustom(null);
+    syncMusicName();
+    if (musicOn) Music.start();
+  });
+
   let unlocked = false;
   document.addEventListener("pointerdown", function first(e) {
     unlocked = true;

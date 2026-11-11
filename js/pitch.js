@@ -13,7 +13,7 @@
   // تظليل المقطع حسب عدد التلميحات (بكسل)
   const BLUR = [20, 14, 9, 5, 5];
   const YT_HOST = "https://www.youtube-nocookie.com";
-  const YT_TIMEOUT = 7000; // لو المشغل ما رد خلال هالوقت (غالبًا ما فيه نت) نعرض الرسم
+  const YT_TIMEOUT = 8000; // لو المشغل ما رد خلال هالوقت نطلع تنبيه
   const PAUSE = 1.6; // ثواني قبل ما يعيد اللقطة
 
   /** موقع عنصر في لحظة معينة بين نقطتين */
@@ -61,7 +61,7 @@
       if (!d || !d.event) return;
       if (d.event === "onError") return nextYouTube();
       if (d.event === "onReady" || d.event === "infoDelivery" || d.event === "initialDelivery") {
-        if (!ytOk) { ytOk = true; clearTimeout(ytTimer); }
+        if (!ytOk) { ytOk = true; clearTimeout(ytTimer); const n = box.querySelector(".stage-note"); if (n) n.remove(); }
         // نعيد المقطع إذا خلص
         if (d.info && d.info.playerState === 0) { ytCmd("seekTo", [0, true]); ytCmd("playVideo"); }
       }
@@ -130,17 +130,24 @@
       ytFrame = f; media = wrap; ytOk = false;
       setBlur(level);
       clearTimeout(ytTimer);
-      ytTimer = setTimeout(() => { if (!ytOk) { ytIdx = ytList.length; nextYouTube(); } }, YT_TIMEOUT);
+      // لو المشغل ما رد، نترك المقطع مكانه (يمكن شغال) ونطلع تنبيه صغير بس
+      ytTimer = setTimeout(() => {
+        if (ytOk || ytFrame !== f) return;
+        const n = document.createElement("div");
+        n.className = "stage-note";
+        n.textContent = "ما اشتغل؟ تأكد من النت";
+        box.append(n);
+      }, YT_TIMEOUT);
     }
 
     function nextYouTube() {
       clearTimeout(ytTimer);
       ytIdx++;
       if (ytIdx < ytList.length) return startYouTube();
-      // ما اشتغل ولا رابط (بدون نت مثلًا): نعرض الرسم المتحرك
-      const g = item;
+      // ولا رابط اشتغل: رسالة للمقدّم يتخطى
       clear();
-      if (g && g.actors) { playGoal(g); if (onFallback) onFallback(); }
+      poster("المقطع ما اشتغل 😕 تأكد من النت، أو اضغط «ورني الجواب» وبعدها «تخطي».");
+      if (onFallback) onFallback();
     }
 
     function playGoal(g) {

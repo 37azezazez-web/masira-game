@@ -253,3 +253,9 @@ legend { font-weight: 800; margin-bottom: 10px; font-family: var(--display); }
   color: #fff; font-weight: 700; background: var(--ink);
 }
 .stage:has(.stage-poster) { aspect-ratio: 16 / 9; }
+.music-pick { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 10px; text-align: center; }
+.music-pick > span { flex-basis: 100%; overflow-wrap: anywhere; }
+.stage-note {
+  position: absolute; inset-inline: 10px; bottom: 10px; text-align: center; pointer-events: none;
+  background: var(--yellow); color: var(--ink); border: 2px solid var(--ink); border-radius: 10px; padding: 4px 10px; font-size: .85rem; font-weight: 700;
+}
