@@ -10,8 +10,8 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/icon-180.png">
-  <link rel="stylesheet" href="css/fonts.css?v=202611112316">
-  <link rel="stylesheet" href="css/style.css?v=202611112316">
+  <link rel="stylesheet" href="css/fonts.css?v=202611112341">
+  <link rel="stylesheet" href="css/style.css?v=202611112341">
 </head>
 <body>
   <main id="app">
@@ -68,6 +68,17 @@
             <button type="button" role="radio" data-value="career">انتقالات اللاعب</button>
             <button type="button" role="radio" data-value="goals">خمّن الهدف</button>
           </div>
+        </fieldset>
+
+        <fieldset id="fs-yt" hidden>
+          <legend>أهداف من يوتيوب</legend>
+          <p class="muted small fs-note">افتح مقطع الهدف في يوتيوب وتأكد إنه بتعليق عربي، بعدين انسخ الرابط والصقه هنا واكتب اسم اللي سجّل. لو تبيه يبدأ من ثانية معينة، انسخ الرابط من «مشاركة» وفعّل «البدء عند». الأهداف تنحفظ في جهازك.</p>
+          <div class="yt-add">
+            <input id="yt-url" type="url" inputmode="url" dir="ltr" placeholder="https://youtu.be/..." aria-label="رابط يوتيوب">
+            <input id="yt-name" maxlength="30" placeholder="مين سجّل الهدف؟" aria-label="اسم اللي سجّل">
+            <button type="button" class="btn btn-primary btn-sm" id="yt-add-btn">+ أضف</button>
+          </div>
+          <div id="yt-list" class="clip-list"></div>
         </fieldset>
 
         <fieldset id="fs-clips" hidden>
@@ -189,11 +200,11 @@
 
   <div class="toast" id="toast" role="status" hidden></div>
 
-  <script src="js/data.js?v=202611112316"></script>
-  <script src="js/goals.js?v=202611112316"></script>
-  <script src="js/engine.js?v=202611112316"></script>
-  <script src="js/pitch.js?v=202611112316"></script>
-  <script src="js/music.js?v=202611112316"></script>
-  <script src="js/app.js?v=202611112316"></script>
+  <script src="js/data.js?v=202611112341"></script>
+  <script src="js/goals.js?v=202611112341"></script>
+  <script src="js/engine.js?v=202611112341"></script>
+  <script src="js/pitch.js?v=202611112341"></script>
+  <script src="js/music.js?v=202611112341"></script>
+  <script src="js/app.js?v=202611112341"></script>
 </body>
 </html>

@@ -21,9 +21,10 @@
   var p = new URLSearchParams(location.search);
   var id = p.get("v") || "";
   if (!/^[\w-]{11}$/.test(id)) return;
+  var start = parseInt(p.get("start") || "0", 10) || 0;
   var q = new URLSearchParams({
     autoplay: "1", controls: "0", playsinline: "1", rel: "0", modestbranding: "1", iv_load_policy: "3",
-    disablekb: "1", fs: "0", loop: "1", playlist: id, enablejsapi: "1", origin: location.origin
+    disablekb: "1", fs: "0", loop: "1", playlist: id, enablejsapi: "1", origin: location.origin, mute: "1", start: String(start)
   });
   var f = document.getElementById("f");
   f.src = YT + "/embed/" + id + "?" + q;

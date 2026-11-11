@@ -67,6 +67,7 @@
       if (ytFrame) ytCmd("mute");
       else if (media && media.tagName === "VIDEO") media.muted = true;
     }
+    const startAt = () => (item && item.start) || 0;
     const soundLimit = () => (item && item.soundUntil != null ? item.soundUntil : SOUND_SECS);
 
     function onMessage(e) {
@@ -87,8 +88,8 @@
         if (d.info && typeof d.info.playerState === "number") ytState = d.info.playerState;
         if (d.event === "onStateChange" && typeof d.info === "number") ytState = d.info;
         // نعيد المقطع إذا خلص
-        if (d.info && d.info.playerState === 0) { ytCmd("seekTo", [0, true]); ytCmd("playVideo"); }
-        if (d.info && typeof d.info.currentTime === "number" && d.info.currentTime >= soundLimit()) silence();
+        if (d.info && d.info.playerState === 0) { ytCmd("seekTo", [startAt(), true]); ytCmd("playVideo"); }
+        if (d.info && typeof d.info.currentTime === "number" && d.info.currentTime >= startAt() + soundLimit()) silence();
       }
     }
     window.addEventListener("message", onMessage);
@@ -140,7 +141,7 @@
     function replay() {
       if (revealed) return;
       silenced = false;
-      if (ytFrame) { ytCmd("seekTo", [0, true]); ytCmd("unMute"); ytCmd("setVolume", [100]); ytCmd("playVideo"); }
+      if (ytFrame) { ytCmd("seekTo", [startAt(), true]); ytCmd("unMute"); ytCmd("setVolume", [100]); ytCmd("playVideo"); }
       else if (media && media.tagName === "VIDEO") { media.currentTime = 0; media.muted = false; media.play().catch(() => {}); }
       box.classList.remove("is-silent");
       clearTimeout(muteTimer);
@@ -157,10 +158,10 @@
       const q = new URLSearchParams({
         // نبدأ مكتوم عشان المتصفح يسمح بالتشغيل التلقائي، وبعدها نطلع الصوت أول ما المشغل يجهز
         autoplay: "1", mute: "1", controls: "0", playsinline: "1", rel: "0", modestbranding: "1", iv_load_policy: "3",
-        disablekb: "1", fs: "0", loop: "1", playlist: id, enablejsapi: "1",
+        disablekb: "1", fs: "0", loop: "1", playlist: id, enablejsapi: "1", start: String(startAt()),
         origin: location.origin && location.origin !== "null" ? location.origin : "",
       });
-      f.src = DIRECT ? `${YT_HOST}/embed/${encodeURIComponent(id)}?${q}` : `${RELAY}?v=${encodeURIComponent(id)}`;
+      f.src = DIRECT ? `${YT_HOST}/embed/${encodeURIComponent(id)}?${q}` : `${RELAY}?v=${encodeURIComponent(id)}&start=${startAt()}`;
       f.title = "مقطع الهدف";
       f.allow = "autoplay; encrypted-media";
       f.referrerPolicy = "strict-origin-when-cross-origin";
@@ -305,7 +306,7 @@
         setBlur(-1);
         box.classList.remove("is-silent");
         box.classList.add("is-revealed");
-        if (ytFrame) { ytCmd("unMute"); ytCmd("seekTo", [0, true]); ytCmd("playVideo"); }
+        if (ytFrame) { ytCmd("unMute"); ytCmd("seekTo", [startAt(), true]); ytCmd("playVideo"); }
         else if (media && media.tagName === "VIDEO") { media.muted = false; media.currentTime = 0; media.play().catch(() => {}); }
       },
       stop() { clear(); item = null; },

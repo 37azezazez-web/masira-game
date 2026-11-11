@@ -3,7 +3,8 @@
   "use strict";
   const { Game, pickPlayers, shuffle, MAX_HINTS } = window.Engine;
   const Music = window.Music;
-  const GOALS = window.GOALS || [];
+  // الأهداف الجاهزة: اللي تأكدنا منها بس
+  const GOALS = (window.GOALS || []).filter((g) => g.verified);
   const $ = (s) => document.querySelector(s);
   const el = (tag, cls, text) => {
     const e = document.createElement(tag);
@@ -105,7 +106,7 @@
     if (go) show(go.dataset.go);
   });
 
-  $("#home-count").textContent = `${AR(PLAYERS.length)} لاعب و${AR(GOALS.length)} هدف في المكتبة`;
+  const updateCount = (n) => { $("#home-count").textContent = `${AR(PLAYERS.length)} لاعب و${AR(n)} هدف في المكتبة`; };
 
   let toastTimer;
   function toast(msg) {
@@ -178,9 +179,62 @@
     const goals = settings.mode === "goals";
     $("#fs-diff").hidden = goals;
     $("#fs-clips").hidden = !goals;
+    $("#fs-yt").hidden = !goals;
     $("#rounds-legend").textContent = goals ? "عدد الأهداف في الجولة" : "عدد اللاعبين في الجولة";
   }
   syncMode();
+
+  // ===== أهداف من يوتيوب يضيفها المستخدم (تنحفظ في الجهاز) =====
+  /** يطلع معرف المقطع ووقت البداية من أي شكل لرابط يوتيوب */
+  function parseYouTube(text) {
+    let u;
+    try { u = new URL(String(text).trim()); } catch { return null; }
+    const host = u.hostname.replace(/^(www\.|m\.)/, "");
+    let id = "";
+    if (host === "youtu.be") id = u.pathname.slice(1).split("/")[0];
+    else if (/(^|\.)youtube(-nocookie)?\.com$/.test(host)) {
+      id = u.searchParams.get("v") || (u.pathname.match(/^\/(?:shorts|embed|live)\/([\w-]{11})/) || [])[1] || "";
+    }
+    if (!/^[\w-]{11}$/.test(id)) return null;
+    const t = u.searchParams.get("t") || u.searchParams.get("start") || "";
+    let start = 0;
+    const m = t.match(/^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s?)?$/);
+    if (m) start = (+m[1] || 0) * 3600 + (+m[2] || 0) * 60 + (+m[3] || 0);
+    return { vid: id, start };
+  }
+  const ytGoals = store.get("ytGoals", []).filter((g) => g && /^[\w-]{11}$/.test(g.vid) && g.name);
+  const ytItem = (g) => ({ id: `u-${g.vid}-${g.start}`, kind: "ytuser", yt: [g.vid], start: g.start, name: g.name, en: "", aliases: [] });
+  function renderYt() {
+    updateCount(GOALS.length + ytGoals.length);
+    const list = $("#yt-list");
+    list.replaceChildren();
+    ytGoals.forEach((g, i) => {
+      const row = el("div", "clip-row yt-row");
+      const tag = el("span", "yt-tag", "▶");
+      const name = el("span", "yt-name", g.name + (g.start ? ` · من ${AR(g.start)} ث` : ""));
+      const rm = el("button", "icon-btn", "−");
+      rm.type = "button";
+      rm.setAttribute("aria-label", `احذف هدف ${g.name}`);
+      rm.addEventListener("click", () => { ytGoals.splice(i, 1); store.set("ytGoals", ytGoals); renderYt(); });
+      row.append(tag, name, rm);
+      list.append(row);
+    });
+  }
+  $("#yt-add-btn").addEventListener("click", () => {
+    const err = $("#setup-error");
+    const parsed = parseYouTube($("#yt-url").value);
+    const name = $("#yt-name").value.trim().slice(0, 30);
+    if (!parsed) { err.textContent = "الرابط مو رابط يوتيوب صحيح."; err.hidden = false; return; }
+    if (!name) { err.textContent = "اكتب اسم اللي سجّل الهدف."; err.hidden = false; return; }
+    if (ytGoals.some((g) => g.vid === parsed.vid && g.start === parsed.start)) { err.textContent = "هالهدف مضاف قبل."; err.hidden = false; return; }
+    err.hidden = true;
+    ytGoals.push({ vid: parsed.vid, start: parsed.start, name });
+    store.set("ytGoals", ytGoals);
+    $("#yt-url").value = ""; $("#yt-name").value = "";
+    renderYt();
+    toast(`انضاف هدف ${name} ✓`);
+  });
+  renderYt();
 
   // المقاطع تبقى في ذاكرة الصفحة بس (رابط محلي blob)، ما تنحفظ ولا تنرفع
   const clips = [];
@@ -238,9 +292,11 @@
     if (settings.mode === "goals") {
       const seen = store.get("seenGoals", []);
       const mine = clips.map((c) => ({ ...c, name: c.name.trim().slice(0, 30) }));
-      const built = pickPlayers(GOALS, "mix", Math.max(0, count - mine.length), seen);
+      const pool = GOALS.concat(ytGoals.map(ytItem));
+      const built = pickPlayers(pool, "mix", Math.max(0, count - mine.length), seen);
       items = shuffle(mine.slice(0, count).concat(built));
-      store.set("seenGoals", [...new Set([...built.map((g) => g.id), ...seen])].slice(0, Math.max(0, GOALS.length - 5)));
+      if (!items.length) { const err = $("#setup-error"); err.textContent = "أضف هدف من يوتيوب أو مقطع من جوالك أول."; err.hidden = false; show("setup"); return; }
+      store.set("seenGoals", [...new Set([...built.map((g) => g.id), ...seen])].slice(0, Math.max(0, pool.length - 3)));
     } else {
       const seen = store.get("seen", []);
       const diff = settings.difficulty === "mix" ? "mix" : Number(settings.difficulty);
@@ -414,8 +470,8 @@
   function fillRevealInfo(p) {
     const desc = $("#rv-desc");
     desc.hidden = true;
-    if (p.kind === "clip") {
-      $("#rv-info").textContent = "من مقاطعك";
+    if (p.kind === "clip" || p.kind === "ytuser") {
+      $("#rv-info").textContent = p.kind === "clip" ? "من مقاطعك" : "من أهدافك";
     } else if (p.kind === "goal") {
       $("#rv-info").textContent = `${p.team} ضد ${p.opp} · ${p.comp} ${AR(p.year)}`;
       desc.textContent = p.desc;

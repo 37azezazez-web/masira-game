@@ -36,7 +36,7 @@
     { key: "first", label: "أول حرف", get: (p) => `«${clean(p)[0]}»` },
     { key: "half", label: "نص الاسم", get: (p) => p.name.trim().slice(0, Math.ceil(p.name.trim().length / 2)) + "…" },
   ];
-  const hintsFor = (item) => (item && item.kind === "goal" ? GOAL_HINTS : item && item.kind === "clip" ? CLIP_HINTS : HINTS);
+  const hintsFor = (item) => (item && item.kind === "goal" ? GOAL_HINTS : item && (item.kind === "clip" || item.kind === "ytuser") ? CLIP_HINTS : HINTS);
   const MAX_HINTS = HINTS.length;
 
   function normalize(s) {
