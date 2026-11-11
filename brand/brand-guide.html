@@ -1,239 +1,158 @@
 <title>هوية انتقالات</title>
-<meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@500;800;900&family=Readex+Pro:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@800;900&family=Readex+Pro:wght@400;600&display=swap">
 <style>
-/* التخطيط: لوحة انتقالات عمودية؛ كل قسم "محطة" على مسار منقّط يمين الصفحة */
-:root {
-  color-scheme: dark;
-  --night: #0B1220; --night-2: #121B2E; --line: #24314D;
-  --chalk: #F4F7FB; --muted: #8C9AB3; --lime: #C8F135; --sky: #5CC8FF; --deadline: #FF5C6C; --olive: #5E8A00;
-  --display: "Alexandria", "Readex Pro", system-ui, sans-serif;
-  --body: "Readex Pro", system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif;
-}
-* { box-sizing: border-box; }
-body { background: var(--night); color: var(--chalk); font-family: var(--body); font-size: 16px; line-height: 1.7; }
-.wrap { max-width: 980px; margin: 0 auto; padding-block: 40px 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-h1, h2, h3 { font-family: var(--display); line-height: 1.25; text-wrap: balance; margin: 0; }
-h2 { font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 800; }
-h3 { font-size: 1.05rem; font-weight: 800; }
-p { margin: 0; max-width: 62ch; }
-.muted { color: var(--muted); }
-.route { position: relative; padding-inline-start: 34px; display: flex; flex-direction: column; gap: 72px; }
-.route::before { content: ""; position: absolute; inset-inline-start: 7px; top: 12px; bottom: 12px; border-inline-start: 3px dotted var(--line); }
-section { position: relative; display: flex; flex-direction: column; gap: 20px; }
-section > .stop { position: absolute; inset-inline-start: -34px; top: 6px; width: 17px; height: 17px; border-radius: 50%; background: var(--chalk); }
-section:last-child > .stop { background: var(--lime); }
-.eyebrow { font-size: .8rem; color: var(--lime); letter-spacing: .04em; font-weight: 600; }
-.hero { display: grid; gap: 28px; padding-block: 24px 8px; }
-.hero-mark { display: flex; align-items: center; gap: clamp(16px, 4vw, 36px); flex-wrap: wrap; }
-.hero-mark .sym { width: clamp(84px, 16vw, 132px); height: auto; }
-.hero-mark .wm { width: clamp(220px, 52vw, 460px); height: auto; }
-.hero p.lead { font-size: 1.15rem; }
-.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-.tile { border-radius: 18px; padding: 28px; display: grid; place-items: center; min-height: 190px; border: 1px solid var(--line); background: var(--night-2); }
-.tile.light { background: var(--chalk); border-color: var(--chalk); }
-.tile.lime { background: var(--lime); border-color: var(--lime); }
-.tile svg { max-width: 100%; height: auto; }
-figure { margin: 0; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-figcaption { font-size: .88rem; color: var(--muted); }
-.concept { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-.concept div { display: flex; gap: 12px; align-items: flex-start; }
-.dot { flex: none; width: 16px; height: 16px; border-radius: 50%; margin-top: 6px; }
-.swatches { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); }
-.sw { display: flex; gap: 14px; align-items: stretch; min-width: 0; }
-.chip { flex: none; width: 78px; border-radius: 14px; background: var(--c); border: 1px solid var(--line); min-height: 92px; }
-.sw-t { display: flex; flex-direction: column; min-width: 0; }
-.sw-t span { color: var(--muted); font-size: .88rem; }
-.hex { align-self: flex-start; background: none; border: 0; padding: 0; color: var(--chalk); font: 500 .95rem/1.6 var(--display); direction: ltr; cursor: pointer; text-decoration: underline dotted var(--muted); text-underline-offset: 4px; }
-.hex:focus-visible, a:focus-visible { outline: 3px solid var(--sky); outline-offset: 3px; border-radius: 4px; }
-.type { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-.type-card { border: 1px solid var(--line); border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
-.type-card .big { font-size: clamp(2.4rem, 7vw, 3.4rem); line-height: 1.1; }
-.d900 { font-family: var(--display); font-weight: 900; }
-.b400 { font-family: var(--body); font-weight: 400; }
-.scale { display: flex; flex-direction: column; gap: 6px; border-top: 1px dashed var(--line); padding-top: 12px; }
-.rules { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-.rule { border-radius: 18px; padding: 20px; border: 1px solid var(--line); display: flex; flex-direction: column; gap: 8px; }
-.rule.do h3 { color: var(--lime); } .rule.dont h3 { color: var(--deadline); }
-.rule ul { margin: 0; padding-inline-start: 20px; }
-.store { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; background: var(--chalk); color: var(--night); border-radius: 22px; padding: 20px; }
-.store .ic { width: 96px; height: 96px; border-radius: 22px; overflow: hidden; flex: none; }
-.store .ic svg { width: 100%; height: 100%; display: block; }
-.store b { font-family: var(--display); font-size: 1.3rem; display: block; }
-.store span { color: #4B5872; }
-.store .get { margin-inline-start: auto; background: var(--night); color: var(--chalk); border-radius: 999px; padding: 6px 20px; font-weight: 600; }
-.sizes { display: flex; gap: 20px; align-items: flex-end; flex-wrap: wrap; }
-.sizes div { border-radius: 22%; overflow: hidden; }
-.sizes svg { display: block; }
-code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .85em; background: var(--night-2); padding: 2px 6px; border-radius: 6px; direction: ltr; unicode-bidi: isolate; }
-.toast { position: fixed; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); inset-inline: 0; margin: 0 auto; width: max-content; background: var(--lime); color: var(--night); font-weight: 600; padding: 8px 16px; border-radius: 999px; }
-@media (prefers-reduced-motion: no-preference) { .hero-mark .sym { animation: hop .9s cubic-bezier(.3,1.4,.5,1) both; } @keyframes hop { from { transform: translate(-14px, 14px); opacity: .4; } } }
+:root { color-scheme: light; --paper:#EDEFE8; --card:#FFFFFF; --ink:#15171A; --ink-2:#4A4F57; --line:#C9CDC2; --red:#E03A2F; --yellow:#FFC82E; --blue:#2849D6; --green:#1F9D55;
+  --display:"Alexandria","Readex Pro",system-ui,sans-serif; --body:"Readex Pro",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.7; }
+.wrap { max-width:980px; margin:0 auto; padding:40px max(16px,env(safe-area-inset-right,0px)) 80px max(16px,env(safe-area-inset-left,0px)); display:flex; flex-direction:column; gap:56px; }
+h1,h2,h3 { font-family:var(--display); line-height:1.25; margin:0; text-wrap:balance; }
+h2 { font-size:clamp(1.5rem,4vw,2rem); font-weight:900; display:inline-block; background:var(--card); border:2.5px solid var(--ink); box-shadow:4px 4px 0 var(--ink); border-radius:12px; padding:2px 14px; align-self:flex-start; transform:rotate(-1deg); }
+h3 { font-size:1.05rem; font-weight:800; }
+p { margin:0; max-width:62ch; }
+.muted { color:var(--ink-2); }
+section { display:flex; flex-direction:column; gap:20px; }
+.eyebrow { font-size:.85rem; font-weight:600; color:var(--red); }
+.hero { display:grid; gap:24px; }
+.hero-mark { display:flex; align-items:center; gap:clamp(16px,4vw,36px); flex-wrap:wrap; }
+.hero-mark .ico { width:clamp(88px,16vw,132px)!important; height:auto!important; aspect-ratio:1; }
+.hero-mark .ico svg { width:100%; height:100%; }
+.hero-mark .wm { width:clamp(220px,52vw,460px); height:auto; }
+.lead { font-size:1.15rem; }
+.card { background:var(--card); border:2.5px solid var(--ink); border-radius:18px; box-shadow:4px 4px 0 var(--ink); }
+.grid { display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); }
+.tile { padding:28px; display:grid; place-items:center; min-height:190px; }
+.tile.ink { background:var(--ink); } .tile.red { background:var(--red); }
+.tile svg { max-width:100%; height:auto; }
+.ico { border-radius:22%; overflow:hidden; border:2.5px solid var(--ink); box-shadow:3px 3px 0 var(--ink); flex:none; }
+.ico svg { display:block; }
+figure { margin:0; display:flex; flex-direction:column; gap:10px; min-width:0; }
+figcaption { font-size:.9rem; color:var(--ink-2); }
+.concept { display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); }
+.concept div { display:flex; gap:12px; align-items:flex-start; }
+.dot { flex:none; width:18px; height:18px; border-radius:50%; margin-top:5px; border:2px solid var(--ink); }
+.swatches { list-style:none; padding:0; margin:0; display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); }
+.sw { display:flex; gap:14px; align-items:stretch; min-width:0; }
+.chip { flex:none; width:78px; min-height:92px; border-radius:14px; background:var(--c); border:2.5px solid var(--ink); box-shadow:3px 3px 0 var(--ink); }
+.sw-t { display:flex; flex-direction:column; min-width:0; }
+.sw-t span { color:var(--ink-2); font-size:.88rem; }
+.hex { align-self:flex-start; background:none; border:0; padding:0; color:var(--ink); font:600 .95rem/1.6 var(--display); direction:ltr; cursor:pointer; text-decoration:underline dotted var(--ink-2); text-underline-offset:4px; }
+.hex:focus-visible { outline:3px solid var(--blue); outline-offset:3px; border-radius:4px; }
+.type { display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); }
+.type-card { padding:24px; display:flex; flex-direction:column; gap:10px; min-width:0; }
+.big { font-size:clamp(2.2rem,7vw,3.2rem); line-height:1.15; }
+.d900 { font-family:var(--display); font-weight:900; } .b400 { font-family:var(--body); font-weight:400; }
+.style { display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); }
+.demo { padding:20px; display:flex; flex-direction:column; gap:12px; align-items:flex-start; }
+.btn { font:800 1.1rem var(--display); border:2.5px solid var(--ink); border-radius:14px; padding:10px 22px; box-shadow:4px 4px 0 var(--ink); }
+.btn.p { background:var(--red); color:#fff; } .btn.g { background:var(--card); color:var(--ink); }
+.pill { font:800 .95rem var(--display); background:var(--yellow); border:2.5px solid var(--ink); border-radius:999px; padding:2px 14px; }
+.rules { display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); }
+.rule { padding:20px; display:flex; flex-direction:column; gap:8px; }
+.rule.do { border-top:10px solid var(--green); } .rule.dont { border-top:10px solid var(--red); }
+.rule ul { margin:0; padding-inline-start:20px; }
+.sizes { display:flex; gap:22px; align-items:flex-end; flex-wrap:wrap; }
+.store { display:flex; gap:18px; align-items:center; flex-wrap:wrap; padding:20px; }
+.store b { font-family:var(--display); font-size:1.3rem; display:block; }
+.store span { color:var(--ink-2); }
+.store .get { margin-inline-start:auto; background:var(--ink); color:#fff; border-radius:999px; padding:6px 20px; font-weight:600; }
+code { font-family:ui-monospace,Menlo,monospace; font-size:.85em; background:var(--card); border:1.5px solid var(--line); padding:2px 6px; border-radius:6px; direction:ltr; unicode-bidi:isolate; }
+.toast { position:fixed; bottom:calc(16px + env(safe-area-inset-bottom,0px)); inset-inline:0; margin:0 auto; width:max-content; background:var(--ink); color:#fff; font-weight:600; padding:8px 16px; border-radius:999px; }
 </style>
-
 <div class="wrap" dir="rtl" lang="ar">
-  <div class="route">
-    <section class="hero">
-      <span class="stop" aria-hidden="true"></span>
-      <span class="eyebrow">دليل الهوية · الإصدار ١</span>
-      <div class="hero-mark">
-        <svg class="sym" width="132" height="132" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="رمز انتقالات">
+  <section class="hero">
+    <span class="eyebrow">دليل الهوية · الإصدار ٢</span>
+    <div class="hero-mark"><div class="ico" style="width:132px;height:132px"><svg width="132" height="132" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" fill="#E03A2F"/>
+<g transform="translate(12 12) scale(.8)"><circle cx="30" cy="90" r="16" fill="#F6F4EE"/><circle cx="90" cy="30" r="16" fill="#FFC82E"/>
+<path d="M30 64 C30 40 42 32 60 31" fill="none" stroke="#F6F4EE" stroke-width="10" stroke-linecap="round"/>
+<path d="M55 18 L68 31 L55 44" fill="none" stroke="#F6F4EE" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></g></svg></div><svg width="460" class="wm" xmlns="http://www.w3.org/2000/svg" viewBox="30 -921 4207 941" role="img" aria-label="انتقالات"><title>انتقالات</title><path fill="#15171A" d="M396 0Q307 0 241.5 -25.5Q176 -51 133.5 -94.5Q91 -138 70.5 -193.5Q50 -249 50 -310Q50 -366 67.0 -423.0Q84 -480 117 -531L265 -464Q250 -433 242.0 -403.5Q234 -374 234 -347Q234 -312 250.0 -284.0Q266 -256 300.5 -240.5Q335 -225 390 -225H824V-537H1017V0Z M1669 0V-901H1862V0Z M1147 0V-225H1862V0Z M1289 0V-620H1482V0Z M2185 0V-225H2300V0Z M2002 0V-901H2195V0Z M2300 0V-225Q2308 -225 2314.0 -194.5Q2320 -164 2320 -114Q2320 -62 2314.0 -31.0Q2308 0 2300 0Z M2300 0V-225Q2357 -225 2405.5 -226.5Q2454 -228 2495 -229Q2503 -230 2510.0 -223.0Q2517 -216 2524.0 -209.5Q2531 -203 2537 -203Q2627 -211 2678.5 -225.5Q2730 -240 2752.0 -259.5Q2774 -279 2774 -303Q2774 -322 2763.0 -337.5Q2752 -353 2732.5 -362.0Q2713 -371 2687 -371Q2661 -371 2640.5 -360.5Q2620 -350 2609.0 -334.5Q2598 -319 2598 -303Q2598 -280 2620.5 -260.0Q2643 -240 2696.0 -225.0Q2749 -210 2841 -202Q2848 -202 2854.5 -209.0Q2861 -216 2868.0 -223.0Q2875 -230 2882 -229Q2923 -227 2970.0 -226.0Q3017 -225 3072 -225V0Q2926 0 2804.0 -18.0Q2682 -36 2592.5 -74.0Q2503 -112 2454.0 -171.0Q2405 -230 2405 -311Q2405 -384 2443.0 -439.0Q2481 -494 2545.0 -525.5Q2609 -557 2686 -557Q2764 -557 2828.0 -526.0Q2892 -495 2930.0 -439.5Q2968 -384 2968 -310Q2968 -237 2929.5 -184.0Q2891 -131 2824.0 -95.0Q2757 -59 2671.0 -38.5Q2585 -18 2490.0 -9.0Q2395 0 2300 0Z M3072 0V-225Q3080 -225 3086.0 -194.5Q3092 -164 3092 -114Q3092 -62 3086.0 -31.0Q3080 0 3072 0Z M2300 0Q2292 0 2286.0 -31.0Q2280 -62 2280 -114Q2280 -164 2286.0 -194.5Q2292 -225 2300 -225Z M3072 0V-225H3130Q3167 -225 3187.0 -232.5Q3207 -240 3215.0 -258.5Q3223 -277 3223 -309V-537H3416V-309Q3416 -214 3381.0 -145.0Q3346 -76 3282.0 -38.5Q3218 -1 3130 0Z M3509 0Q3421 0 3357.0 -37.5Q3293 -75 3258.0 -144.5Q3223 -214 3223 -309H3416Q3416 -277 3424.0 -258.5Q3432 -240 3452.0 -232.5Q3472 -225 3509 -225H3542V0Z M3542 0V-225Q3550 -225 3556.0 -194.5Q3562 -164 3562 -114Q3562 -62 3556.0 -31.0Q3550 0 3542 0Z M3072 0Q3064 0 3058.0 -31.0Q3052 -62 3052 -114Q3052 -164 3058.0 -194.5Q3064 -225 3072 -225Z M3701 -537H3894V0H3542V-225H3701Z M3542 0Q3534 0 3528.0 -31.0Q3522 -62 3522 -114Q3522 -164 3528.0 -194.5Q3534 -225 3542 -225Z M4024 0V-901H4217V0Z"/><path fill="#E03A2F" d="M626 -589Q590 -589 567.5 -611.0Q545 -633 545 -668Q545 -704 567.5 -726.5Q590 -749 626 -749Q661 -749 683.5 -726.5Q706 -704 706 -668Q706 -633 683.5 -611.0Q661 -589 626 -589Z M444 -589Q408 -589 385.5 -611.0Q363 -633 363 -668Q363 -704 385.5 -726.5Q408 -749 444 -749Q479 -749 501.5 -726.5Q524 -704 524 -668Q524 -633 501.5 -611.0Q479 -589 444 -589Z M2778 -637Q2742 -637 2719.5 -659.0Q2697 -681 2697 -716Q2697 -752 2719.5 -774.5Q2742 -797 2778 -797Q2813 -797 2835.5 -774.5Q2858 -752 2858 -716Q2858 -681 2835.5 -659.0Q2813 -637 2778 -637Z M2596 -637Q2560 -637 2537.5 -659.0Q2515 -681 2515 -716Q2515 -752 2537.5 -774.5Q2560 -797 2596 -797Q2631 -797 2653.5 -774.5Q2676 -752 2676 -716Q2676 -681 2653.5 -659.0Q2631 -637 2596 -637Z M3396 -617Q3360 -617 3337.5 -639.0Q3315 -661 3315 -696Q3315 -732 3337.5 -754.5Q3360 -777 3396 -777Q3431 -777 3453.5 -754.5Q3476 -732 3476 -696Q3476 -661 3453.5 -639.0Q3431 -617 3396 -617Z M3214 -617Q3178 -617 3155.5 -639.0Q3133 -661 3133 -696Q3133 -732 3155.5 -754.5Q3178 -777 3214 -777Q3249 -777 3271.5 -754.5Q3294 -732 3294 -696Q3294 -661 3271.5 -639.0Q3249 -617 3214 -617Z M3798 -640Q3752 -640 3723.0 -668.5Q3694 -697 3694 -743Q3694 -789 3723.0 -818.0Q3752 -847 3798 -847Q3844 -847 3873.0 -818.0Q3902 -789 3902 -743Q3902 -697 3873.0 -668.5Q3844 -640 3798 -640Z"/></svg></div>
+    <p class="lead">لعبة جماعية تعرض <b>انتقالات</b> لاعب كرة قدم من نادي لنادي، والفرق تتسابق تعرف مين هو. الشعار: <b>من انتقالاته تعرفه</b>.</p>
+    <p class="muted">الطابع: ستيكرات ألبوم الكورة اللي كنا نجمعها. حدود حبر سميكة، ظل صلب، ألوان صريحة، وبدون تدرجات ولا توهج.</p>
+  </section>
+  <section>
+    <h2>الفكرة</h2>
+    <div class="concept">
+      <div><span class="dot" style="background:var(--ink)"></span><p><b>النقطة الأولى</b> هي النادي اللي طلع منه اللاعب.</p></div>
+      <div><span class="dot" style="background:var(--red)"></span><p><b>السهم</b> هو الانتقال نفسه، طالع لفوق ومتجه للمحطة الجاية.</p></div>
+      <div><span class="dot" style="background:var(--red)"></span><p><b>النقطة الجديدة</b> هي النادي الجديد. نقاط حروف الكلمة كلها حمراء، كأنها محطات في مسيرته.</p></div>
+    </div>
+  </section>
+  <section>
+    <h2>الشعار</h2>
+    <div class="grid">
+      <figure><div class="card tile"><svg width="260" xmlns="http://www.w3.org/2000/svg" viewBox="30 -921 4207 941" role="img" aria-label="انتقالات"><title>انتقالات</title><path fill="#15171A" d="M396 0Q307 0 241.5 -25.5Q176 -51 133.5 -94.5Q91 -138 70.5 -193.5Q50 -249 50 -310Q50 -366 67.0 -423.0Q84 -480 117 -531L265 -464Q250 -433 242.0 -403.5Q234 -374 234 -347Q234 -312 250.0 -284.0Q266 -256 300.5 -240.5Q335 -225 390 -225H824V-537H1017V0Z M1669 0V-901H1862V0Z M1147 0V-225H1862V0Z M1289 0V-620H1482V0Z M2185 0V-225H2300V0Z M2002 0V-901H2195V0Z M2300 0V-225Q2308 -225 2314.0 -194.5Q2320 -164 2320 -114Q2320 -62 2314.0 -31.0Q2308 0 2300 0Z M2300 0V-225Q2357 -225 2405.5 -226.5Q2454 -228 2495 -229Q2503 -230 2510.0 -223.0Q2517 -216 2524.0 -209.5Q2531 -203 2537 -203Q2627 -211 2678.5 -225.5Q2730 -240 2752.0 -259.5Q2774 -279 2774 -303Q2774 -322 2763.0 -337.5Q2752 -353 2732.5 -362.0Q2713 -371 2687 -371Q2661 -371 2640.5 -360.5Q2620 -350 2609.0 -334.5Q2598 -319 2598 -303Q2598 -280 2620.5 -260.0Q2643 -240 2696.0 -225.0Q2749 -210 2841 -202Q2848 -202 2854.5 -209.0Q2861 -216 2868.0 -223.0Q2875 -230 2882 -229Q2923 -227 2970.0 -226.0Q3017 -225 3072 -225V0Q2926 0 2804.0 -18.0Q2682 -36 2592.5 -74.0Q2503 -112 2454.0 -171.0Q2405 -230 2405 -311Q2405 -384 2443.0 -439.0Q2481 -494 2545.0 -525.5Q2609 -557 2686 -557Q2764 -557 2828.0 -526.0Q2892 -495 2930.0 -439.5Q2968 -384 2968 -310Q2968 -237 2929.5 -184.0Q2891 -131 2824.0 -95.0Q2757 -59 2671.0 -38.5Q2585 -18 2490.0 -9.0Q2395 0 2300 0Z M3072 0V-225Q3080 -225 3086.0 -194.5Q3092 -164 3092 -114Q3092 -62 3086.0 -31.0Q3080 0 3072 0Z M2300 0Q2292 0 2286.0 -31.0Q2280 -62 2280 -114Q2280 -164 2286.0 -194.5Q2292 -225 2300 -225Z M3072 0V-225H3130Q3167 -225 3187.0 -232.5Q3207 -240 3215.0 -258.5Q3223 -277 3223 -309V-537H3416V-309Q3416 -214 3381.0 -145.0Q3346 -76 3282.0 -38.5Q3218 -1 3130 0Z M3509 0Q3421 0 3357.0 -37.5Q3293 -75 3258.0 -144.5Q3223 -214 3223 -309H3416Q3416 -277 3424.0 -258.5Q3432 -240 3452.0 -232.5Q3472 -225 3509 -225H3542V0Z M3542 0V-225Q3550 -225 3556.0 -194.5Q3562 -164 3562 -114Q3562 -62 3556.0 -31.0Q3550 0 3542 0Z M3072 0Q3064 0 3058.0 -31.0Q3052 -62 3052 -114Q3052 -164 3058.0 -194.5Q3064 -225 3072 -225Z M3701 -537H3894V0H3542V-225H3701Z M3542 0Q3534 0 3528.0 -31.0Q3522 -62 3522 -114Q3522 -164 3528.0 -194.5Q3534 -225 3542 -225Z M4024 0V-901H4217V0Z"/><path fill="#E03A2F" d="M626 -589Q590 -589 567.5 -611.0Q545 -633 545 -668Q545 -704 567.5 -726.5Q590 -749 626 -749Q661 -749 683.5 -726.5Q706 -704 706 -668Q706 -633 683.5 -611.0Q661 -589 626 -589Z M444 -589Q408 -589 385.5 -611.0Q363 -633 363 -668Q363 -704 385.5 -726.5Q408 -749 444 -749Q479 -749 501.5 -726.5Q524 -704 524 -668Q524 -633 501.5 -611.0Q479 -589 444 -589Z M2778 -637Q2742 -637 2719.5 -659.0Q2697 -681 2697 -716Q2697 -752 2719.5 -774.5Q2742 -797 2778 -797Q2813 -797 2835.5 -774.5Q2858 -752 2858 -716Q2858 -681 2835.5 -659.0Q2813 -637 2778 -637Z M2596 -637Q2560 -637 2537.5 -659.0Q2515 -681 2515 -716Q2515 -752 2537.5 -774.5Q2560 -797 2596 -797Q2631 -797 2653.5 -774.5Q2676 -752 2676 -716Q2676 -681 2653.5 -659.0Q2631 -637 2596 -637Z M3396 -617Q3360 -617 3337.5 -639.0Q3315 -661 3315 -696Q3315 -732 3337.5 -754.5Q3360 -777 3396 -777Q3431 -777 3453.5 -754.5Q3476 -732 3476 -696Q3476 -661 3453.5 -639.0Q3431 -617 3396 -617Z M3214 -617Q3178 -617 3155.5 -639.0Q3133 -661 3133 -696Q3133 -732 3155.5 -754.5Q3178 -777 3214 -777Q3249 -777 3271.5 -754.5Q3294 -732 3294 -696Q3294 -661 3271.5 -639.0Q3249 -617 3214 -617Z M3798 -640Q3752 -640 3723.0 -668.5Q3694 -697 3694 -743Q3694 -789 3723.0 -818.0Q3752 -847 3798 -847Q3844 -847 3873.0 -818.0Q3902 -789 3902 -743Q3902 -697 3873.0 -668.5Q3844 -640 3798 -640Z"/></svg></div><figcaption>الأساسي: على الورق أو الأبيض</figcaption></figure>
+      <figure><div class="card tile ink"><svg width="260" xmlns="http://www.w3.org/2000/svg" viewBox="30 -921 4207 941" role="img" aria-label="انتقالات"><title>انتقالات</title><path fill="#F6F4EE" d="M396 0Q307 0 241.5 -25.5Q176 -51 133.5 -94.5Q91 -138 70.5 -193.5Q50 -249 50 -310Q50 -366 67.0 -423.0Q84 -480 117 -531L265 -464Q250 -433 242.0 -403.5Q234 -374 234 -347Q234 -312 250.0 -284.0Q266 -256 300.5 -240.5Q335 -225 390 -225H824V-537H1017V0Z M1669 0V-901H1862V0Z M1147 0V-225H1862V0Z M1289 0V-620H1482V0Z M2185 0V-225H2300V0Z M2002 0V-901H2195V0Z M2300 0V-225Q2308 -225 2314.0 -194.5Q2320 -164 2320 -114Q2320 -62 2314.0 -31.0Q2308 0 2300 0Z M2300 0V-225Q2357 -225 2405.5 -226.5Q2454 -228 2495 -229Q2503 -230 2510.0 -223.0Q2517 -216 2524.0 -209.5Q2531 -203 2537 -203Q2627 -211 2678.5 -225.5Q2730 -240 2752.0 -259.5Q2774 -279 2774 -303Q2774 -322 2763.0 -337.5Q2752 -353 2732.5 -362.0Q2713 -371 2687 -371Q2661 -371 2640.5 -360.5Q2620 -350 2609.0 -334.5Q2598 -319 2598 -303Q2598 -280 2620.5 -260.0Q2643 -240 2696.0 -225.0Q2749 -210 2841 -202Q2848 -202 2854.5 -209.0Q2861 -216 2868.0 -223.0Q2875 -230 2882 -229Q2923 -227 2970.0 -226.0Q3017 -225 3072 -225V0Q2926 0 2804.0 -18.0Q2682 -36 2592.5 -74.0Q2503 -112 2454.0 -171.0Q2405 -230 2405 -311Q2405 -384 2443.0 -439.0Q2481 -494 2545.0 -525.5Q2609 -557 2686 -557Q2764 -557 2828.0 -526.0Q2892 -495 2930.0 -439.5Q2968 -384 2968 -310Q2968 -237 2929.5 -184.0Q2891 -131 2824.0 -95.0Q2757 -59 2671.0 -38.5Q2585 -18 2490.0 -9.0Q2395 0 2300 0Z M3072 0V-225Q3080 -225 3086.0 -194.5Q3092 -164 3092 -114Q3092 -62 3086.0 -31.0Q3080 0 3072 0Z M2300 0Q2292 0 2286.0 -31.0Q2280 -62 2280 -114Q2280 -164 2286.0 -194.5Q2292 -225 2300 -225Z M3072 0V-225H3130Q3167 -225 3187.0 -232.5Q3207 -240 3215.0 -258.5Q3223 -277 3223 -309V-537H3416V-309Q3416 -214 3381.0 -145.0Q3346 -76 3282.0 -38.5Q3218 -1 3130 0Z M3509 0Q3421 0 3357.0 -37.5Q3293 -75 3258.0 -144.5Q3223 -214 3223 -309H3416Q3416 -277 3424.0 -258.5Q3432 -240 3452.0 -232.5Q3472 -225 3509 -225H3542V0Z M3542 0V-225Q3550 -225 3556.0 -194.5Q3562 -164 3562 -114Q3562 -62 3556.0 -31.0Q3550 0 3542 0Z M3072 0Q3064 0 3058.0 -31.0Q3052 -62 3052 -114Q3052 -164 3058.0 -194.5Q3064 -225 3072 -225Z M3701 -537H3894V0H3542V-225H3701Z M3542 0Q3534 0 3528.0 -31.0Q3522 -62 3522 -114Q3522 -164 3528.0 -194.5Q3534 -225 3542 -225Z M4024 0V-901H4217V0Z"/><path fill="#FFC82E" d="M626 -589Q590 -589 567.5 -611.0Q545 -633 545 -668Q545 -704 567.5 -726.5Q590 -749 626 -749Q661 -749 683.5 -726.5Q706 -704 706 -668Q706 -633 683.5 -611.0Q661 -589 626 -589Z M444 -589Q408 -589 385.5 -611.0Q363 -633 363 -668Q363 -704 385.5 -726.5Q408 -749 444 -749Q479 -749 501.5 -726.5Q524 -704 524 -668Q524 -633 501.5 -611.0Q479 -589 444 -589Z M2778 -637Q2742 -637 2719.5 -659.0Q2697 -681 2697 -716Q2697 -752 2719.5 -774.5Q2742 -797 2778 -797Q2813 -797 2835.5 -774.5Q2858 -752 2858 -716Q2858 -681 2835.5 -659.0Q2813 -637 2778 -637Z M2596 -637Q2560 -637 2537.5 -659.0Q2515 -681 2515 -716Q2515 -752 2537.5 -774.5Q2560 -797 2596 -797Q2631 -797 2653.5 -774.5Q2676 -752 2676 -716Q2676 -681 2653.5 -659.0Q2631 -637 2596 -637Z M3396 -617Q3360 -617 3337.5 -639.0Q3315 -661 3315 -696Q3315 -732 3337.5 -754.5Q3360 -777 3396 -777Q3431 -777 3453.5 -754.5Q3476 -732 3476 -696Q3476 -661 3453.5 -639.0Q3431 -617 3396 -617Z M3214 -617Q3178 -617 3155.5 -639.0Q3133 -661 3133 -696Q3133 -732 3155.5 -754.5Q3178 -777 3214 -777Q3249 -777 3271.5 -754.5Q3294 -732 3294 -696Q3294 -661 3271.5 -639.0Q3249 -617 3214 -617Z M3798 -640Q3752 -640 3723.0 -668.5Q3694 -697 3694 -743Q3694 -789 3723.0 -818.0Q3752 -847 3798 -847Q3844 -847 3873.0 -818.0Q3902 -789 3902 -743Q3902 -697 3873.0 -668.5Q3844 -640 3798 -640Z"/></svg></div><figcaption>على الخلفيات الداكنة (النقاط صفراء)</figcaption></figure>
+      <figure><div class="card tile"><svg width="120" height="120" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="رمز انتقالات">
   <title>انتقالات</title>
-  <!-- نقطة بيضاء = النادي القديم، نقطة ليمونية = النادي الجديد، والقوس = الانتقال. النقاط نفس نقاط الكتابة -->
-  <circle cx="30" cy="90" r="16" fill="#F4F7FB"/>
-  <circle cx="90" cy="30" r="16" fill="#C8F135"/>
-  <path d="M30 64 C30 40 42 32 60 31" fill="none" stroke="#C8F135" stroke-width="10" stroke-linecap="round"/>
-  <path d="M55 18 L68 31 L55 44" fill="none" stroke="#C8F135" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-
-        <svg class="wm" width="460" xmlns="http://www.w3.org/2000/svg" viewBox="30 -921 4207 941" role="img" aria-label="انتقالات"><title>انتقالات</title><path fill="#F4F7FB" d="M396 0Q307 0 241.5 -25.5Q176 -51 133.5 -94.5Q91 -138 70.5 -193.5Q50 -249 50 -310Q50 -366 67.0 -423.0Q84 -480 117 -531L265 -464Q250 -433 242.0 -403.5Q234 -374 234 -347Q234 -312 250.0 -284.0Q266 -256 300.5 -240.5Q335 -225 390 -225H824V-537H1017V0Z M1669 0V-901H1862V0Z M1147 0V-225H1862V0Z M1289 0V-620H1482V0Z M2185 0V-225H2300V0Z M2002 0V-901H2195V0Z M2300 0V-225Q2308 -225 2314.0 -194.5Q2320 -164 2320 -114Q2320 -62 2314.0 -31.0Q2308 0 2300 0Z M2300 0V-225Q2357 -225 2405.5 -226.5Q2454 -228 2495 -229Q2503 -230 2510.0 -223.0Q2517 -216 2524.0 -209.5Q2531 -203 2537 -203Q2627 -211 2678.5 -225.5Q2730 -240 2752.0 -259.5Q2774 -279 2774 -303Q2774 -322 2763.0 -337.5Q2752 -353 2732.5 -362.0Q2713 -371 2687 -371Q2661 -371 2640.5 -360.5Q2620 -350 2609.0 -334.5Q2598 -319 2598 -303Q2598 -280 2620.5 -260.0Q2643 -240 2696.0 -225.0Q2749 -210 2841 -202Q2848 -202 2854.5 -209.0Q2861 -216 2868.0 -223.0Q2875 -230 2882 -229Q2923 -227 2970.0 -226.0Q3017 -225 3072 -225V0Q2926 0 2804.0 -18.0Q2682 -36 2592.5 -74.0Q2503 -112 2454.0 -171.0Q2405 -230 2405 -311Q2405 -384 2443.0 -439.0Q2481 -494 2545.0 -525.5Q2609 -557 2686 -557Q2764 -557 2828.0 -526.0Q2892 -495 2930.0 -439.5Q2968 -384 2968 -310Q2968 -237 2929.5 -184.0Q2891 -131 2824.0 -95.0Q2757 -59 2671.0 -38.5Q2585 -18 2490.0 -9.0Q2395 0 2300 0Z M3072 0V-225Q3080 -225 3086.0 -194.5Q3092 -164 3092 -114Q3092 -62 3086.0 -31.0Q3080 0 3072 0Z M2300 0Q2292 0 2286.0 -31.0Q2280 -62 2280 -114Q2280 -164 2286.0 -194.5Q2292 -225 2300 -225Z M3072 0V-225H3130Q3167 -225 3187.0 -232.5Q3207 -240 3215.0 -258.5Q3223 -277 3223 -309V-537H3416V-309Q3416 -214 3381.0 -145.0Q3346 -76 3282.0 -38.5Q3218 -1 3130 0Z M3509 0Q3421 0 3357.0 -37.5Q3293 -75 3258.0 -144.5Q3223 -214 3223 -309H3416Q3416 -277 3424.0 -258.5Q3432 -240 3452.0 -232.5Q3472 -225 3509 -225H3542V0Z M3542 0V-225Q3550 -225 3556.0 -194.5Q3562 -164 3562 -114Q3562 -62 3556.0 -31.0Q3550 0 3542 0Z M3072 0Q3064 0 3058.0 -31.0Q3052 -62 3052 -114Q3052 -164 3058.0 -194.5Q3064 -225 3072 -225Z M3701 -537H3894V0H3542V-225H3701Z M3542 0Q3534 0 3528.0 -31.0Q3522 -62 3522 -114Q3522 -164 3528.0 -194.5Q3534 -225 3542 -225Z M4024 0V-901H4217V0Z"/><path fill="#C8F135" d="M626 -589Q590 -589 567.5 -611.0Q545 -633 545 -668Q545 -704 567.5 -726.5Q590 -749 626 -749Q661 -749 683.5 -726.5Q706 -704 706 -668Q706 -633 683.5 -611.0Q661 -589 626 -589Z M444 -589Q408 -589 385.5 -611.0Q363 -633 363 -668Q363 -704 385.5 -726.5Q408 -749 444 -749Q479 -749 501.5 -726.5Q524 -704 524 -668Q524 -633 501.5 -611.0Q479 -589 444 -589Z M2778 -637Q2742 -637 2719.5 -659.0Q2697 -681 2697 -716Q2697 -752 2719.5 -774.5Q2742 -797 2778 -797Q2813 -797 2835.5 -774.5Q2858 -752 2858 -716Q2858 -681 2835.5 -659.0Q2813 -637 2778 -637Z M2596 -637Q2560 -637 2537.5 -659.0Q2515 -681 2515 -716Q2515 -752 2537.5 -774.5Q2560 -797 2596 -797Q2631 -797 2653.5 -774.5Q2676 -752 2676 -716Q2676 -681 2653.5 -659.0Q2631 -637 2596 -637Z M3396 -617Q3360 -617 3337.5 -639.0Q3315 -661 3315 -696Q3315 -732 3337.5 -754.5Q3360 -777 3396 -777Q3431 -777 3453.5 -754.5Q3476 -732 3476 -696Q3476 -661 3453.5 -639.0Q3431 -617 3396 -617Z M3214 -617Q3178 -617 3155.5 -639.0Q3133 -661 3133 -696Q3133 -732 3155.5 -754.5Q3178 -777 3214 -777Q3249 -777 3271.5 -754.5Q3294 -732 3294 -696Q3294 -661 3271.5 -639.0Q3249 -617 3214 -617Z M3798 -640Q3752 -640 3723.0 -668.5Q3694 -697 3694 -743Q3694 -789 3723.0 -818.0Q3752 -847 3798 -847Q3844 -847 3873.0 -818.0Q3902 -789 3902 -743Q3902 -697 3873.0 -668.5Q3844 -640 3798 -640Z"/></svg>
-
-      </div>
-      <p class="lead">لعبة جماعية تعرض <b>انتقالات</b> لاعب كرة قدم من نادي لنادي، والفرق تتسابق تعرف مين هو. الشعار: <b>من انتقالاته تعرفه</b>.</p>
-    </section>
-
-    <section>
-      <span class="stop" aria-hidden="true"></span>
-      <h2>الفكرة</h2>
-      <div class="concept">
-        <div><span class="dot" style="background:var(--chalk)"></span><p><b>النقطة البيضاء</b> هي النادي اللي طلع منه اللاعب.</p></div>
-        <div><span class="dot" style="background:var(--lime)"></span><p><b>النقطة الليمونية</b> هي النادي الجديد. كل نقاط الحروف في الكلمة ليمونية، كأنها محطات في مسيرته.</p></div>
-        <div><span class="dot" style="background:var(--sky)"></span><p><b>السهم</b> هو الانتقال نفسه، طالع لفوق ومتجه للمحطة الجاية.</p></div>
-      </div>
-    </section>
-
-    <section>
-      <span class="stop" aria-hidden="true"></span>
-      <h2>الشعار</h2>
-      <div class="grid">
-        <figure><div class="tile"><svg width="260" xmlns="http://www.w3.org/2000/svg" viewBox="30 -921 4207 941" role="img" aria-label="انتقالات"><title>انتقالات</title><path fill="#F4F7FB" d="M396 0Q307 0 241.5 -25.5Q176 -51 133.5 -94.5Q91 -138 70.5 -193.5Q50 -249 50 -310Q50 -366 67.0 -423.0Q84 -480 117 -531L265 -464Q250 -433 242.0 -403.5Q234 -374 234 -347Q234 -312 250.0 -284.0Q266 -256 300.5 -240.5Q335 -225 390 -225H824V-537H1017V0Z M1669 0V-901H1862V0Z M1147 0V-225H1862V0Z M1289 0V-620H1482V0Z M2185 0V-225H2300V0Z M2002 0V-901H2195V0Z M2300 0V-225Q2308 -225 2314.0 -194.5Q2320 -164 2320 -114Q2320 -62 2314.0 -31.0Q2308 0 2300 0Z M2300 0V-225Q2357 -225 2405.5 -226.5Q2454 -228 2495 -229Q2503 -230 2510.0 -223.0Q2517 -216 2524.0 -209.5Q2531 -203 2537 -203Q2627 -211 2678.5 -225.5Q2730 -240 2752.0 -259.5Q2774 -279 2774 -303Q2774 -322 2763.0 -337.5Q2752 -353 2732.5 -362.0Q2713 -371 2687 -371Q2661 -371 2640.5 -360.5Q2620 -350 2609.0 -334.5Q2598 -319 2598 -303Q2598 -280 2620.5 -260.0Q2643 -240 2696.0 -225.0Q2749 -210 2841 -202Q2848 -202 2854.5 -209.0Q2861 -216 2868.0 -223.0Q2875 -230 2882 -229Q2923 -227 2970.0 -226.0Q3017 -225 3072 -225V0Q2926 0 2804.0 -18.0Q2682 -36 2592.5 -74.0Q2503 -112 2454.0 -171.0Q2405 -230 2405 -311Q2405 -384 2443.0 -439.0Q2481 -494 2545.0 -525.5Q2609 -557 2686 -557Q2764 -557 2828.0 -526.0Q2892 -495 2930.0 -439.5Q2968 -384 2968 -310Q2968 -237 2929.5 -184.0Q2891 -131 2824.0 -95.0Q2757 -59 2671.0 -38.5Q2585 -18 2490.0 -9.0Q2395 0 2300 0Z M3072 0V-225Q3080 -225 3086.0 -194.5Q3092 -164 3092 -114Q3092 -62 3086.0 -31.0Q3080 0 3072 0Z M2300 0Q2292 0 2286.0 -31.0Q2280 -62 2280 -114Q2280 -164 2286.0 -194.5Q2292 -225 2300 -225Z M3072 0V-225H3130Q3167 -225 3187.0 -232.5Q3207 -240 3215.0 -258.5Q3223 -277 3223 -309V-537H3416V-309Q3416 -214 3381.0 -145.0Q3346 -76 3282.0 -38.5Q3218 -1 3130 0Z M3509 0Q3421 0 3357.0 -37.5Q3293 -75 3258.0 -144.5Q3223 -214 3223 -309H3416Q3416 -277 3424.0 -258.5Q3432 -240 3452.0 -232.5Q3472 -225 3509 -225H3542V0Z M3542 0V-225Q3550 -225 3556.0 -194.5Q3562 -164 3562 -114Q3562 -62 3556.0 -31.0Q3550 0 3542 0Z M3072 0Q3064 0 3058.0 -31.0Q3052 -62 3052 -114Q3052 -164 3058.0 -194.5Q3064 -225 3072 -225Z M3701 -537H3894V0H3542V-225H3701Z M3542 0Q3534 0 3528.0 -31.0Q3522 -62 3522 -114Q3522 -164 3528.0 -194.5Q3534 -225 3542 -225Z M4024 0V-901H4217V0Z"/><path fill="#C8F135" d="M626 -589Q590 -589 567.5 -611.0Q545 -633 545 -668Q545 -704 567.5 -726.5Q590 -749 626 -749Q661 -749 683.5 -726.5Q706 -704 706 -668Q706 -633 683.5 -611.0Q661 -589 626 -589Z M444 -589Q408 -589 385.5 -611.0Q363 -633 363 -668Q363 -704 385.5 -726.5Q408 -749 444 -749Q479 -749 501.5 -726.5Q524 -704 524 -668Q524 -633 501.5 -611.0Q479 -589 444 -589Z M2778 -637Q2742 -637 2719.5 -659.0Q2697 -681 2697 -716Q2697 -752 2719.5 -774.5Q2742 -797 2778 -797Q2813 -797 2835.5 -774.5Q2858 -752 2858 -716Q2858 -681 2835.5 -659.0Q2813 -637 2778 -637Z M2596 -637Q2560 -637 2537.5 -659.0Q2515 -681 2515 -716Q2515 -752 2537.5 -774.5Q2560 -797 2596 -797Q2631 -797 2653.5 -774.5Q2676 -752 2676 -716Q2676 -681 2653.5 -659.0Q2631 -637 2596 -637Z M3396 -617Q3360 -617 3337.5 -639.0Q3315 -661 3315 -696Q3315 -732 3337.5 -754.5Q3360 -777 3396 -777Q3431 -777 3453.5 -754.5Q3476 -732 3476 -696Q3476 -661 3453.5 -639.0Q3431 -617 3396 -617Z M3214 -617Q3178 -617 3155.5 -639.0Q3133 -661 3133 -696Q3133 -732 3155.5 -754.5Q3178 -777 3214 -777Q3249 -777 3271.5 -754.5Q3294 -732 3294 -696Q3294 -661 3271.5 -639.0Q3249 -617 3214 -617Z M3798 -640Q3752 -640 3723.0 -668.5Q3694 -697 3694 -743Q3694 -789 3723.0 -818.0Q3752 -847 3798 -847Q3844 -847 3873.0 -818.0Q3902 -789 3902 -743Q3902 -697 3873.0 -668.5Q3844 -640 3798 -640Z"/></svg>
-</div><figcaption>الأساسي: على الكحلي</figcaption></figure>
-        <figure><div class="tile light"><svg width="260" xmlns="http://www.w3.org/2000/svg" viewBox="30 -921 4207 941" role="img" aria-label="انتقالات"><title>انتقالات</title><path fill="#0B1220" d="M396 0Q307 0 241.5 -25.5Q176 -51 133.5 -94.5Q91 -138 70.5 -193.5Q50 -249 50 -310Q50 -366 67.0 -423.0Q84 -480 117 -531L265 -464Q250 -433 242.0 -403.5Q234 -374 234 -347Q234 -312 250.0 -284.0Q266 -256 300.5 -240.5Q335 -225 390 -225H824V-537H1017V0Z M1669 0V-901H1862V0Z M1147 0V-225H1862V0Z M1289 0V-620H1482V0Z M2185 0V-225H2300V0Z M2002 0V-901H2195V0Z M2300 0V-225Q2308 -225 2314.0 -194.5Q2320 -164 2320 -114Q2320 -62 2314.0 -31.0Q2308 0 2300 0Z M2300 0V-225Q2357 -225 2405.5 -226.5Q2454 -228 2495 -229Q2503 -230 2510.0 -223.0Q2517 -216 2524.0 -209.5Q2531 -203 2537 -203Q2627 -211 2678.5 -225.5Q2730 -240 2752.0 -259.5Q2774 -279 2774 -303Q2774 -322 2763.0 -337.5Q2752 -353 2732.5 -362.0Q2713 -371 2687 -371Q2661 -371 2640.5 -360.5Q2620 -350 2609.0 -334.5Q2598 -319 2598 -303Q2598 -280 2620.5 -260.0Q2643 -240 2696.0 -225.0Q2749 -210 2841 -202Q2848 -202 2854.5 -209.0Q2861 -216 2868.0 -223.0Q2875 -230 2882 -229Q2923 -227 2970.0 -226.0Q3017 -225 3072 -225V0Q2926 0 2804.0 -18.0Q2682 -36 2592.5 -74.0Q2503 -112 2454.0 -171.0Q2405 -230 2405 -311Q2405 -384 2443.0 -439.0Q2481 -494 2545.0 -525.5Q2609 -557 2686 -557Q2764 -557 2828.0 -526.0Q2892 -495 2930.0 -439.5Q2968 -384 2968 -310Q2968 -237 2929.5 -184.0Q2891 -131 2824.0 -95.0Q2757 -59 2671.0 -38.5Q2585 -18 2490.0 -9.0Q2395 0 2300 0Z M3072 0V-225Q3080 -225 3086.0 -194.5Q3092 -164 3092 -114Q3092 -62 3086.0 -31.0Q3080 0 3072 0Z M2300 0Q2292 0 2286.0 -31.0Q2280 -62 2280 -114Q2280 -164 2286.0 -194.5Q2292 -225 2300 -225Z M3072 0V-225H3130Q3167 -225 3187.0 -232.5Q3207 -240 3215.0 -258.5Q3223 -277 3223 -309V-537H3416V-309Q3416 -214 3381.0 -145.0Q3346 -76 3282.0 -38.5Q3218 -1 3130 0Z M3509 0Q3421 0 3357.0 -37.5Q3293 -75 3258.0 -144.5Q3223 -214 3223 -309H3416Q3416 -277 3424.0 -258.5Q3432 -240 3452.0 -232.5Q3472 -225 3509 -225H3542V0Z M3542 0V-225Q3550 -225 3556.0 -194.5Q3562 -164 3562 -114Q3562 -62 3556.0 -31.0Q3550 0 3542 0Z M3072 0Q3064 0 3058.0 -31.0Q3052 -62 3052 -114Q3052 -164 3058.0 -194.5Q3064 -225 3072 -225Z M3701 -537H3894V0H3542V-225H3701Z M3542 0Q3534 0 3528.0 -31.0Q3522 -62 3522 -114Q3522 -164 3528.0 -194.5Q3534 -225 3542 -225Z M4024 0V-901H4217V0Z"/><path fill="#5E8A00" d="M626 -589Q590 -589 567.5 -611.0Q545 -633 545 -668Q545 -704 567.5 -726.5Q590 -749 626 -749Q661 -749 683.5 -726.5Q706 -704 706 -668Q706 -633 683.5 -611.0Q661 -589 626 -589Z M444 -589Q408 -589 385.5 -611.0Q363 -633 363 -668Q363 -704 385.5 -726.5Q408 -749 444 -749Q479 -749 501.5 -726.5Q524 -704 524 -668Q524 -633 501.5 -611.0Q479 -589 444 -589Z M2778 -637Q2742 -637 2719.5 -659.0Q2697 -681 2697 -716Q2697 -752 2719.5 -774.5Q2742 -797 2778 -797Q2813 -797 2835.5 -774.5Q2858 -752 2858 -716Q2858 -681 2835.5 -659.0Q2813 -637 2778 -637Z M2596 -637Q2560 -637 2537.5 -659.0Q2515 -681 2515 -716Q2515 -752 2537.5 -774.5Q2560 -797 2596 -797Q2631 -797 2653.5 -774.5Q2676 -752 2676 -716Q2676 -681 2653.5 -659.0Q2631 -637 2596 -637Z M3396 -617Q3360 -617 3337.5 -639.0Q3315 -661 3315 -696Q3315 -732 3337.5 -754.5Q3360 -777 3396 -777Q3431 -777 3453.5 -754.5Q3476 -732 3476 -696Q3476 -661 3453.5 -639.0Q3431 -617 3396 -617Z M3214 -617Q3178 -617 3155.5 -639.0Q3133 -661 3133 -696Q3133 -732 3155.5 -754.5Q3178 -777 3214 -777Q3249 -777 3271.5 -754.5Q3294 -732 3294 -696Q3294 -661 3271.5 -639.0Q3249 -617 3214 -617Z M3798 -640Q3752 -640 3723.0 -668.5Q3694 -697 3694 -743Q3694 -789 3723.0 -818.0Q3752 -847 3798 -847Q3844 -847 3873.0 -818.0Q3902 -789 3902 -743Q3902 -697 3873.0 -668.5Q3844 -640 3798 -640Z"/></svg>
-</div><figcaption>على الخلفيات الفاتحة (النقاط زيتية عشان تنقرا)</figcaption></figure>
-        <figure><div class="tile"><svg width="120" height="120" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="رمز انتقالات">
+  
+  <circle cx="30" cy="90" r="16" fill="#15171A"/>
+  <circle cx="90" cy="30" r="16" fill="#E03A2F"/>
+  <path d="M30 64 C30 40 42 32 60 31" fill="none" stroke="#E03A2F" stroke-width="10" stroke-linecap="round"/>
+  <path d="M55 18 L68 31 L55 44" fill="none" stroke="#E03A2F" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div><figcaption>الرمز لحاله: للأماكن الصغيرة</figcaption></figure>
+      <figure><div class="card tile red"><svg width="120" height="120" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="رمز انتقالات">
   <title>انتقالات</title>
-  <!-- نقطة بيضاء = النادي القديم، نقطة ليمونية = النادي الجديد، والقوس = الانتقال. النقاط نفس نقاط الكتابة -->
-  <circle cx="30" cy="90" r="16" fill="#F4F7FB"/>
-  <circle cx="90" cy="30" r="16" fill="#C8F135"/>
-  <path d="M30 64 C30 40 42 32 60 31" fill="none" stroke="#C8F135" stroke-width="10" stroke-linecap="round"/>
-  <path d="M55 18 L68 31 L55 44" fill="none" stroke="#C8F135" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-</div><figcaption>الرمز لحاله: للأيقونات والأماكن الصغيرة</figcaption></figure>
-        <figure><div class="tile lime"><div style="width:120px;height:120px;border-radius:27px;overflow:hidden"><svg width="120" height="120" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
-  <rect width="120" height="120" fill="#0B1220"/>
-  <rect width="120" height="120" fill="url(#g)"/>
-  <defs><radialGradient id="g" cx="80%" cy="10%" r="90%"><stop offset="0" stop-color="#1D3363" stop-opacity=".9"/><stop offset="1" stop-color="#0B1220" stop-opacity="0"/></radialGradient></defs>
-  <g transform="translate(12 12) scale(.8)"><circle cx="30" cy="90" r="16" fill="#F4F7FB"/>
-  <circle cx="90" cy="30" r="16" fill="#C8F135"/>
-  <path d="M30 64 C30 40 42 32 60 31" fill="none" stroke="#C8F135" stroke-width="10" stroke-linecap="round"/>
-  <path d="M55 18 L68 31 L55 44" fill="none" stroke="#C8F135" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-</svg>
-</div></div><figcaption>أيقونة التطبيق (موجودة بمقاس 1024 للآب ستور)</figcaption></figure>
-      </div>
-      <p class="muted">المساحة الفاضية حول الشعار لازم تكون على الأقل بقد نقطة وحدة من نقاط الحروف. وأصغر عرض للكلمة ٨٠ بكسل، وتحت كذا استخدم الرمز.</p>
-    </section>
-
-    <section>
-      <span class="stop" aria-hidden="true"></span>
-      <h2>الأيقونة في الأحجام</h2>
-      <div class="sizes">
-        <div style="width:120px;height:120px"><svg width="120" height="120" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
-  <rect width="120" height="120" fill="#0B1220"/>
-  <rect width="120" height="120" fill="url(#g)"/>
-  <defs><radialGradient id="g" cx="80%" cy="10%" r="90%"><stop offset="0" stop-color="#1D3363" stop-opacity=".9"/><stop offset="1" stop-color="#0B1220" stop-opacity="0"/></radialGradient></defs>
-  <g transform="translate(12 12) scale(.8)"><circle cx="30" cy="90" r="16" fill="#F4F7FB"/>
-  <circle cx="90" cy="30" r="16" fill="#C8F135"/>
-  <path d="M30 64 C30 40 42 32 60 31" fill="none" stroke="#C8F135" stroke-width="10" stroke-linecap="round"/>
-  <path d="M55 18 L68 31 L55 44" fill="none" stroke="#C8F135" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-</svg>
-</div>
-        <div style="width:76px;height:76px"><svg width="76" height="76" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
-  <rect width="120" height="120" fill="#0B1220"/>
-  <rect width="120" height="120" fill="url(#g)"/>
-  <defs><radialGradient id="g" cx="80%" cy="10%" r="90%"><stop offset="0" stop-color="#1D3363" stop-opacity=".9"/><stop offset="1" stop-color="#0B1220" stop-opacity="0"/></radialGradient></defs>
-  <g transform="translate(12 12) scale(.8)"><circle cx="30" cy="90" r="16" fill="#F4F7FB"/>
-  <circle cx="90" cy="30" r="16" fill="#C8F135"/>
-  <path d="M30 64 C30 40 42 32 60 31" fill="none" stroke="#C8F135" stroke-width="10" stroke-linecap="round"/>
-  <path d="M55 18 L68 31 L55 44" fill="none" stroke="#C8F135" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-</svg>
-</div>
-        <div style="width:48px;height:48px"><svg width="48" height="48" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
-  <rect width="120" height="120" fill="#0B1220"/>
-  <rect width="120" height="120" fill="url(#g)"/>
-  <defs><radialGradient id="g" cx="80%" cy="10%" r="90%"><stop offset="0" stop-color="#1D3363" stop-opacity=".9"/><stop offset="1" stop-color="#0B1220" stop-opacity="0"/></radialGradient></defs>
-  <g transform="translate(12 12) scale(.8)"><circle cx="30" cy="90" r="16" fill="#F4F7FB"/>
-  <circle cx="90" cy="30" r="16" fill="#C8F135"/>
-  <path d="M30 64 C30 40 42 32 60 31" fill="none" stroke="#C8F135" stroke-width="10" stroke-linecap="round"/>
-  <path d="M55 18 L68 31 L55 44" fill="none" stroke="#C8F135" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-</svg>
-</div>
-        <div style="width:29px;height:29px"><svg width="29" height="29" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
-  <rect width="120" height="120" fill="#0B1220"/>
-  <rect width="120" height="120" fill="url(#g)"/>
-  <defs><radialGradient id="g" cx="80%" cy="10%" r="90%"><stop offset="0" stop-color="#1D3363" stop-opacity=".9"/><stop offset="1" stop-color="#0B1220" stop-opacity="0"/></radialGradient></defs>
-  <g transform="translate(12 12) scale(.8)"><circle cx="30" cy="90" r="16" fill="#F4F7FB"/>
-  <circle cx="90" cy="30" r="16" fill="#C8F135"/>
-  <path d="M30 64 C30 40 42 32 60 31" fill="none" stroke="#C8F135" stroke-width="10" stroke-linecap="round"/>
-  <path d="M55 18 L68 31 L55 44" fill="none" stroke="#C8F135" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-</svg>
-</div>
-      </div>
-      <p class="muted">الرمز يبقى واضح حتى بحجم ٢٩ بكسل (حجم أيقونة الإعدادات في الآيفون).</p>
-    </section>
-
-    <section>
-      <span class="stop" aria-hidden="true"></span>
-      <h2>الألوان</h2>
-      <ul class="swatches"><li class="sw"><div class="chip" style="--c:#0B1220"></div><div class="sw-t"><b>كحلي الليل</b><button class="hex" type="button" data-hex="#0B1220" aria-label="انسخ #0B1220">#0B1220</button><span>الخلفية الأساسية. ملعب بالليل تحت الأضواء.</span></div></li><li class="sw"><div class="chip" style="--c:#C8F135"></div><div class="sw-t"><b>ليموني الانتقال</b><button class="hex" type="button" data-hex="#C8F135" aria-label="انسخ #C8F135">#C8F135</button><span>لون النقاط والأسهم والأزرار. يعني: انتقال تم.</span></div></li><li class="sw"><div class="chip" style="--c:#F4F7FB"></div><div class="sw-t"><b>أبيض الطباشير</b><button class="hex" type="button" data-hex="#F4F7FB" aria-label="انسخ #F4F7FB">#F4F7FB</button><span>النصوص والنقطة البيضاء (النادي القديم).</span></div></li><li class="sw"><div class="chip" style="--c:#5CC8FF"></div><div class="sw-t"><b>أزرق الكشّاف</b><button class="hex" type="button" data-hex="#5CC8FF" aria-label="انسخ #5CC8FF">#5CC8FF</button><span>لون مساعد للفريق الثاني والتركيز.</span></div></li><li class="sw"><div class="chip" style="--c:#FF5C6C"></div><div class="sw-t"><b>أحمر آخر دقيقة</b><button class="hex" type="button" data-hex="#FF5C6C" aria-label="انسخ #FF5C6C">#FF5C6C</button><span>الوقت ينتهي، والإجابات الغلط.</span></div></li><li class="sw"><div class="chip" style="--c:#5E8A00"></div><div class="sw-t"><b>زيتي النقاط</b><button class="hex" type="button" data-hex="#5E8A00" aria-label="انسخ #5E8A00">#5E8A00</button><span>نقاط الشعار على الخلفيات الفاتحة.</span></div></li></ul>
-      <p class="muted">اضغط على أي كود لون عشان تنسخه.</p>
-    </section>
-
-    <section>
-      <span class="stop" aria-hidden="true"></span>
-      <h2>الخطوط</h2>
-      <div class="type">
-        <div class="type-card"><span class="eyebrow">العناوين والأرقام</span><span class="big d900">ضربة جزاء ٩٠</span><h3>Alexandria · Black 900</h3><p class="muted">عريض وقوي مثل لوحات الملاعب. للعناوين والنقاط والمؤقت فقط.</p></div>
-        <div class="type-card"><span class="eyebrow">النصوص والأزرار</span><span class="big b400">انتقل إلى الهلال</span><h3>Readex Pro · 400 / 600</h3><p class="muted">مريح للقراءة على الجوال، ويدعم العربي والإنجليزي بنفس الروح.</p></div>
-      </div>
-      <div class="scale">
-        <span class="d900" style="font-size:2rem">عنوان رئيسي ٣٢</span>
-        <span class="d900" style="font-size:1.5rem;font-weight:800">عنوان فرعي ٢٤</span>
-        <span style="font-size:1rem">نص عادي ١٦: كل فريق عنده ٣٠ ثانية يخمّن فيها.</span>
-        <span class="muted" style="font-size:.85rem">ملاحظة صغيرة ١٤</span>
-      </div>
-      <p class="muted">الخطين مجانيين من Google Fonts (رخصة OFL)، وتقدر تستخدمهم في تطبيق تجاري.</p>
-    </section>
-
-    <section>
-      <span class="stop" aria-hidden="true"></span>
-      <h2>الاستخدام</h2>
-      <div class="rules">
-        <div class="rule do"><h3>سوّ</h3><ul><li>خل الخلفية كحلية قدر الإمكان.</li><li>استخدم الليموني للشي المهم بس: الزر الأساسي والنقاط.</li><li>اكتب بلهجة قريبة وبسيطة: «جاهزين؟»، «مرّر».</li></ul></div>
-        <div class="rule dont"><h3>لا تسوّ</h3><ul><li>لا تمط الشعار أو تغيّر ألوان النقاط.</li><li>لا تحط الشعار الأبيض على خلفية فاتحة.</li><li>لا تستخدم شعارات أندية أو صور لاعبين بدون ترخيص.</li></ul></div>
-      </div>
-    </section>
-
-    <section>
-      <span class="stop" aria-hidden="true"></span>
-      <h2>في الآب ستور</h2>
-      <div class="store"><div class="ic"><svg width="96" height="96" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
-  <rect width="120" height="120" fill="#0B1220"/>
-  <rect width="120" height="120" fill="url(#g)"/>
-  <defs><radialGradient id="g" cx="80%" cy="10%" r="90%"><stop offset="0" stop-color="#1D3363" stop-opacity=".9"/><stop offset="1" stop-color="#0B1220" stop-opacity="0"/></radialGradient></defs>
-  <g transform="translate(12 12) scale(.8)"><circle cx="30" cy="90" r="16" fill="#F4F7FB"/>
-  <circle cx="90" cy="30" r="16" fill="#C8F135"/>
-  <path d="M30 64 C30 40 42 32 60 31" fill="none" stroke="#C8F135" stroke-width="10" stroke-linecap="round"/>
-  <path d="M55 18 L68 31 L55 44" fill="none" stroke="#C8F135" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-</svg>
-</div><div><b>انتقالات</b><span>من انتقالاته تعرفه</span></div><span class="get">احصل</span></div>
-      <p class="muted">الاسم الإنجليزي المقترح للمتجر: <code>Intiqalat: Guess the Player</code>. يحتاج نتأكد إن الاسم مو محجوز وقت التسجيل في App Store Connect.</p>
-    </section>
-  </div>
+  
+  <circle cx="30" cy="90" r="16" fill="#F6F4EE"/>
+  <circle cx="90" cy="30" r="16" fill="#FFC82E"/>
+  <path d="M30 64 C30 40 42 32 60 31" fill="none" stroke="#F6F4EE" stroke-width="10" stroke-linecap="round"/>
+  <path d="M55 18 L68 31 L55 44" fill="none" stroke="#F6F4EE" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div><figcaption>الرمز على الأحمر</figcaption></figure>
+    </div>
+    <p class="muted">خل حول الشعار مساحة فاضية بقد نقطة وحدة من نقاط الحروف على الأقل. وأصغر عرض للكلمة ٨٠ بكسل، وتحت كذا استخدم الرمز.</p>
+  </section>
+  <section>
+    <h2>الأيقونة</h2>
+    <div class="sizes"><div class="ico" style="width:120px;height:120px"><svg width="120" height="120" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" fill="#E03A2F"/>
+<g transform="translate(12 12) scale(.8)"><circle cx="30" cy="90" r="16" fill="#F6F4EE"/><circle cx="90" cy="30" r="16" fill="#FFC82E"/>
+<path d="M30 64 C30 40 42 32 60 31" fill="none" stroke="#F6F4EE" stroke-width="10" stroke-linecap="round"/>
+<path d="M55 18 L68 31 L55 44" fill="none" stroke="#F6F4EE" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></g></svg></div><div class="ico" style="width:76px;height:76px"><svg width="76" height="76" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" fill="#E03A2F"/>
+<g transform="translate(12 12) scale(.8)"><circle cx="30" cy="90" r="16" fill="#F6F4EE"/><circle cx="90" cy="30" r="16" fill="#FFC82E"/>
+<path d="M30 64 C30 40 42 32 60 31" fill="none" stroke="#F6F4EE" stroke-width="10" stroke-linecap="round"/>
+<path d="M55 18 L68 31 L55 44" fill="none" stroke="#F6F4EE" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></g></svg></div><div class="ico" style="width:48px;height:48px"><svg width="48" height="48" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" fill="#E03A2F"/>
+<g transform="translate(12 12) scale(.8)"><circle cx="30" cy="90" r="16" fill="#F6F4EE"/><circle cx="90" cy="30" r="16" fill="#FFC82E"/>
+<path d="M30 64 C30 40 42 32 60 31" fill="none" stroke="#F6F4EE" stroke-width="10" stroke-linecap="round"/>
+<path d="M55 18 L68 31 L55 44" fill="none" stroke="#F6F4EE" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></g></svg></div><div class="ico" style="width:29px;height:29px"><svg width="29" height="29" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" fill="#E03A2F"/>
+<g transform="translate(12 12) scale(.8)"><circle cx="30" cy="90" r="16" fill="#F6F4EE"/><circle cx="90" cy="30" r="16" fill="#FFC82E"/>
+<path d="M30 64 C30 40 42 32 60 31" fill="none" stroke="#F6F4EE" stroke-width="10" stroke-linecap="round"/>
+<path d="M55 18 L68 31 L55 44" fill="none" stroke="#F6F4EE" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></g></svg></div></div>
+    <p class="muted">الرمز يبقى واضح حتى بحجم ٢٩ بكسل (حجم أيقونة الإعدادات في الآيفون). الملف الجاهز للآب ستور بمقاس 1024.</p>
+  </section>
+  <section>
+    <h2>الألوان</h2>
+    <ul class="swatches"><li class="sw"><div class="chip" style="--c:#E03A2F"></div><div class="sw-t"><b>أحمر الصافرة</b><button class="hex" type="button" data-hex="#E03A2F" aria-label="انسخ #E03A2F">#E03A2F</button><span>لون الهوية: الأيقونة، الزر الأساسي، نقاط الحروف</span></div></li><li class="sw"><div class="chip" style="--c:#15171A"></div><div class="sw-t"><b>حبر</b><button class="hex" type="button" data-hex="#15171A" aria-label="انسخ #15171A">#15171A</button><span>النصوص، الحدود السميكة والظلال الصلبة</span></div></li><li class="sw"><div class="chip" style="--c:#EDEFE8"></div><div class="sw-t"><b>ورق الألبوم</b><button class="hex" type="button" data-hex="#EDEFE8" aria-label="انسخ #EDEFE8">#EDEFE8</button><span>خلفية التطبيق، مثل صفحة ألبوم ستيكرات</span></div></li><li class="sw"><div class="chip" style="--c:#FFC82E"></div><div class="sw-t"><b>أصفر البطاقة</b><button class="hex" type="button" data-hex="#FFC82E" aria-label="انسخ #FFC82E">#FFC82E</button><span>النقاط والتلميحات، والنقطة الجديدة في الأيقونة</span></div></li><li class="sw"><div class="chip" style="--c:#2849D6"></div><div class="sw-t"><b>أزرق الملعب</b><button class="hex" type="button" data-hex="#2849D6" aria-label="انسخ #2849D6">#2849D6</button><span>لون الفريق الثاني والمؤقت</span></div></li><li class="sw"><div class="chip" style="--c:#1F9D55"></div><div class="sw-t"><b>أخضر العشب</b><button class="hex" type="button" data-hex="#1F9D55" aria-label="انسخ #1F9D55">#1F9D55</button><span>خلفية بطاقة اللاعب ولون الفريق الرابع</span></div></li></ul>
+    <p class="muted">اضغط على أي كود لون عشان تنسخه. ألوان الفرق بالترتيب: أحمر، أزرق، أصفر، أخضر.</p>
+  </section>
+  <section>
+    <h2>الخطوط</h2>
+    <div class="type">
+      <div class="card type-card"><span class="eyebrow">العناوين والأرقام</span><span class="big d900">ضربة جزاء ٩٠</span><h3>Alexandria · Black 900</h3><p class="muted">عريض وقوي مثل لوحات الملاعب.</p></div>
+      <div class="card type-card"><span class="eyebrow">النصوص والأزرار</span><span class="big b400">انتقل إلى الهلال</span><h3>Readex Pro · 400 / 600</h3><p class="muted">مريح للقراءة على الجوال، ويدعم العربي والإنجليزي.</p></div>
+    </div>
+    <p class="muted">الخطين مجانيين (رخصة OFL)، ومضمّنين داخل التطبيق فيشتغلون بدون إنترنت.</p>
+  </section>
+  <section>
+    <h2>الأسلوب</h2>
+    <div class="style">
+      <div class="card demo"><span class="btn p">ورني الجواب</span><span class="btn g">ما ندري، مرّر</span></div>
+      <div class="card demo"><span class="pill">٥ نقاط</span><p class="muted">حدود ٢.٥ بكسل بلون الحبر، وظل صلب ٤×٤ بدون تمويه. الزوايا دائرية بس مو مبالغ فيها.</p></div>
+    </div>
+  </section>
+  <section>
+    <h2>الاستخدام</h2>
+    <div class="rules">
+      <div class="card rule do"><h3>سوّ</h3><ul><li>خل الخلفية ورق فاتح، والأحمر للشي المهم بس.</li><li>كل عنصر تفاعلي له حد حبر وظل صلب.</li><li>اكتب بلهجة قريبة وبسيطة.</li></ul></div>
+      <div class="card rule dont"><h3>لا تسوّ</h3><ul><li>لا تحط تدرجات أو توهج أو خلفيات داكنة نيون.</li><li>لا تمط الشعار أو تغيّر ألوان النقاط.</li><li>لا تستخدم شعارات أندية أو صور لاعبين بدون رخصة.</li></ul></div>
+    </div>
+  </section>
+  <section>
+    <h2>في الآب ستور</h2>
+    <div class="card store"><div class="ico" style="width:96px;height:96px"><svg width="96" height="96" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" fill="#E03A2F"/>
+<g transform="translate(12 12) scale(.8)"><circle cx="30" cy="90" r="16" fill="#F6F4EE"/><circle cx="90" cy="30" r="16" fill="#FFC82E"/>
+<path d="M30 64 C30 40 42 32 60 31" fill="none" stroke="#F6F4EE" stroke-width="10" stroke-linecap="round"/>
+<path d="M55 18 L68 31 L55 44" fill="none" stroke="#F6F4EE" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></g></svg></div><div><b>انتقالات</b><span>من انتقالاته تعرفه</span></div><span class="get">احصل</span></div>
+    <p class="muted">الاسم الإنجليزي المقترح: <code>Intiqalat: Guess the Player</code>. نتأكد إنه مو محجوز وقت التسجيل في App Store Connect.</p>
+  </section>
 </div>
 <div class="toast" id="toast" role="status" hidden></div>
 <script>

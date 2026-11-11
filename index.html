@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-  <meta name="theme-color" content="#0B1220">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; script-src 'self'; connect-src 'self'; media-src 'self'; object-src 'none'; base-uri 'self'">
+  <meta name="theme-color" content="#E03A2F">
   <title>انتقالات · من هو اللاعب؟</title>
-  <meta name="description" content="انتقالات: لعبة جماعية تعرض لك انتقالات لاعب كرة قدم وأنت تخمّن مين هو.">
+  <meta name="description" content="انتقالات: لعبة جماعية تعرض لك انتقالات لاعب كرة قدم والفرق تتسابق تعرف مين هو.">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/icon-180.png">
@@ -18,9 +18,10 @@
 
     <!-- الشاشة الرئيسية -->
     <section class="screen active" id="screen-home" aria-labelledby="home-title">
+      <div class="home-top"><button class="icon-btn music-btn" type="button" aria-pressed="true" aria-label="الموسيقى"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 18V5l11-2v13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.8" fill="currentColor"/><circle cx="17.5" cy="16" r="2.8" fill="currentColor"/><path class="slash" d="M3 3l18 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button></div>
       <div class="home-hero">
-        <img src="assets/logo.svg" alt="" class="home-logo" width="120" height="120">
-        <h1 id="home-title" class="brand"><img src="assets/wordmark-light.svg" alt="انتقالات" width="260"></h1>
+        <div class="home-badge"><img src="assets/symbol-light.svg" alt="" width="96" height="96"></div>
+        <h1 id="home-title" class="brand"><img src="assets/wordmark-dark.svg" alt="انتقالات" width="260"></h1>
         <p class="tagline">من انتقالاته تعرفه</p>
       </div>
       <div class="stack">
@@ -35,11 +36,11 @@
       <header class="bar"><button class="icon-btn" data-go="home" aria-label="رجوع">→</button><h2 id="howto-title">طريقة اللعب</h2><span></span></header>
       <ol class="rules">
         <li>نعرض لكم <b>انتقالات لاعب</b>: الأندية اللي لعب لها بالترتيب.</li>
-        <li>كل فريق عنده <b>وقت محدد</b> يكتب فيه اسم اللاعب.</li>
-        <li>لو غلط أو خلص وقته، ينتقل الدور للفريق اللي بعده.</li>
-        <li>لو <b>كل الفرق</b> ما عرفته، ينكشف <b>تلميح</b> وتقل النقاط.</li>
-        <li>بدون تلميح = ٥ نقاط، وكل تلميح ينقص نقطة. بعد ٤ تلميحات ينكشف اللاعب.</li>
-        <li>اللي يجمع نقاط أكثر في الأخير يفوز.</li>
+        <li>واحد منكم يمسك الجوال ويكون <b>المقدّم</b>.</li>
+        <li>الفريق اللي عليه الدور يقول الجواب بصوت عالي قبل ما يخلص وقته.</li>
+        <li>المقدّم يضغط <b>«ورني الجواب»</b>، يطلع اللاعب، ويختار الفريق اللي جاوب صح. وإذا محد عرفه يضغط <b>«تخطي»</b>.</li>
+        <li>ما تعرفون؟ اضغطوا <b>«مرّر»</b> وينتقل الدور. ولو كل الفرق مرّرت ينكشف <b>تلميح</b>.</li>
+        <li>بدون تلميح ٥ نقاط، وكل تلميح ينقص نقطة.</li>
       </ol>
       <button class="btn btn-primary" data-go="setup">يلا نلعب</button>
     </section>
@@ -91,16 +92,16 @@
 
     <!-- اللعب -->
     <section class="screen" id="screen-game" aria-label="اللعب">
-      <header class="bar">
+      <header class="bar bar-game">
         <button class="icon-btn" id="quit-btn" aria-label="إنهاء اللعبة">✕</button>
         <span class="round-label" id="round-label"></span>
-        <span class="points-badge" id="points-badge" aria-live="polite"></span>
+        <button class="icon-btn music-btn" type="button" aria-pressed="true" aria-label="الموسيقى"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 18V5l11-2v13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.8" fill="currentColor"/><circle cx="17.5" cy="16" r="2.8" fill="currentColor"/><path class="slash" d="M3 3l18 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
       </header>
 
       <div class="scores" id="scores" aria-label="النتائج"></div>
 
       <div class="card career-card">
-        <h3 class="card-title">انتقالات اللاعب</h3>
+        <div class="card-head"><h3 class="card-title">انتقالات اللاعب</h3><span class="points-badge" id="points-badge" aria-live="polite"></span></div>
         <ol class="career" id="career"></ol>
       </div>
 
@@ -117,12 +118,10 @@
         </div>
       </div>
 
-      <form id="guess-form" class="guess" autocomplete="off">
-        <label for="guess-input" class="sr-only">اسم اللاعب</label>
-        <input id="guess-input" type="text" inputmode="text" enterkeyhint="send" placeholder="اكتب اسم اللاعب…" maxlength="40" autocomplete="off" autocorrect="off" spellcheck="false">
-        <button type="submit" class="btn btn-primary">جاوب</button>
-      </form>
-      <button class="btn btn-ghost btn-sm" id="pass-btn">ما ندري، مرّر</button>
+      <div class="actions">
+        <button class="btn btn-primary btn-lg" id="reveal-btn">ورني الجواب</button>
+        <button class="btn btn-ghost" id="pass-btn">ما ندري، مرّر</button>
+      </div>
     </section>
 
     <!-- النهاية -->
@@ -137,7 +136,7 @@
     </section>
   </main>
 
-  <!-- نافذة تسليم الدور / النتيجة -->
+  <!-- نافذة تسليم الدور -->
   <div class="overlay" id="overlay" hidden>
     <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="ov-title">
       <div class="ov-emoji" id="ov-emoji" aria-hidden="true"></div>
@@ -148,8 +147,28 @@
     </div>
   </div>
 
+  <!-- كشف الجواب -->
+  <div class="overlay" id="reveal" hidden>
+    <div class="sheet reveal-sheet" role="dialog" aria-modal="true" aria-labelledby="rv-name">
+      <div class="player-card">
+        <div class="player-photo" id="rv-photo"></div>
+        <div class="player-meta">
+          <h2 id="rv-name"></h2>
+          <p id="rv-en" class="muted"></p>
+          <p id="rv-info"></p>
+        </div>
+      </div>
+      <p class="rv-q">مين جاوب صح؟ <b id="rv-points"></b></p>
+      <div class="rv-teams" id="rv-teams"></div>
+      <button class="btn btn-ghost" id="rv-skip">محد عرفه · تخطي</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" hidden></div>
+
   <script src="js/data.js"></script>
   <script src="js/engine.js"></script>
+  <script src="js/music.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

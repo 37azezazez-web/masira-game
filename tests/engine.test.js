@@ -72,3 +72,19 @@ test("اختيار اللاعبين حسب الصعوبة وبدون تكرار"
   assert.ok(fresh.every((p) => !seen.includes(p.id)), "يفضّل اللاعبين الجدد");
   assert.equal(E.pickPlayers(PLAYERS, "mix", 999).length, PLAYERS.length);
 });
+
+test("نظام ورني الجواب: نقاط للفريق المختار أو تخطي", () => {
+  const g = new E.Game({ teams: ["أ", "ب", "ج"], players: [byId("messi"), byId("salah"), byId("kane")], turnSeconds: 30 });
+  g.pass(); g.pass(); g.pass(); // كل الفرق مرّرت = تلميح
+  assert.equal(g.hintLevel, 1);
+  const ev = g.award(2);
+  assert.equal(ev.type, "correct");
+  assert.equal(g.teams[2].score, 4);
+  assert.equal(g.award(0).type, "ignored", "ما ينفع نعطي نقاط مرتين");
+  g.nextRound();
+  const sk = g.skip();
+  assert.equal(sk.type, "reveal");
+  assert.equal(g.teams.reduce((a, t) => a + t.score, 0), 4);
+  g.nextRound();
+  assert.equal(g.award(9).type, "ignored", "فريق غير موجود");
+});

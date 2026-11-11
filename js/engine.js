@@ -127,6 +127,24 @@
       return this._fail("wrong");
     }
 
+    /** نظام «ورني الجواب»: المقدم يحدد الفريق اللي جاوب صح بعد كشف الجواب */
+    award(teamIndex) {
+      if (this.roundDone || this.over) return { type: "ignored" };
+      const t = this.teams[teamIndex];
+      if (!t) return { type: "ignored" };
+      const pts = this.points;
+      t.score += pts;
+      this.roundDone = true;
+      return { type: "correct", team: teamIndex, points: pts, player: this.player };
+    }
+
+    /** محد عرفه: ينكشف اللاعب بدون نقاط */
+    skip() {
+      if (this.roundDone || this.over) return { type: "ignored" };
+      this.roundDone = true;
+      return { type: "reveal", reason: "skip", team: this.current, player: this.player };
+    }
+
     timeout() { return this.roundDone ? { type: "ignored" } : this._fail("timeout"); }
     pass() { return this.roundDone ? { type: "ignored" } : this._fail("pass"); }
 

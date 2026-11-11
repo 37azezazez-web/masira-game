@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="رمز انتقالات">
   <title>انتقالات</title>
-  <!-- نقطة بيضاء = النادي القديم، نقطة ليمونية = النادي الجديد، والقوس = الانتقال. النقاط نفس نقاط الكتابة -->
-  <circle cx="30" cy="90" r="16" fill="#F4F7FB"/>
-  <circle cx="90" cy="30" r="16" fill="#C8F135"/>
-  <path d="M30 64 C30 40 42 32 60 31" fill="none" stroke="#C8F135" stroke-width="10" stroke-linecap="round"/>
-  <path d="M55 18 L68 31 L55 44" fill="none" stroke="#C8F135" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- النقطة الأولى = النادي القديم، السهم = الانتقال، النقطة الثانية = النادي الجديد -->
+  <circle cx="30" cy="90" r="16" fill="#15171A"/>
+  <circle cx="90" cy="30" r="16" fill="#E03A2F"/>
+  <path d="M30 64 C30 40 42 32 60 31" fill="none" stroke="#E03A2F" stroke-width="10" stroke-linecap="round"/>
+  <path d="M55 18 L68 31 L55 44" fill="none" stroke="#E03A2F" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
