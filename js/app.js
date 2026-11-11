@@ -1,8 +1,9 @@
 /* واجهة اللعبة. كل النصوص تنحط بـ textContent (ما نستخدم innerHTML مع مدخلات المستخدم). */
 (function () {
   "use strict";
-  const { Game, pickPlayers, MAX_HINTS } = window.Engine;
+  const { Game, pickPlayers, shuffle, MAX_HINTS } = window.Engine;
   const Music = window.Music;
+  const GOALS = window.GOALS || [];
   const $ = (s) => document.querySelector(s);
   const el = (tag, cls, text) => {
     const e = document.createElement(tag);
@@ -73,6 +74,7 @@
 
   // ===== التنقل =====
   function show(name) {
+    if (name !== "game" && typeof stage !== "undefined") stage.stop();
     document.querySelectorAll(".screen").forEach((s) => s.classList.toggle("active", s.id === "screen-" + name));
     window.scrollTo(0, 0);
   }
@@ -81,7 +83,7 @@
     if (go) show(go.dataset.go);
   });
 
-  $("#home-count").textContent = `${AR(PLAYERS.length)} لاعب في المكتبة`;
+  $("#home-count").textContent = `${AR(PLAYERS.length)} لاعب و${AR(GOALS.length)} هدف في المكتبة`;
 
   let toastTimer;
   function toast(msg) {
@@ -93,7 +95,7 @@
   }
 
   // ===== الإعدادات =====
-  const settings = Object.assign({ teams: DEFAULT_TEAMS.slice(0, 2), difficulty: "1", seconds: "30", rounds: "10" }, store.get("settings", {}));
+  const settings = Object.assign({ teams: DEFAULT_TEAMS.slice(0, 2), mode: "career", difficulty: "1", seconds: "30", rounds: "10" }, store.get("settings", {}));
 
   function renderTeams() {
     const list = $("#team-list");
@@ -136,7 +138,7 @@
       b.tabIndex = on ? 0 : -1;
     });
     buttons.forEach((b, idx) => {
-      b.addEventListener("click", () => { settings[key] = b.dataset.value; sync(); });
+      b.addEventListener("click", () => { settings[key] = b.dataset.value; sync(); if (key === "mode") syncMode(); });
       b.addEventListener("keydown", (e) => {
         const dir = { ArrowLeft: 1, ArrowRight: -1, ArrowDown: 1, ArrowUp: -1 }[e.key];
         if (!dir) return;
@@ -149,12 +151,56 @@
   });
   renderTeams();
 
+  // ===== نوع التحدي ومقاطع المستخدم =====
+  function syncMode() {
+    const goals = settings.mode === "goals";
+    $("#fs-diff").hidden = goals;
+    $("#fs-clips").hidden = !goals;
+    $("#rounds-legend").textContent = goals ? "عدد الأهداف في الجولة" : "عدد اللاعبين في الجولة";
+  }
+  syncMode();
+
+  // المقاطع تبقى في ذاكرة الصفحة بس (رابط محلي blob)، ما تنحفظ ولا تنرفع
+  const clips = [];
+  let clipSeq = 0;
+  function renderClips() {
+    const list = $("#clip-list");
+    list.replaceChildren();
+    clips.forEach((c, i) => {
+      const row = el("div", "clip-row");
+      const v = el("video");
+      v.muted = true; v.playsInline = true; v.preload = "metadata"; v.src = c.src + "#t=0.5";
+      const input = el("input");
+      input.value = c.name; input.maxLength = 30; input.placeholder = "مين سجّل الهدف؟";
+      input.setAttribute("aria-label", `اسم صاحب الهدف في المقطع ${i + 1}`);
+      input.addEventListener("input", () => { c.name = input.value; });
+      const rm = el("button", "icon-btn", "−");
+      rm.type = "button";
+      rm.setAttribute("aria-label", "احذف المقطع");
+      rm.addEventListener("click", () => { URL.revokeObjectURL(c.src); clips.splice(i, 1); renderClips(); });
+      row.append(v, input, rm);
+      list.append(row);
+    });
+  }
+  $("#clip-file").addEventListener("change", (e) => {
+    for (const f of e.target.files) {
+      if (!f.type.startsWith("video/")) continue;
+      if (clips.length >= 20) { toast("أقصى شي ٢٠ مقطع"); break; }
+      clips.push({ id: `clip-${++clipSeq}`, kind: "clip", name: "", en: "", aliases: [], src: URL.createObjectURL(f) });
+    }
+    e.target.value = "";
+    renderClips();
+    const last = $("#clip-list .clip-row:last-child input");
+    if (last) last.focus();
+  });
+
   $("#setup-form").addEventListener("submit", (e) => {
     e.preventDefault();
     const names = settings.teams.map((n) => n.trim().slice(0, 18));
     const err = $("#setup-error");
     if (names.some((n) => !n)) { err.textContent = "اكتب اسم لكل فريق."; err.hidden = false; return; }
     if (new Set(names).size !== names.length) { err.textContent = "أسماء الفرق لازم تكون مختلفة."; err.hidden = false; return; }
+    if (settings.mode === "goals" && clips.some((c) => !c.name.trim())) { err.textContent = "اكتب اسم صاحب الهدف لكل مقطع."; err.hidden = false; return; }
     err.hidden = true;
     settings.teams = names;
     store.set("settings", settings);
@@ -165,11 +211,21 @@
   let game, timerId, remaining, paused = true;
 
   function startGame() {
-    const seen = store.get("seen", []);
-    const diff = settings.difficulty === "mix" ? "mix" : Number(settings.difficulty);
-    const players = pickPlayers(PLAYERS, diff, Number(settings.rounds), seen);
-    game = new Game({ teams: settings.teams, players, turnSeconds: Number(settings.seconds) });
-    store.set("seen", [...new Set([...players.map((p) => p.id), ...seen])].slice(0, PLAYERS.length - 10));
+    const count = Number(settings.rounds);
+    let items;
+    if (settings.mode === "goals") {
+      const seen = store.get("seenGoals", []);
+      const mine = clips.map((c) => ({ ...c, name: c.name.trim().slice(0, 30) }));
+      const built = pickPlayers(GOALS, "mix", Math.max(0, count - mine.length), seen);
+      items = shuffle(mine.slice(0, count).concat(built));
+      store.set("seenGoals", [...new Set([...built.map((g) => g.id), ...seen])].slice(0, Math.max(0, GOALS.length - 5)));
+    } else {
+      const seen = store.get("seen", []);
+      const diff = settings.difficulty === "mix" ? "mix" : Number(settings.difficulty);
+      items = pickPlayers(PLAYERS, diff, count, seen);
+      store.set("seen", [...new Set([...items.map((p) => p.id), ...seen])].slice(0, PLAYERS.length - 10));
+    }
+    game = new Game({ teams: settings.teams, players: items, turnSeconds: Number(settings.seconds) });
     show("game");
     renderRound();
     handoff();
@@ -192,11 +248,20 @@
     });
   }
 
+  const stage = window.Pitch.create($("#stage"));
+  const isGoal = (p) => p.kind === "goal" || p.kind === "clip";
+
   function renderRound() {
     const p = game.player;
-    $("#round-label").textContent = `اللاعب ${AR(game.round + 1)} من ${AR(game.players.length)}`;
+    const goal = isGoal(p);
+    $("#round-label").textContent = `${goal ? "الهدف" : "اللاعب"} ${AR(game.round + 1)} من ${AR(game.players.length)}`;
+    $("#card-title").textContent = goal ? "مين سجّل الهدف؟" : "انتقالات اللاعب";
+    $("#career").hidden = goal;
+    $("#stage").hidden = !goal;
+    if (goal) stage.show(p, 0); else stage.stop();
     const list = $("#career");
     list.replaceChildren();
+    if (goal) { renderHints(); renderTurn(); return; }
     p.career.forEach(([club, years], i) => {
       const li = el("li");
       li.style.setProperty("animation-delay", `${i * 60}ms`);
@@ -319,6 +384,21 @@
     box.append(svg);
   }
 
+  function fillRevealInfo(p) {
+    const desc = $("#rv-desc");
+    desc.hidden = true;
+    if (p.kind === "clip") {
+      $("#rv-info").textContent = "من مقاطعك";
+    } else if (p.kind === "goal") {
+      $("#rv-info").textContent = `${p.team} ضد ${p.opp} · ${p.comp} ${AR(p.year)}`;
+      desc.textContent = p.desc;
+      desc.hidden = false;
+    } else {
+      $("#rv-info").textContent = `${p.flag} ${p.nat} · ${p.pos} · مواليد ${AR(p.born)}`;
+    }
+    if (p.kind === "clip") stage.unveil();
+  }
+
   function openReveal() {
     if (paused || game.roundDone) return;
     stopTimer();
@@ -327,7 +407,7 @@
     playerPhoto(p);
     $("#rv-name").textContent = p.name;
     $("#rv-en").textContent = p.en;
-    $("#rv-info").textContent = `${p.flag} ${p.nat} · ${p.pos} · مواليد ${AR(p.born)}`;
+    fillRevealInfo(p);
     $("#rv-points").textContent = `+${AR(game.points)}`;
     const box = $("#rv-teams");
     box.replaceChildren();
@@ -371,6 +451,7 @@
       sfx.hint(); buzz(30);
       renderHints(game.hintLevel - 1);
       renderTurn();
+      if (game.player.kind === "clip") stage.setBlur(game.hintLevel);
       return handoff({ emoji: "💡", text: `${why}. ${game.teams.length > 1 ? "محد عرفه، " : ""}انكشف تلميح: ${ev.hint.label}` });
     }
     sfx.pass(); buzz(60);
@@ -384,7 +465,7 @@
     playerPhoto(p);
     $("#rv-name").textContent = p.name;
     $("#rv-en").textContent = p.en;
-    $("#rv-info").textContent = `${p.flag} ${p.nat} · ${p.pos} · مواليد ${AR(p.born)}`;
+    fillRevealInfo(p);
     $(".rv-q").hidden = true;
     $("#rv-teams").replaceChildren();
     const skip = $("#rv-skip");
@@ -416,6 +497,7 @@
 
   function endGame() {
     stopTimer();
+    stage.stop();
     const st = game.standings();
     const top = st[0];
     const tie = st.length > 1 && st[1].score === top.score;

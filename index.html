@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; script-src 'self'; connect-src 'self'; media-src 'self'; object-src 'none'; base-uri 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; script-src 'self'; connect-src 'self'; media-src 'self' blob:; object-src 'none'; base-uri 'self'">
   <meta name="theme-color" content="#E03A2F">
   <title>انتقالات · من هو اللاعب؟</title>
   <meta name="description" content="انتقالات: لعبة جماعية تعرض لك انتقالات لاعب كرة قدم والفرق تتسابق تعرف مين هو.">
@@ -41,6 +41,7 @@
         <li>المقدّم يضغط <b>«ورني الجواب»</b>، يطلع اللاعب، ويختار الفريق اللي جاوب صح. وإذا محد عرفه يضغط <b>«تخطي»</b>.</li>
         <li>ما تعرفون؟ اضغطوا <b>«مرّر»</b> وينتقل الدور. ولو كل الفرق مرّرت ينكشف <b>تلميح</b>.</li>
         <li>بدون تلميح ٥ نقاط، وكل تلميح ينقص نقطة.</li>
+        <li><b>خمّن الهدف:</b> نعرض لكم هدف مشهور مرسوم بنقاط مظللة على الملعب، وعليكم تعرفون مين سجله. وتقدرون تضيفون مقاطع أهداف من جوالكم وتطلع مظللة.</li>
       </ol>
       <button class="btn btn-primary" data-go="setup">يلا نلعب</button>
     </section>
@@ -57,6 +58,21 @@
         </fieldset>
 
         <fieldset>
+          <legend>نوع التحدي</legend>
+          <div class="chips chips-2" role="radiogroup" aria-label="نوع التحدي" data-name="mode">
+            <button type="button" role="radio" data-value="career">انتقالات اللاعب</button>
+            <button type="button" role="radio" data-value="goals">خمّن الهدف</button>
+          </div>
+        </fieldset>
+
+        <fieldset id="fs-clips" hidden>
+          <legend>مقاطعك (اختياري)</legend>
+          <p class="muted small fs-note">عندك مقطع هدف في جوالك؟ أضفه واكتب اسم اللي سجّل، ويطلع للفرق مظلل ويوضح مع كل تلميح. المقاطع تبقى في جوالك ولا تنرفع لأي مكان، وتنمسح لما تقفل اللعبة.</p>
+          <div id="clip-list" class="clip-list"></div>
+          <label class="btn btn-ghost btn-sm file-btn">+ أضف مقطع<input type="file" id="clip-file" accept="video/*" multiple class="sr-only"></label>
+        </fieldset>
+
+        <fieldset id="fs-diff">
           <legend>الصعوبة</legend>
           <div class="chips" role="radiogroup" aria-label="الصعوبة" data-name="difficulty">
             <button type="button" role="radio" data-value="1">سهل</button>
@@ -77,7 +93,7 @@
         </fieldset>
 
         <fieldset>
-          <legend>عدد اللاعبين في الجولة</legend>
+          <legend id="rounds-legend">عدد اللاعبين في الجولة</legend>
           <div class="chips" role="radiogroup" aria-label="عدد اللاعبين" data-name="rounds">
             <button type="button" role="radio" data-value="5">٥</button>
             <button type="button" role="radio" data-value="10">١٠</button>
@@ -101,8 +117,9 @@
       <div class="scores" id="scores" aria-label="النتائج"></div>
 
       <div class="card career-card">
-        <div class="card-head"><h3 class="card-title">انتقالات اللاعب</h3><span class="points-badge" id="points-badge" aria-live="polite"></span></div>
+        <div class="card-head"><h3 class="card-title" id="card-title">انتقالات اللاعب</h3><span class="points-badge" id="points-badge" aria-live="polite"></span></div>
         <ol class="career" id="career"></ol>
+        <div class="stage" id="stage" hidden></div>
       </div>
 
       <div class="hints" id="hints" aria-live="polite"></div>
@@ -156,6 +173,7 @@
           <h2 id="rv-name"></h2>
           <p id="rv-en" class="muted"></p>
           <p id="rv-info"></p>
+          <p id="rv-desc" class="rv-desc" hidden></p>
         </div>
       </div>
       <p class="rv-q">مين جاوب صح؟ <b id="rv-points"></b></p>
@@ -167,7 +185,9 @@
   <div class="toast" id="toast" role="status" hidden></div>
 
   <script src="js/data.js"></script>
+  <script src="js/goals.js"></script>
   <script src="js/engine.js"></script>
+  <script src="js/pitch.js"></script>
   <script src="js/music.js"></script>
   <script src="js/app.js"></script>
 </body>

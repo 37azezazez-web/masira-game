@@ -88,3 +88,34 @@ test("نظام ورني الجواب: نقاط للفريق المختار أو 
   g.nextRound();
   assert.equal(g.award(9).type, "ignored", "فريق غير موجود");
 });
+
+test("بيانات الأهداف سليمة والتلميحات حقتها", () => {
+  const { GOALS } = require("../js/goals.js");
+  assert.ok(GOALS.length >= 12);
+  const ids = new Set();
+  for (const g of GOALS) {
+    assert.ok(!ids.has(g.id), "معرف مكرر " + g.id); ids.add(g.id);
+    assert.equal(g.kind, "goal");
+    for (const k of ["name", "en", "nat", "flag", "team", "opp", "comp", "desc"]) assert.ok(g[k], `${g.id} ناقص ${k}`);
+    assert.ok(g.year > 1950 && g.year <= 2026);
+    assert.ok(g.actors.some(([s]) => s === "k"), g.id + " بدون حارس");
+    const tracks = [...g.actors.map(([, p]) => p), g.ball];
+    for (const path of tracks) {
+      assert.ok(path.length >= 2);
+      for (let i = 0; i < path.length; i++) {
+        const [t, x, y] = path[i];
+        assert.ok(x >= 30 && x <= 106 && y >= -1 && y <= 69, `${g.id} نقطة برا الملعب ${x},${y}`);
+        if (i) assert.ok(t > path[i - 1][0], `${g.id} الوقت لازم يزيد`);
+      }
+    }
+    // الكورة تخلص داخل المرمى
+    const [, bx, by] = g.ball[g.ball.length - 1];
+    assert.ok(bx >= 104.5 && by > 30.3 && by < 37.7, `${g.id} الكورة ما دخلت المرمى`);
+  }
+  const game = new E.Game({ teams: ["أ", "ب"], players: GOALS.slice(0, 2), turnSeconds: 30 });
+  const ev = game.pass() && game.pass();
+  assert.equal(ev.type, "hint");
+  assert.equal(ev.hint.label, "البطولة");
+  assert.match(ev.hint.value, /كأس العالم 1994/);
+  assert.ok(E.isCorrect("العويران", GOALS[0]));
+});

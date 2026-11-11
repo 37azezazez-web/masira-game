@@ -16,6 +16,26 @@
         return `يبدأ بـ «${first}» و${len} حرف`;
       } },
   ];
+  const letterHint = { key: "letter", label: "أول حرف وعدد الحروف", get: (p) => {
+      const first = p.name.trim()[0];
+      const len = p.name.replace(/\s/g, "").length;
+      return `يبدأ بـ «${first}» و${len} حرف`;
+    } };
+  // تحدي «خمّن الهدف»: أهداف مرسومة من التطبيق
+  const GOAL_HINTS = [
+    { key: "comp", label: "البطولة", get: (g) => `${g.comp} ${g.year}` },
+    { key: "match", label: "المباراة", get: (g) => `${g.team} ضد ${g.opp}` },
+    { key: "nat", label: "جنسية الهداف", get: (g) => `${g.flag} ${g.nat}` },
+    letterHint,
+  ];
+  // مقاطع المستخدم: كل تلميح يخفف التظليل، والأخير أول حرف
+  const CLIP_HINTS = [
+    { key: "blur1", label: "التظليل", get: () => "خفّ شوي" },
+    { key: "blur2", label: "التظليل", get: () => "خفّ أكثر" },
+    { key: "blur3", label: "التظليل", get: () => "شبه واضح" },
+    letterHint,
+  ];
+  const hintsFor = (item) => (item && item.kind === "goal" ? GOAL_HINTS : item && item.kind === "clip" ? CLIP_HINTS : HINTS);
   const MAX_HINTS = HINTS.length;
 
   function normalize(s) {
@@ -101,7 +121,7 @@
     get team() { return this.teams[this.current]; }
     get points() { return POINTS[this.hintLevel]; }
     get revealedHints() {
-      return HINTS.slice(0, this.hintLevel).map((h) => ({ label: h.label, value: h.get(this.player) }));
+      return hintsFor(this.player).slice(0, this.hintLevel).map((h) => ({ label: h.label, value: h.get(this.player) }));
     }
     get isLastRound() { return this.round >= this.players.length - 1; }
 
@@ -159,7 +179,7 @@
           return { type: "reveal", reason, team, player: this.player };
         }
         this.hintLevel++;
-        const h = HINTS[this.hintLevel - 1];
+        const h = hintsFor(this.player)[this.hintLevel - 1];
         return { type: "hint", reason, team, hint: { label: h.label, value: h.get(this.player) } };
       }
       return { type: "next", reason, team };
@@ -170,7 +190,7 @@
     }
   }
 
-  const api = { Game, normalize, levenshtein, isCorrect, pickPlayers, shuffle, POINTS, HINTS, MAX_HINTS };
+  const api = { Game, normalize, levenshtein, isCorrect, pickPlayers, shuffle, POINTS, HINTS, GOAL_HINTS, CLIP_HINTS, hintsFor, MAX_HINTS };
   if (typeof module !== "undefined") module.exports = api;
   else root.Engine = api;
 })(typeof window !== "undefined" ? window : globalThis);
