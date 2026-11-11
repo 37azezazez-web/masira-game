@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
   <meta name="theme-color" content="#0B1220">
-  <title>مسيرة · من هو اللاعب؟</title>
-  <meta name="description" content="لعبة جماعية: نعرض لك مسيرة لاعب كرة قدم وأنت تخمّن مين هو.">
+  <title>انتقالات · من هو اللاعب؟</title>
+  <meta name="description" content="انتقالات: لعبة جماعية تعرض لك انتقالات لاعب كرة قدم وأنت تخمّن مين هو.">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/icon-180.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@800;900&family=Readex+Pro:wght@400;600;700&display=swap">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -20,9 +20,9 @@
     <!-- الشاشة الرئيسية -->
     <section class="screen active" id="screen-home" aria-labelledby="home-title">
       <div class="home-hero">
-        <img src="assets/logo.svg" alt="" class="home-logo" width="132" height="132">
-        <h1 id="home-title" class="brand">مسيرة</h1>
-        <p class="tagline">من مسيرته تعرفه</p>
+        <img src="assets/logo.svg" alt="" class="home-logo" width="120" height="120">
+        <h1 id="home-title" class="brand"><img src="assets/wordmark-light.svg" alt="انتقالات" width="260"></h1>
+        <p class="tagline">من انتقالاته تعرفه</p>
       </div>
       <div class="stack">
         <button class="btn btn-primary btn-lg" data-go="setup">ابدأ لعبة</button>
@@ -35,7 +35,7 @@
     <section class="screen" id="screen-howto" aria-labelledby="howto-title">
       <header class="bar"><button class="icon-btn" data-go="home" aria-label="رجوع">→</button><h2 id="howto-title">طريقة اللعب</h2><span></span></header>
       <ol class="rules">
-        <li>نعرض لكم <b>مسيرة لاعب</b>: الأندية اللي لعب لها بالترتيب.</li>
+        <li>نعرض لكم <b>انتقالات لاعب</b>: الأندية اللي لعب لها بالترتيب.</li>
         <li>كل فريق عنده <b>وقت محدد</b> يكتب فيه اسم اللاعب.</li>
         <li>لو غلط أو خلص وقته، ينتقل الدور للفريق اللي بعده.</li>
         <li>لو <b>كل الفرق</b> ما عرفته، ينكشف <b>تلميح</b> وتقل النقاط.</li>
@@ -101,7 +101,7 @@
       <div class="scores" id="scores" aria-label="النتائج"></div>
 
       <div class="card career-card">
-        <h3 class="card-title">مسيرة اللاعب</h3>
+        <h3 class="card-title">انتقالات اللاعب</h3>
         <ol class="career" id="career"></ol>
       </div>
 

@@ -1,4 +1,4 @@
-/* ===== هوية مسيرة ===== */
+/* ===== هوية انتقالات ===== */
 :root {
   --bg: #0B1220;
   --bg-2: #121B2E;
@@ -12,6 +12,7 @@
   --danger: #FF5C6C;
   --gold: #FFC93C;
   --radius: 18px;
+  --display: "Alexandria", "Readex Pro", system-ui, sans-serif;
   --font: "Readex Pro", system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif;
 }
 
@@ -60,8 +61,10 @@ button, input { font: inherit; color: inherit; }
 /* الرئيسية */
 #screen-home { justify-content: center; text-align: center; gap: 28px; }
 .home-logo { margin: 0 auto; filter: drop-shadow(0 12px 30px rgba(200, 241, 53, .25)); }
-.brand { font-size: 3rem; margin: 8px 0 0; letter-spacing: -.5px; }
-.tagline { margin: 4px 0 0; color: var(--lime); font-weight: 600; }
+.brand { margin: 8px 0 0; line-height: 0; }
+.brand img { width: min(260px, 70vw); height: auto; }
+h2, .winner, .points-badge, #timer-text, .score .n { font-family: var(--display); }
+.tagline { margin: 14px 0 0; color: var(--lime); font-weight: 600; }
 
 .rules { line-height: 1.9; padding-inline-start: 22px; margin: 0; flex: 1; }
 .rules b { color: var(--lime); }
