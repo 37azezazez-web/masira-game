@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>مشغّل انتقالات</title>
+<style>html,body{margin:0;height:100%;background:#000;overflow:hidden}iframe{border:0;width:100%;height:100%;display:block}</style>
+</head>
+<body>
+<!--
+  وسيط لتطبيق الآيفون: التطبيق يشتغل من capacitor://localhost، ويوتيوب يرفض يشغل
+  المقاطع لصفحة بدون عنوان https. فالتطبيق يفتح هذي الصفحة (من GitHub Pages)،
+  وهي تفتح مشغل يوتيوب وتمرر الرسائل بين التطبيق والمشغل.
+-->
+<iframe id="f" title="مقطع الهدف" allow="autoplay; encrypted-media" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+<script>
+(function () {
+  "use strict";
+  var YT = "https://www.youtube-nocookie.com";
+  var p = new URLSearchParams(location.search);
+  var id = p.get("v") || "";
+  if (!/^[\w-]{11}$/.test(id)) return;
+  var q = new URLSearchParams({
+    autoplay: "1", controls: "0", playsinline: "1", rel: "0", modestbranding: "1", iv_load_policy: "3",
+    disablekb: "1", fs: "0", loop: "1", playlist: id, enablejsapi: "1", origin: location.origin
+  });
+  var f = document.getElementById("f");
+  f.src = YT + "/embed/" + id + "?" + q;
+  window.addEventListener("message", function (e) {
+    if (e.source === f.contentWindow && e.origin === YT) {
+      if (window.parent !== window) window.parent.postMessage(e.data, "*");
+    } else if (e.source === window.parent && typeof e.data === "string" && e.data.length < 2000) {
+      f.contentWindow.postMessage(e.data, YT);
+    }
+  });
+})();
+</script>
+</body>
+</html>

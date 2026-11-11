@@ -13,6 +13,11 @@
   // تظليل المقطع حسب عدد التلميحات (بكسل)
   const BLUR = [20, 14, 9, 5, 5];
   const YT_HOST = "https://www.youtube-nocookie.com";
+  // تطبيق الآيفون يشتغل من capacitor:// ويوتيوب يرفضه، فنمر عبر صفحة وسيطة على GitHub Pages (yt.html)
+  const RELAY_HOST = "https://37azezazez-web.github.io";
+  const RELAY = RELAY_HOST + "/masira-game/yt.html";
+  const DIRECT = /^https?:$/.test(location.protocol);
+  const FRAME_HOST = DIRECT ? YT_HOST : RELAY_HOST;
   const YT_TIMEOUT = 8000; // لو المشغل ما رد خلال هالوقت نطلع تنبيه
   const PAUSE = 1.6; // ثواني قبل ما يعيد اللقطة
 
@@ -69,7 +74,7 @@
     window.addEventListener("message", onMessage);
 
     function ytCmd(func, args = []) {
-      if (ytFrame && ytFrame.contentWindow) ytFrame.contentWindow.postMessage(JSON.stringify({ event: "command", func, args }), YT_HOST);
+      if (ytFrame && ytFrame.contentWindow) ytFrame.contentWindow.postMessage(JSON.stringify({ event: "command", func, args }), FRAME_HOST);
     }
 
     function clear() {
@@ -114,7 +119,7 @@
         disablekb: "1", fs: "0", loop: "1", playlist: id, enablejsapi: "1",
         origin: location.origin && location.origin !== "null" ? location.origin : "",
       });
-      f.src = `${YT_HOST}/embed/${encodeURIComponent(id)}?${q}`;
+      f.src = DIRECT ? `${YT_HOST}/embed/${encodeURIComponent(id)}?${q}` : `${RELAY}?v=${encodeURIComponent(id)}`;
       f.title = "مقطع الهدف";
       f.allow = "autoplay; encrypted-media";
       f.referrerPolicy = "strict-origin-when-cross-origin";
@@ -122,7 +127,7 @@
       f.addEventListener("load", () => {
         const ping = setInterval(() => {
           if (ytOk || ytFrame !== f) return clearInterval(ping);
-          try { f.contentWindow.postMessage(JSON.stringify({ event: "listening", id: 1, channel: "widget" }), YT_HOST); } catch { /* */ }
+          try { f.contentWindow.postMessage(JSON.stringify({ event: "listening", id: 1, channel: "widget" }), FRAME_HOST); } catch { /* */ }
         }, 250);
       });
       wrap.append(f);
