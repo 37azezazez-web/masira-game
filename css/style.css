@@ -221,7 +221,7 @@ legend { font-weight: 800; margin-bottom: 10px; font-family: var(--display); }
 .stage.is-clip { aspect-ratio: 16 / 9; background: var(--ink); }
 .stage video {
   width: 100%; height: 100%; object-fit: contain; display: block;
-  filter: url(#sketch0);
+  filter: var(--hide0);
   transform: scale(1.08); /* يخفي أطراف البلور */
   transition: filter .6s ease, transform .6s ease;
 }
@@ -240,12 +240,13 @@ legend { font-weight: 800; margin-bottom: 10px; font-family: var(--display); }
 .stage.is-yt { aspect-ratio: 16 / 9; background: var(--ink); }
 .yt-wrap {
   position: absolute; inset: 0; overflow: hidden;
-  filter: url(#sketch0);
+  filter: var(--hide0);
 }
 .yt-wrap.clear { filter: none; }
 /* نكبر المشغل شوي عشان نخفي عنوان المقطع وشعار يوتيوب تحت التظليل */
-.yt-wrap iframe { position: absolute; width: 100%; height: 130%; top: -15%; left: 0; border: 0; pointer-events: none; }
-.yt-wrap.clear iframe { height: 100%; top: 0; }
+/* نكبّر المشغل عشان تنقص الأطراف: النتيجة وأسماء الفرق فوق، وعنوان المقطع وشعار القناة */
+.yt-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; pointer-events: none; transform: scale(1.32); transition: transform .5s ease; }
+.yt-wrap.clear iframe { transform: none; }
 .stage-shield { position: absolute; inset: 0; background: transparent; border: 0; padding: 0; cursor: pointer; }
 .stage-poster {
   position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 16px;
@@ -258,9 +259,16 @@ legend { font-weight: 800; margin-bottom: 10px; font-family: var(--display); }
   position: absolute; inset-inline: 10px; bottom: 10px; text-align: center; pointer-events: none;
   background: var(--yellow); color: var(--ink); border: 2px solid var(--ink); border-radius: 10px; padding: 4px 10px; font-size: .85rem; font-weight: 700;
 }
-/* فلتر الرسم حسب التلميحات */
-[data-sketch="1"] { filter: url(#sketch1) !important; }
-[data-sketch="2"] { filter: url(#sketch2) !important; }
-[data-sketch="3"], [data-sketch="4"] { filter: url(#sketch3) !important; }
+/* تظليل «ورقة بيضا»: الملعب يبيض واللاعبين يطلعون بقع سودا، ويخف مع كل تلميح.
+   (فلاتر CSS بس، لأن فلاتر SVG ما تنطبق على مشغل يوتيوب) */
+:root {
+  --hide0: grayscale(1) brightness(1.6) contrast(3);
+  --hide1: grayscale(1) brightness(1.45) contrast(2.6);
+  --hide2: grayscale(1) brightness(1.3) contrast(2);
+  --hide3: grayscale(.6) brightness(1.15) contrast(1.4);
+}
+[data-sketch="1"] { filter: var(--hide1) !important; }
+[data-sketch="2"] { filter: var(--hide2) !important; }
+[data-sketch="3"], [data-sketch="4"] { filter: var(--hide3) !important; }
 .yt-wrap.clear, .stage video.clear { filter: none !important; }
 .svg-defs { position: absolute; width: 0; height: 0; overflow: hidden; }

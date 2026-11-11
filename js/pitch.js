@@ -16,6 +16,8 @@
   const RELAY = RELAY_HOST + "/masira-game/yt.html";
   const DIRECT = /^https?:$/.test(location.protocol);
   const FRAME_HOST = DIRECT ? YT_HOST : RELAY_HOST;
+  // صوت التعليق يشتغل أول كم ثانية بس، وبعدها ينكتم لين الكشف عشان المعلق ما يقول الاسم
+  const SOUND_SECS = 10;
   const YT_TIMEOUT = 8000; // لو المشغل ما رد خلال هالوقت نطلع تنبيه
   const PAUSE = 1.6; // ثواني قبل ما يعيد اللقطة
 
@@ -55,7 +57,16 @@
   function create(box) {
     let raf = 0, media = null, item = null, level = 0, pending = false;
     let ytFrame = null, ytList = [], ytIdx = 0, ytTimer = 0, ytOk = false;
-    let onFallback = null;
+    let onFallback = null, revealed = false, silenced = false, muteTimer = 0;
+
+    /** نكتم الصوت بعد الثواني الأولى (أو حسب soundUntil لكل هدف) */
+    function silence() {
+      if (revealed || silenced) return;
+      silenced = true;
+      if (ytFrame) ytCmd("mute");
+      else if (media && media.tagName === "VIDEO") media.muted = true;
+    }
+    const soundLimit = () => (item && item.soundUntil != null ? item.soundUntil : SOUND_SECS);
 
     function onMessage(e) {
       if (!ytFrame || e.source !== ytFrame.contentWindow) return;
@@ -67,6 +78,7 @@
         if (!ytOk) { ytOk = true; clearTimeout(ytTimer); const n = box.querySelector(".stage-note"); if (n) n.remove(); }
         // نعيد المقطع إذا خلص
         if (d.info && d.info.playerState === 0) { ytCmd("seekTo", [0, true]); ytCmd("playVideo"); }
+        if (d.info && typeof d.info.currentTime === "number" && d.info.currentTime >= soundLimit()) silence();
       }
     }
     window.addEventListener("message", onMessage);
@@ -77,7 +89,8 @@
 
     function clear() {
       cancelAnimationFrame(raf); raf = 0;
-      clearTimeout(ytTimer);
+      clearTimeout(ytTimer); clearTimeout(muteTimer);
+      revealed = false; silenced = false;
       if (media && media.tagName === "VIDEO") { media.pause(); media.removeAttribute("src"); media.load(); }
       media = null; ytFrame = null; ytOk = false; pending = false;
       box.replaceChildren();
@@ -99,8 +112,8 @@
       sh.className = "stage-shield";
       sh.setAttribute("aria-label", "شغّل المقطع بالصوت");
       sh.addEventListener("click", () => {
-        if (ytFrame) { ytCmd("unMute"); ytCmd("playVideo"); }
-        else if (media) { media.muted = false; media.play().catch(() => {}); }
+        if (ytFrame) { if (!silenced) ytCmd("unMute"); ytCmd("playVideo"); }
+        else if (media) { if (!silenced) media.muted = false; media.play().catch(() => {}); }
       });
       return sh;
     }
@@ -131,6 +144,9 @@
       wrap.append(f);
       box.append(wrap, shield());
       ytFrame = f; media = wrap; ytOk = false;
+      // احتياط لو ما وصلنا وقت المقطع: نكتم بعد المهلة + وقت التحميل
+      clearTimeout(muteTimer);
+      muteTimer = setTimeout(silence, (soundLimit() + 3) * 1000);
       setBlur(level);
       clearTimeout(ytTimer);
       // لو المشغل ما رد، نترك المقطع مكانه (يمكن شغال) ونطلع تنبيه صغير بس
@@ -222,6 +238,7 @@
       setBlur(level);
       // لو المتصفح منع الصوت قبل لمسة، نشغله مكتوم والضغط على المقطع يطلع الصوت
       v.play().catch(() => { v.muted = true; v.play().catch(() => {}); });
+      v.addEventListener("timeupdate", () => { if (v.currentTime >= soundLimit()) silence(); });
     }
 
     function setBlur(lv) {
@@ -252,7 +269,13 @@
       get isVideo() { return !!item && (item.kind === "clip" || !!(item.yt && item.yt.length)); },
       set onFallback(fn) { onFallback = fn; },
       setBlur,
-      unveil() { setBlur(-1); if (ytFrame) ytCmd("unMute"); },
+      /** الكشف: المقطع يوضح ويرجع من البداية بالصوت كامل */
+      unveil() {
+        revealed = true; clearTimeout(muteTimer);
+        setBlur(-1);
+        if (ytFrame) { ytCmd("unMute"); ytCmd("seekTo", [0, true]); ytCmd("playVideo"); }
+        else if (media && media.tagName === "VIDEO") { media.muted = false; media.currentTime = 0; media.play().catch(() => {}); }
+      },
       stop() { clear(); item = null; },
     };
   }
