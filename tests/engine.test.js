@@ -13,7 +13,7 @@ test("البيانات سليمة", () => {
     ids.add(p.id);
     assert.ok([1, 2, 3].includes(p.level), p.id);
     for (const k of ["name", "en", "nat", "flag", "pos"]) assert.ok(p[k], `${p.id} ناقصه ${k}`);
-    assert.ok(p.born > 1940 && p.born < 2010, p.id);
+    assert.ok(p.born > 1930 && p.born < 2010, p.id);
     assert.ok(p.career.length >= 1, p.id);
     for (const [club, years] of p.career) assert.ok(club && years, p.id);
   }

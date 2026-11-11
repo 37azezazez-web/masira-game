@@ -1,0 +1,9 @@
+{
+  "appId": "com.intiqalat.game",
+  "appName": "انتقالات",
+  "webDir": "www",
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#0B1220"
+  }
+}

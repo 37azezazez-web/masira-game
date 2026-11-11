@@ -1,0 +1,20 @@
+{
+  "name": "intiqalat",
+  "version": "1.0.0",
+  "private": true,
+  "description": "انتقالات: لعبة تخمين اللاعب من انتقالاته",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "build": "node scripts/build.mjs",
+    "serve": "python3 -m http.server 8000",
+    "ios:sync": "npm run build && npx cap sync ios",
+    "ios:open": "npx cap open ios"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.6.0"
+  },
+  "dependencies": {
+    "@capacitor/core": "8.6.0",
+    "@capacitor/ios": "8.6.0"
+  }
+}

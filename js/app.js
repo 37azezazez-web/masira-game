@@ -323,7 +323,7 @@
   $("#again-btn").addEventListener("click", startGame);
 
   // تشغيل بدون إنترنت
-  if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
     navigator.serviceWorker.register("sw.js").catch(() => {});
   }
 })();
