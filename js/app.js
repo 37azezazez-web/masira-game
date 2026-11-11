@@ -56,18 +56,18 @@
     musicOn = !musicOn;
     store.set("music", musicOn);
     syncMusicButtons();
-    musicOn ? Music.start() : Music.stop();
+    musicOn && !(typeof stage !== "undefined" && stage.isVideo) ? Music.start() : Music.stop();
   }));
   syncMusicButtons();
   // المتصفح ما يسمح بالصوت إلا بعد أول لمسة
   let unlocked = false;
   document.addEventListener("pointerdown", function first(e) {
     unlocked = true;
-    if (musicOn && !e.target.closest(".music-btn")) Music.start();
+    if (musicOn && !e.target.closest(".music-btn") && !(typeof stage !== "undefined" && stage.isVideo)) Music.start();
     document.removeEventListener("pointerdown", first);
   });
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) Music.stop(); else if (musicOn && unlocked) Music.start();
+    if (document.hidden) Music.stop(); else if (musicOn && unlocked && !(typeof stage !== "undefined" && stage.isVideo)) Music.start();
   });
 
   const ptsLabel = (n) => n === 1 ? "نقطة وحدة" : n === 2 ? "نقطتين" : `${AR(n)} نقاط`;
@@ -249,6 +249,8 @@
   }
 
   const stage = window.Pitch.create($("#stage"));
+  // المقطع ما اشتغل وطلع الرسم بداله: نرجع الموسيقى
+  stage.onFallback = () => { if (musicOn && unlocked) Music.start(); };
   const isGoal = (p) => p.kind === "goal" || p.kind === "clip";
 
   function renderRound() {
@@ -259,6 +261,7 @@
     $("#career").hidden = goal;
     $("#stage").hidden = !goal;
     if (goal) stage.show(p, 0); else stage.stop();
+    if (!stage.isVideo && musicOn && unlocked && !document.hidden) Music.start();
     const list = $("#career");
     list.replaceChildren();
     if (goal) { renderHints(); renderTurn(); return; }
@@ -303,6 +306,8 @@
   }
   function startTimer() {
     remaining = game.turnSeconds;
+    // المقاطع تشتغل بصوت التعليق بعد ضغطة «جاهزين»، والموسيقى توقف عشان ما تغطي عليه
+    if (stage.isVideo) { Music.stop(); stage.start(); }
     runTimer();
   }
   function runTimer() {
@@ -396,7 +401,7 @@
     } else {
       $("#rv-info").textContent = `${p.flag} ${p.nat} · ${p.pos} · مواليد ${AR(p.born)}`;
     }
-    if (p.kind === "clip") stage.unveil();
+    if (stage.isVideo) stage.unveil();
   }
 
   function openReveal() {
@@ -451,7 +456,7 @@
       sfx.hint(); buzz(30);
       renderHints(game.hintLevel - 1);
       renderTurn();
-      if (game.player.kind === "clip") stage.setBlur(game.hintLevel);
+      if (stage.isVideo) stage.setBlur(game.hintLevel);
       return handoff({ emoji: "💡", text: `${why}. ${game.teams.length > 1 ? "محد عرفه، " : ""}انكشف تلميح: ${ev.hint.label}` });
     }
     sfx.pass(); buzz(60);
@@ -498,6 +503,7 @@
   function endGame() {
     stopTimer();
     stage.stop();
+    if (musicOn && unlocked) Music.start();
     const st = game.standings();
     const top = st[0];
     const tie = st.length > 1 && st[1].score === top.score;

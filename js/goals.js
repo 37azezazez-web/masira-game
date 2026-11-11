@@ -6,11 +6,12 @@
  * y = 0 هو خط التماس اللي فوق (يسار المهاجم)، و y = 68 خط التماس اللي تحت (يمين المهاجم).
  * actors: [النوع، [[الثانية، x، y], ...]]  النوع: a مهاجم، d مدافع، k حارس
  * ball: [[الثانية، x، y، الارتفاع], ...]
+ * yt: روابط مقاطع يوتيوب بتعليق عربي بالترتيب؛ لو الأول ما اشتغل نجرب اللي بعده، ولو كلها فشلت نعرض الرسم.
  * hints: البطولة والسنة، المباراة، جنسية الهداف، أول حرف (من engine.js)
  */
 const GOALS = [
   {
-    id: "g-owairan-1994", kind: "goal", name: "سعيد العويران", en: "Saeed Al-Owairan", aliases: ["العويران", "owairan"],
+    id: "g-owairan-1994", kind: "goal", yt: ["ZF503i_WUZ0", "h0CeGZvr2K8", "gx2KqlT741c"], name: "سعيد العويران", en: "Saeed Al-Owairan", aliases: ["العويران", "owairan"],
     nat: "السعودية", flag: "🇸🇦", team: "السعودية", opp: "بلجيكا", comp: "كأس العالم", year: 1994, minute: 5,
     desc: "شال الكورة من نص ملعبه وراوغ نص فريق بلجيكا وسجل. من أجمل أهداف كؤوس العالم.",
     actors: [
@@ -27,7 +28,7 @@ const GOALS = [
     ball: [[0, 41, 50, 0], [1.5, 51, 47, 0], [3, 61, 42, 0], [4.5, 71, 39, 0], [6, 83, 36, 0], [7.2, 93, 33, 0], [7.6, 101, 32, 1.5], [7.8, 105, 32, 1]],
   },
   {
-    id: "g-dawsari-2022", kind: "goal", name: "سالم الدوسري", en: "Salem Al-Dawsari", aliases: ["الدوسري", "dawsari"],
+    id: "g-dawsari-2022", kind: "goal", yt: ["7ms8Mhw4gV4", "6EywC8RRcFE"], name: "سالم الدوسري", en: "Salem Al-Dawsari", aliases: ["الدوسري", "dawsari"],
     nat: "السعودية", flag: "🇸🇦", team: "السعودية", opp: "الأرجنتين", comp: "كأس العالم", year: 2022, minute: 53,
     desc: "الكورة نطّت له على طرف المنطقة، دخل لجوا وراوغ اثنين ولفّها في الزاوية البعيدة. هدف الفوز التاريخي.",
     actors: [
@@ -43,7 +44,7 @@ const GOALS = [
     ball: [[0, 80, 10, 3], [1, 86, 14, 1], [1.2, 87.5, 15, 0], [2.4, 89.5, 20, 0], [3.2, 90.5, 24, 0], [4, 91, 26, 0], [4.4, 98, 32, 2.5], [4.8, 105, 36.5, 2]],
   },
   {
-    id: "g-maradona-1986", kind: "goal", name: "دييغو مارادونا", en: "Diego Maradona", aliases: ["مارادونا", "maradona"],
+    id: "g-maradona-1986", kind: "goal", yt: ["0PoSlOG_1uM", "AFjCra0Xd8A"], name: "دييغو مارادونا", en: "Diego Maradona", aliases: ["مارادونا", "maradona"],
     nat: "الأرجنتين", flag: "🇦🇷", team: "الأرجنتين", opp: "إنجلترا", comp: "كأس العالم", year: 1986, minute: 55,
     desc: "«هدف القرن»: استلم في نص ملعبه وراوغ خمسة لاعبين والحارس.",
     actors: [
@@ -59,7 +60,7 @@ const GOALS = [
     ball: [[0, 50, 52, 0], [1, 55, 50, 0], [2.5, 65, 48, 0], [4, 76, 45, 0], [5.5, 88, 41, 0], [7, 97, 37, 0], [8, 100.5, 31.5, 0], [8.6, 102, 32, 0], [8.9, 105, 33, 0]],
   },
   {
-    id: "g-zidane-2002", kind: "goal", name: "زين الدين زيدان", en: "Zinedine Zidane", aliases: ["زيدان", "zidane", "zizou"],
+    id: "g-zidane-2002", kind: "goal", yt: ["_SIkyJjKCnE", "l0g-A7AdLNY", "mRTW1dF_cJE"], name: "زين الدين زيدان", en: "Zinedine Zidane", aliases: ["زيدان", "zidane", "zizou"],
     nat: "فرنسا", flag: "🇫🇷", team: "ريال مدريد", opp: "باير ليفركوزن", comp: "نهائي دوري أبطال أوروبا", year: 2002, minute: 45,
     desc: "عرضية عالية من روبرتو كارلوس، وزيدان لعبها طايرة بيساره في الزاوية العليا.",
     actors: [
@@ -74,7 +75,7 @@ const GOALS = [
     ball: [[0, 81, 6, 0], [1, 85.5, 7, 0.3], [1.9, 88, 18, 14], [2.8, 90, 30.5, 2], [3.2, 105, 31.2, 2.2]],
   },
   {
-    id: "g-rcarlos-1997", kind: "goal", name: "روبرتو كارلوس", en: "Roberto Carlos", aliases: ["كارلوس", "roberto carlos", "روبيرتو كارلوس"],
+    id: "g-rcarlos-1997", kind: "goal", yt: ["XcV_VtD2qPA", "Zxi3WXx_pRg"], name: "روبرتو كارلوس", en: "Roberto Carlos", aliases: ["كارلوس", "roberto carlos", "روبيرتو كارلوس"],
     nat: "البرازيل", flag: "🇧🇷", team: "البرازيل", opp: "فرنسا", comp: "بطولة فرنسا الودية", year: 1997, minute: 21,
     desc: "ضربة حرة من ٣٥ متر، الكورة طلعت برا الحائط ورجعت لفّت داخل المرمى.",
     actors: [
@@ -90,7 +91,7 @@ const GOALS = [
     ball: [[0, 70, 41, 0], [1.4, 70, 41, 0], [1.8, 80, 46, 1.2], [2.2, 92, 45, 1.2], [2.5, 101, 40, 0.8], [2.7, 105, 37.3, 0.5]],
   },
   {
-    id: "g-cr7-2018", kind: "goal", name: "كريستيانو رونالدو", en: "Cristiano Ronaldo", aliases: ["رونالدو", "كريستيانو", "ronaldo", "cr7"],
+    id: "g-cr7-2018", kind: "goal", yt: ["MxiIF4bwU1c", "9L97zHgugbU", "OlHuK2-PEy0"], name: "كريستيانو رونالدو", en: "Cristiano Ronaldo", aliases: ["رونالدو", "كريستيانو", "ronaldo", "cr7"],
     nat: "البرتغال", flag: "🇵🇹", team: "ريال مدريد", opp: "يوفنتوس", comp: "دوري أبطال أوروبا", year: 2018, minute: 64,
     desc: "عرضية من كارفاخال، ورونالدو سجلها مقصّية في تورينو وجمهور يوفنتوس صفق له.",
     actors: [
@@ -105,7 +106,7 @@ const GOALS = [
     ball: [[0, 85, 58, 0], [1, 88.5, 57, 0], [1.7, 92, 44, 5], [2.4, 94, 34, 2.4], [2.8, 105, 32.5, 0.8]],
   },
   {
-    id: "g-rvp-2014", kind: "goal", name: "روبن فان بيرسي", en: "Robin van Persie", aliases: ["فان بيرسي", "van persie", "persie"],
+    id: "g-rvp-2014", kind: "goal", yt: ["GKDSEvrmwTc", "kU8AxKCC_-Q", "zdtrYrecNNM"], name: "روبن فان بيرسي", en: "Robin van Persie", aliases: ["فان بيرسي", "van persie", "persie"],
     nat: "هولندا", flag: "🇳🇱", team: "هولندا", opp: "إسبانيا", comp: "كأس العالم", year: 2014, minute: 44,
     desc: "كورة طويلة من بليند، وفان بيرسي طار لها برأسه ولعبها فوق كاسياس. «الهولندي الطاير».",
     actors: [
@@ -119,7 +120,7 @@ const GOALS = [
     ball: [[0, 59, 12, 0], [1.4, 74, 22, 10], [2.6, 88, 30.5, 2], [3.3, 99, 33, 3.5], [3.7, 105, 34, 1.5]],
   },
   {
-    id: "g-iniesta-2010", kind: "goal", name: "أندريس إنييستا", en: "Andrés Iniesta", aliases: ["انييستا", "إنييستا", "iniesta", "انيستا"],
+    id: "g-iniesta-2010", kind: "goal", yt: ["81t6mlZfX7k", "ZFXatnsI71s"], name: "أندريس إنييستا", en: "Andrés Iniesta", aliases: ["انييستا", "إنييستا", "iniesta", "انيستا"],
     nat: "إسبانيا", flag: "🇪🇸", team: "إسبانيا", opp: "هولندا", comp: "نهائي كأس العالم", year: 2010, minute: 116,
     desc: "تمريرة من فابريغاس في الدقيقة ١١٦، وإنييستا سددها وجاب أول كأس عالم لإسبانيا.",
     actors: [
@@ -133,7 +134,7 @@ const GOALS = [
     ball: [[0, 80, 40, 0], [1, 82.5, 40, 0], [1.6, 92.5, 42.5, 0.6], [1.9, 93.5, 42.3, 0.3], [2.3, 105, 36, 0.4]],
   },
   {
-    id: "g-aguero-2012", kind: "goal", name: "سيرخيو أغويرو", en: "Sergio Agüero", aliases: ["اغويرو", "أغويرو", "aguero", "kun"],
+    id: "g-aguero-2012", kind: "goal", yt: ["mEu68f8fWSw", "ltDp9TWBuBA"], name: "سيرخيو أغويرو", en: "Sergio Agüero", aliases: ["اغويرو", "أغويرو", "aguero", "kun"],
     nat: "الأرجنتين", flag: "🇦🇷", team: "مانشستر سيتي", opp: "كوينز بارك رينجرز", comp: "الدوري الإنجليزي", year: 2012, minute: 94,
     desc: "«٩٣:٢٠». أغويرو أعطى بالوتيلي ورجعت له، راوغ وسجل وجاب الدوري لسيتي في آخر ثانية.",
     actors: [
@@ -148,7 +149,7 @@ const GOALS = [
     ball: [[0, 75, 36, 0], [1, 79, 36, 0], [1.5, 87, 35, 0], [1.8, 87.5, 35.2, 0], [2.5, 88.5, 38, 0], [3, 91.5, 40, 0], [3.8, 94.5, 44, 0], [4.3, 105, 37, 0.5]],
   },
   {
-    id: "g-bergkamp-2002", kind: "goal", name: "دينيس بيركامب", en: "Dennis Bergkamp", aliases: ["بيركامب", "بيرغكامب", "bergkamp"],
+    id: "g-bergkamp-2002", kind: "goal", yt: ["1t_Dv2LEa3c", "w7fZJf0eYq8"], name: "دينيس بيركامب", en: "Dennis Bergkamp", aliases: ["بيركامب", "بيرغكامب", "bergkamp"],
     nat: "هولندا", flag: "🇳🇱", team: "آرسنال", opp: "نيوكاسل", comp: "الدوري الإنجليزي", year: 2002, minute: 11,
     desc: "تمريرة أرضية من بيريس، وبيركامب لفّ الكورة من جهة ولفّ هو من الجهة الثانية وتخطى المدافع وسجل.",
     actors: [
@@ -161,7 +162,7 @@ const GOALS = [
     ball: [[0, 75, 12, 0], [0.8, 76.5, 13, 0], [1.6, 88, 24.5, 0], [2.1, 90, 29, 0.4], [2.6, 91.5, 30.2, 0], [3.1, 93.5, 31, 0], [3.5, 105, 34, 0.2]],
   },
   {
-    id: "g-zlatan-2012", kind: "goal", name: "زلاتان إبراهيموفيتش", en: "Zlatan Ibrahimović", aliases: ["زلاتان", "ابراهيموفيتش", "zlatan", "ibrahimovic"],
+    id: "g-zlatan-2012", kind: "goal", yt: ["k6xRd02MRV4", "gVVkIY0unzE", "1LN3cED0ZVI"], name: "زلاتان إبراهيموفيتش", en: "Zlatan Ibrahimović", aliases: ["زلاتان", "ابراهيموفيتش", "zlatan", "ibrahimovic"],
     nat: "السويد", flag: "🇸🇪", team: "السويد", opp: "إنجلترا", comp: "مباراة ودية", year: 2012, minute: 90,
     desc: "الحارس طلع برا منطقته وبعّد الكورة براسه، وزلاتان سجلها مقصّية من ٣٠ متر.",
     actors: [
@@ -174,7 +175,7 @@ const GOALS = [
     ball: [[0, 68, 34, 12], [1.4, 80, 32, 2.3], [2, 74, 30.5, 3.5], [2.2, 73.2, 30.5, 2], [3.4, 92, 32, 9], [4.2, 105, 34, 2]],
   },
   {
-    id: "g-pavard-2018", kind: "goal", name: "بنجامين بافار", en: "Benjamin Pavard", aliases: ["بافار", "pavard"],
+    id: "g-pavard-2018", kind: "goal", yt: ["NnkUL2wZw6E", "Ov39iGAgEn4"], name: "بنجامين بافار", en: "Benjamin Pavard", aliases: ["بافار", "pavard"],
     nat: "فرنسا", flag: "🇫🇷", team: "فرنسا", opp: "الأرجنتين", comp: "كأس العالم", year: 2018, minute: 57,
     desc: "عرضية من لوكاس هيرنانديز عدّت كل المنطقة، وبافار لعبها طايرة لافّة في الزاوية البعيدة.",
     actors: [
@@ -189,7 +190,7 @@ const GOALS = [
     ball: [[0, 91, 8, 0], [0.8, 93.5, 10, 0.3], [1.6, 90, 30, 3], [2, 86, 42, 0], [2.4, 82.5, 51.5, 0.6], [3.1, 105, 30.8, 1.8]],
   },
   {
-    id: "g-ronaldinho-2005", kind: "goal", name: "رونالدينيو", en: "Ronaldinho", aliases: ["رونالدينهو", "ronaldinho", "dinho"],
+    id: "g-ronaldinho-2005", kind: "goal", yt: ["9o46PtB0EGY", "fygu4KrxJqc"], name: "رونالدينيو", en: "Ronaldinho", aliases: ["رونالدينهو", "ronaldinho", "dinho"],
     nat: "البرازيل", flag: "🇧🇷", team: "برشلونة", opp: "تشيلسي", comp: "دوري أبطال أوروبا", year: 2005, minute: 38,
     desc: "واقف على حدود المنطقة وحوله مدافعين، هزّ بجسمه وسددها بطرف القدم بدون ما يرجع.",
     actors: [
@@ -204,7 +205,7 @@ const GOALS = [
     ball: [[0, 80, 41, 0], [0.8, 85.5, 39, 0], [1.8, 86, 38.2, 0], [2.4, 86.5, 39.2, 0], [2.8, 86.5, 39, 0], [3.4, 105, 32, 0.3]],
   },
   {
-    id: "g-shehri-2022", kind: "goal", name: "صالح الشهري", en: "Saleh Al-Shehri", aliases: ["الشهري", "shehri"],
+    id: "g-shehri-2022", kind: "goal", yt: ["BI40Spy57HA", "Cl4xHmDvvXE"], name: "صالح الشهري", en: "Saleh Al-Shehri", aliases: ["الشهري", "shehri"],
     nat: "السعودية", flag: "🇸🇦", team: "السعودية", opp: "الأرجنتين", comp: "كأس العالم", year: 2022, minute: 48,
     desc: "تمريرة من فراس البريكان، والشهري سددها بيمينه أرضية في الزاوية البعيدة. هدف التعادل.",
     actors: [
@@ -219,7 +220,7 @@ const GOALS = [
     ball: [[0, 82.5, 34, 0], [1, 84.5, 32, 0], [1.8, 89, 24.5, 0], [2.4, 90.5, 25, 0], [2.9, 105, 36.5, 0]],
   },
   {
-    id: "g-henry-2006", kind: "goal", name: "تييري هنري", en: "Thierry Henry", aliases: ["هنري", "henry", "تيري هنري"],
+    id: "g-henry-2006", kind: "goal", yt: ["OpmVMJX63pI", "8wSKHVJIdIc"], name: "تييري هنري", en: "Thierry Henry", aliases: ["هنري", "henry", "تيري هنري"],
     nat: "فرنسا", flag: "🇫🇷", team: "آرسنال", opp: "ريال مدريد", comp: "دوري أبطال أوروبا", year: 2006, minute: 47,
     desc: "من نص الملعب، مرّ من بين لاعبين ريال واحد ورا الثاني وسددها أرضية بيساره في البرنابيو.",
     actors: [
@@ -235,7 +236,7 @@ const GOALS = [
     ball: [[0, 55, 38, 0], [1.2, 61, 37, 0], [2.4, 69, 34, 0], [3.6, 78, 33, 0], [4.8, 87, 34, 0], [5.8, 92.8, 35, 0], [6.3, 105, 36.4, 0]],
   },
   {
-    id: "g-rooney-2011", kind: "goal", name: "واين روني", en: "Wayne Rooney", aliases: ["روني", "rooney"],
+    id: "g-rooney-2011", kind: "goal", yt: ["Q9eni6MIe8Y", "RxHNhiTtTl4"], name: "واين روني", en: "Wayne Rooney", aliases: ["روني", "rooney"],
     nat: "إنجلترا", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", team: "مانشستر يونايتد", opp: "مانشستر سيتي", comp: "الدوري الإنجليزي", year: 2011, minute: 78,
     desc: "عرضية من ناني ارتطمت بمدافع وارتفعت، وروني سجلها مقصّية في الديربي.",
     actors: [

@@ -11,7 +11,9 @@
     return n;
   };
   // تظليل المقطع حسب عدد التلميحات (بكسل)
-  const BLUR = [18, 12, 7, 3, 3];
+  const BLUR = [20, 14, 9, 5, 5];
+  const YT_HOST = "https://www.youtube-nocookie.com";
+  const YT_TIMEOUT = 7000; // لو المشغل ما رد خلال هالوقت (غالبًا ما فيه نت) نعرض الرسم
   const PAUSE = 1.6; // ثواني قبل ما يعيد اللقطة
 
   /** موقع عنصر في لحظة معينة بين نقطتين */
@@ -48,17 +50,102 @@
   }
 
   function create(box) {
-    let raf = 0, video = null;
+    let raf = 0, media = null, item = null, level = 0, pending = false;
+    let ytFrame = null, ytList = [], ytIdx = 0, ytTimer = 0, ytOk = false;
+    let onFallback = null;
+
+    function onMessage(e) {
+      if (!ytFrame || e.source !== ytFrame.contentWindow) return;
+      let d;
+      try { d = typeof e.data === "string" ? JSON.parse(e.data) : e.data; } catch { return; }
+      if (!d || !d.event) return;
+      if (d.event === "onError") return nextYouTube();
+      if (d.event === "onReady" || d.event === "infoDelivery" || d.event === "initialDelivery") {
+        if (!ytOk) { ytOk = true; clearTimeout(ytTimer); }
+        // نعيد المقطع إذا خلص
+        if (d.info && d.info.playerState === 0) { ytCmd("seekTo", [0, true]); ytCmd("playVideo"); }
+      }
+    }
+    window.addEventListener("message", onMessage);
+
+    function ytCmd(func, args = []) {
+      if (ytFrame && ytFrame.contentWindow) ytFrame.contentWindow.postMessage(JSON.stringify({ event: "command", func, args }), YT_HOST);
+    }
 
     function clear() {
       cancelAnimationFrame(raf); raf = 0;
-      if (video) { video.pause(); video.removeAttribute("src"); video.load(); video = null; }
+      clearTimeout(ytTimer);
+      if (media && media.tagName === "VIDEO") { media.pause(); media.removeAttribute("src"); media.load(); }
+      media = null; ytFrame = null; ytOk = false; pending = false;
       box.replaceChildren();
-      box.classList.remove("is-clip");
+      box.classList.remove("is-clip", "is-drawn", "is-yt");
+    }
+
+    /** غطاء قبل ما يبدأ الدور: المقطع ما يشتغل إلا لما الفريق يضغط «جاهزين» */
+    function poster(text) {
+      const p = document.createElement("div");
+      p.className = "stage-poster";
+      p.textContent = text;
+      box.append(p);
+    }
+
+    /** طبقة فوق المقطع تمنع الضغط على المشغل (عشان ما يبين العنوان)، والضغط عليها يشغل الصوت */
+    function shield() {
+      const sh = document.createElement("button");
+      sh.type = "button";
+      sh.className = "stage-shield";
+      sh.setAttribute("aria-label", "شغّل المقطع بالصوت");
+      sh.addEventListener("click", () => {
+        if (ytFrame) { ytCmd("unMute"); ytCmd("playVideo"); }
+        else if (media) { media.muted = false; media.play().catch(() => {}); }
+      });
+      return sh;
+    }
+
+    function startYouTube() {
+      const id = ytList[ytIdx];
+      box.replaceChildren();
+      box.classList.add("is-clip", "is-yt");
+      const wrap = document.createElement("div");
+      wrap.className = "yt-wrap";
+      const f = document.createElement("iframe");
+      const q = new URLSearchParams({
+        autoplay: "1", controls: "0", playsinline: "1", rel: "0", modestbranding: "1", iv_load_policy: "3",
+        disablekb: "1", fs: "0", loop: "1", playlist: id, enablejsapi: "1",
+        origin: location.origin && location.origin !== "null" ? location.origin : "",
+      });
+      f.src = `${YT_HOST}/embed/${encodeURIComponent(id)}?${q}`;
+      f.title = "مقطع الهدف";
+      f.allow = "autoplay; encrypted-media";
+      f.referrerPolicy = "strict-origin-when-cross-origin";
+      // نفس طريقة مكتبة يوتيوب الرسمية: نرسل «listening» لين يرد المشغل
+      f.addEventListener("load", () => {
+        const ping = setInterval(() => {
+          if (ytOk || ytFrame !== f) return clearInterval(ping);
+          try { f.contentWindow.postMessage(JSON.stringify({ event: "listening", id: 1, channel: "widget" }), YT_HOST); } catch { /* */ }
+        }, 250);
+      });
+      wrap.append(f);
+      box.append(wrap, shield());
+      ytFrame = f; media = wrap; ytOk = false;
+      setBlur(level);
+      clearTimeout(ytTimer);
+      ytTimer = setTimeout(() => { if (!ytOk) { ytIdx = ytList.length; nextYouTube(); } }, YT_TIMEOUT);
+    }
+
+    function nextYouTube() {
+      clearTimeout(ytTimer);
+      ytIdx++;
+      if (ytIdx < ytList.length) return startYouTube();
+      // ما اشتغل ولا رابط (بدون نت مثلًا): نعرض الرسم المتحرك
+      const g = item;
+      clear();
+      if (g && g.actors) { playGoal(g); if (onFallback) onFallback(); }
     }
 
     function playGoal(g) {
       clear();
+      box.classList.add("is-drawn");
       // نقرّب الكاميرا على منطقة اللقطة
       const all = [...g.actors.flatMap(([, p]) => p), ...g.ball];
       const xs = all.map((p) => p[1]), ys = all.map((p) => p[2]);
@@ -113,29 +200,49 @@
       raf = requestAnimationFrame(frame);
     }
 
-    function playClip(c, hintLevel) {
-      clear();
+    function startClip(c) {
+      box.replaceChildren();
       box.classList.add("is-clip");
-      video = document.createElement("video");
-      video.muted = true; video.loop = true; video.autoplay = true;
-      video.playsInline = true; video.setAttribute("playsinline", "");
-      video.src = c.src;
-      box.append(video);
-      setBlur(hintLevel);
-      video.play().catch(() => {});
+      const v = document.createElement("video");
+      v.loop = true; v.autoplay = true; v.muted = false;
+      v.playsInline = true; v.setAttribute("playsinline", "");
+      v.src = c.src;
+      box.append(v, shield());
+      media = v;
+      setBlur(level);
+      // لو المتصفح منع الصوت قبل لمسة، نشغله مكتوم والضغط على المقطع يطلع الصوت
+      v.play().catch(() => { v.muted = true; v.play().catch(() => {}); });
     }
 
-    function setBlur(level) {
-      if (!video) return;
-      video.style.setProperty("--blur", (level < 0 ? 0 : BLUR[Math.min(level, BLUR.length - 1)]) + "px");
-      video.classList.toggle("clear", level < 0);
+    function setBlur(lv) {
+      level = lv;
+      if (!media) return;
+      media.style.setProperty("--blur", (lv < 0 ? 0 : BLUR[Math.min(lv, BLUR.length - 1)]) + "px");
+      media.classList.toggle("clear", lv < 0);
     }
 
     return {
-      show(item, hintLevel = 0) { item.kind === "clip" ? playClip(item, hintLevel) : playGoal(item); },
+      /** يجهز اللقطة. المقاطع تنتظر start() عشان تشتغل بالصوت بعد ضغطة الفريق */
+      show(it, hintLevel = 0) {
+        clear();
+        item = it; level = hintLevel;
+        if (it.kind === "clip" || (it.yt && it.yt.length)) {
+          ytList = it.yt || []; ytIdx = 0; pending = true;
+          poster("🎬 المقطع يشتغل لما تضغطون «جاهزين»");
+        } else {
+          playGoal(it);
+        }
+      },
+      start() {
+        if (!pending) return;
+        pending = false;
+        item.kind === "clip" ? startClip(item) : startYouTube();
+      },
+      get isVideo() { return !!item && (item.kind === "clip" || !!(item.yt && item.yt.length)); },
+      set onFallback(fn) { onFallback = fn; },
       setBlur,
-      unveil() { setBlur(-1); },
-      stop: clear,
+      unveil() { setBlur(-1); if (ytFrame) ytCmd("unMute"); },
+      stop() { clear(); item = null; },
     };
   }
 
