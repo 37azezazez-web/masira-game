@@ -63,6 +63,7 @@
     function silence() {
       if (revealed || silenced) return;
       silenced = true;
+      box.classList.add("is-silent");
       if (ytFrame) ytCmd("mute");
       else if (media && media.tagName === "VIDEO") media.muted = true;
     }
@@ -94,7 +95,7 @@
       if (media && media.tagName === "VIDEO") { media.pause(); media.removeAttribute("src"); media.load(); }
       media = null; ytFrame = null; ytOk = false; pending = false;
       box.replaceChildren();
-      box.classList.remove("is-clip", "is-drawn", "is-yt");
+      box.classList.remove("is-clip", "is-drawn", "is-yt", "is-silent", "is-revealed");
     }
 
     /** غطاء قبل ما يبدأ الدور: المقطع ما يشتغل إلا لما الفريق يضغط «جاهزين» */
@@ -105,17 +106,36 @@
       box.append(p);
     }
 
-    /** طبقة فوق المقطع تمنع الضغط على المشغل (عشان ما يبين العنوان)، والضغط عليها يشغل الصوت */
-    function shield() {
-      const sh = document.createElement("button");
-      sh.type = "button";
-      sh.className = "stage-shield";
-      sh.setAttribute("aria-label", "شغّل المقطع بالصوت");
-      sh.addEventListener("click", () => {
-        if (ytFrame) { if (!silenced) ytCmd("unMute"); ytCmd("playVideo"); }
-        else if (media) { if (!silenced) media.muted = false; media.play().catch(() => {}); }
-      });
-      return sh;
+    /** غطا يخفي الصورة كاملة: الفرق تسمع التعليق بس. الضغط عليه يعيد المقطع من البداية بالصوت */
+    function cover() {
+      const c = document.createElement("button");
+      c.type = "button";
+      c.className = "audio-cover";
+      c.setAttribute("aria-label", "عيد التعليق من البداية");
+      const bars = document.createElement("span");
+      bars.className = "bars";
+      bars.setAttribute("aria-hidden", "true");
+      for (let i = 0; i < 7; i++) bars.append(document.createElement("i"));
+      const t = document.createElement("span");
+      t.className = "t";
+      t.textContent = "اسمعوا التعليق 🎙️";
+      const r = document.createElement("span");
+      r.className = "r";
+      r.textContent = "↻ عيد التعليق";
+      c.append(bars, t, r);
+      c.addEventListener("click", replay);
+      return c;
+    }
+
+    /** يعيد المقطع من البداية، والصوت يشتغل أول الثواني من جديد */
+    function replay() {
+      if (revealed) return;
+      silenced = false;
+      if (ytFrame) { ytCmd("seekTo", [0, true]); ytCmd("unMute"); ytCmd("playVideo"); }
+      else if (media && media.tagName === "VIDEO") { media.currentTime = 0; media.muted = false; media.play().catch(() => {}); }
+      box.classList.remove("is-silent");
+      clearTimeout(muteTimer);
+      muteTimer = setTimeout(silence, (soundLimit() + (ytOk ? 0.5 : 3)) * 1000);
     }
 
     function startYouTube() {
@@ -142,7 +162,7 @@
         }, 250);
       });
       wrap.append(f);
-      box.append(wrap, shield());
+      box.append(wrap, cover());
       ytFrame = f; media = wrap; ytOk = false;
       // احتياط لو ما وصلنا وقت المقطع: نكتم بعد المهلة + وقت التحميل
       clearTimeout(muteTimer);
@@ -233,7 +253,7 @@
       v.loop = true; v.autoplay = true; v.muted = false;
       v.playsInline = true; v.setAttribute("playsinline", "");
       v.src = c.src;
-      box.append(v, shield());
+      box.append(v, cover());
       media = v;
       setBlur(level);
       // لو المتصفح منع الصوت قبل لمسة، نشغله مكتوم والضغط على المقطع يطلع الصوت
@@ -256,7 +276,7 @@
         item = it; level = hintLevel;
         if (it.kind === "clip" || (it.yt && it.yt.length)) {
           ytList = it.yt || []; ytIdx = 0; pending = true;
-          poster("🎬 المقطع يشتغل لما تضغطون «جاهزين»");
+          poster("🎙️ التعليق يشتغل لما تضغطون «جاهزين»");
         } else {
           playGoal(it);
         }
@@ -273,6 +293,8 @@
       unveil() {
         revealed = true; clearTimeout(muteTimer);
         setBlur(-1);
+        box.classList.remove("is-silent");
+        box.classList.add("is-revealed");
         if (ytFrame) { ytCmd("unMute"); ytCmd("seekTo", [0, true]); ytCmd("playVideo"); }
         else if (media && media.tagName === "VIDEO") { media.muted = false; media.currentTime = 0; media.play().catch(() => {}); }
       },
