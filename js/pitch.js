@@ -56,7 +56,7 @@
 
   function create(box) {
     let raf = 0, media = null, item = null, level = 0, pending = false;
-    let ytFrame = null, ytList = [], ytIdx = 0, ytTimer = 0, ytOk = false;
+    let ytFrame = null, ytList = [], ytIdx = 0, ytTimer = 0, ytOk = false, ytState = -1;
     let onFallback = null, revealed = false, silenced = false, muteTimer = 0;
 
     /** نكتم الصوت بعد الثواني الأولى (أو حسب soundUntil لكل هدف) */
@@ -75,8 +75,17 @@
       try { d = typeof e.data === "string" ? JSON.parse(e.data) : e.data; } catch { return; }
       if (!d || !d.event) return;
       if (d.event === "onError") return nextYouTube();
-      if (d.event === "onReady" || d.event === "infoDelivery" || d.event === "initialDelivery") {
-        if (!ytOk) { ytOk = true; clearTimeout(ytTimer); const n = box.querySelector(".stage-note"); if (n) n.remove(); }
+      if (d.event === "onReady" || d.event === "infoDelivery" || d.event === "initialDelivery" || d.event === "onStateChange") {
+        if (!ytOk) {
+          ytOk = true; clearTimeout(ytTimer);
+          const n = box.querySelector(".stage-note"); if (n) n.remove();
+          if (!silenced || revealed) { ytCmd("unMute"); ytCmd("setVolume", [100]); }
+          ytCmd("playVideo");
+          // لو علّق وما بدأ، ندفه مرة ثانية
+          setTimeout(() => { if (ytState !== 1 && ytFrame) ytCmd("playVideo"); }, 2500);
+        }
+        if (d.info && typeof d.info.playerState === "number") ytState = d.info.playerState;
+        if (d.event === "onStateChange" && typeof d.info === "number") ytState = d.info;
         // نعيد المقطع إذا خلص
         if (d.info && d.info.playerState === 0) { ytCmd("seekTo", [0, true]); ytCmd("playVideo"); }
         if (d.info && typeof d.info.currentTime === "number" && d.info.currentTime >= soundLimit()) silence();
@@ -93,7 +102,7 @@
       clearTimeout(ytTimer); clearTimeout(muteTimer);
       revealed = false; silenced = false;
       if (media && media.tagName === "VIDEO") { media.pause(); media.removeAttribute("src"); media.load(); }
-      media = null; ytFrame = null; ytOk = false; pending = false;
+      media = null; ytFrame = null; ytOk = false; ytState = -1; pending = false;
       box.replaceChildren();
       box.classList.remove("is-clip", "is-drawn", "is-yt", "is-silent", "is-revealed");
     }
@@ -121,7 +130,7 @@
       t.textContent = "اسمعوا التعليق 🎙️";
       const r = document.createElement("span");
       r.className = "r";
-      r.textContent = "↻ عيد التعليق";
+      r.textContent = "↻ ما تسمعون؟ اضغطوا هنا";
       c.append(bars, t, r);
       c.addEventListener("click", replay);
       return c;
@@ -131,7 +140,7 @@
     function replay() {
       if (revealed) return;
       silenced = false;
-      if (ytFrame) { ytCmd("seekTo", [0, true]); ytCmd("unMute"); ytCmd("playVideo"); }
+      if (ytFrame) { ytCmd("seekTo", [0, true]); ytCmd("unMute"); ytCmd("setVolume", [100]); ytCmd("playVideo"); }
       else if (media && media.tagName === "VIDEO") { media.currentTime = 0; media.muted = false; media.play().catch(() => {}); }
       box.classList.remove("is-silent");
       clearTimeout(muteTimer);
@@ -146,7 +155,8 @@
       wrap.className = "yt-wrap";
       const f = document.createElement("iframe");
       const q = new URLSearchParams({
-        autoplay: "1", controls: "0", playsinline: "1", rel: "0", modestbranding: "1", iv_load_policy: "3",
+        // نبدأ مكتوم عشان المتصفح يسمح بالتشغيل التلقائي، وبعدها نطلع الصوت أول ما المشغل يجهز
+        autoplay: "1", mute: "1", controls: "0", playsinline: "1", rel: "0", modestbranding: "1", iv_load_policy: "3",
         disablekb: "1", fs: "0", loop: "1", playlist: id, enablejsapi: "1",
         origin: location.origin && location.origin !== "null" ? location.origin : "",
       });
