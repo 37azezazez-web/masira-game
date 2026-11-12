@@ -20,14 +20,14 @@ test("كل الصعوبات وكل الحقب موجودة", () => {
   assert.ok(new Set(LINEUPS.map((l) => Math.floor(l.year / 10))).size >= 6);
 });
 
-test("تلميحات التشكيلة: المركز، تلميحين، أول حرف", () => {
+test("تلميحات التشكيلة: عدد الحروف، تلميحين، أول حرف", () => {
   const l = LINEUPS[0];
   const g = new Engine.Game({ teams: ["أ"], players: [l], turnSeconds: 30 });
   for (let i = 0; i < 4; i++) g.pass();
   const h = g.revealedHints;
   assert.strictEqual(h.length, 4);
-  assert.strictEqual(h[0].label, "مركزه");
+  assert.match(h[0].value, /حروف/);
   assert.strictEqual(h[1].label, l.extra[0][0]);
   assert.strictEqual(h[2].value, l.extra[1][1]);
-  assert.match(h[3].value, /يبدأ بـ/);
+  assert.strictEqual(h[3].label, "أول حرف");
 });
