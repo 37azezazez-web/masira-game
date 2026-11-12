@@ -26,7 +26,7 @@
   };
   const AR = (n) => String(n).replace(/\d/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d]);
   // ألوان الفرق: [اللون، لون النص فوقه]
-  const TEAM_COLORS = [["#E03A2F", "#fff"], ["#2849D6", "#fff"], ["#FFC82E", "#15171A"], ["#1F9D55", "#fff"]];
+  const TEAM_COLORS = [["#4BE08A", "#0B140F"], ["#5B8DEF", "#0B140F"], ["#E3B23C", "#0B140F"], ["#E07A6A", "#0B140F"]];
   const DEFAULT_TEAMS = ["الصقور", "النمور", "الذيب", "الفهود"];
 
   // ===== تخزين آمن =====
@@ -57,7 +57,7 @@
   const buzz = (p) => { try { navigator.vibrate && navigator.vibrate(p); } catch { /* */ } };
 
   // ===== الموسيقى =====
-  let musicOn = store.get("music", true);
+  let musicOn = store.get("music", true) !== false;
   function syncMusicButtons() {
     document.querySelectorAll(".music-btn").forEach((b) => {
       b.setAttribute("aria-pressed", String(musicOn));
@@ -131,7 +131,21 @@
   }
 
   // ===== الإعدادات =====
-  const settings = Object.assign({ teams: DEFAULT_TEAMS.slice(0, 2), mode: "career", difficulty: "1", seconds: "30", rounds: "10" }, store.get("settings", {}));
+  // الإعدادات المحفوظة ممكن تكون خربانة أو معدّلة: نقبل بس القيم المعروفة
+  const settings = (() => {
+    const def = { teams: DEFAULT_TEAMS.slice(0, 2), mode: "career", difficulty: "1", seconds: "30", rounds: "10" };
+    const raw = store.get("settings", {});
+    if (!raw || typeof raw !== "object") return def;
+    const pick = (k, ok) => (ok.includes(String(raw[k])) ? String(raw[k]) : def[k]);
+    const teams = Array.isArray(raw.teams) ? raw.teams.filter((t) => typeof t === "string").map((t) => t.slice(0, 18)).slice(0, TEAM_COLORS.length) : [];
+    return {
+      teams: teams.length >= 2 ? teams : def.teams,
+      mode: pick("mode", ["career", "goals"]),
+      difficulty: pick("difficulty", ["1", "2", "3", "mix"]),
+      seconds: pick("seconds", ["20", "30", "45", "60"]),
+      rounds: pick("rounds", ["5", "10", "15"]),
+    };
+  })();
 
   function renderTeams() {
     const list = $("#team-list");
@@ -303,7 +317,7 @@
     const count = Number(settings.rounds);
     let items;
     if (settings.mode === "goals") {
-      const seen = store.get("seenGoals", []);
+      const seen = [].concat(store.get("seenGoals", [])).filter((x) => typeof x === "string");
       const mine = clips.map((c) => ({ ...c, name: c.name.trim().slice(0, 30) }));
       const pool = GOALS.concat(ytGoals.map(ytItem));
       const built = pickPlayers(pool, "mix", Math.max(0, count - mine.length), seen);
@@ -311,7 +325,7 @@
       if (!items.length) { const err = $("#setup-error"); err.textContent = "أضف هدف من يوتيوب أو مقطع من جوالك أول."; err.hidden = false; show("setup"); return; }
       store.set("seenGoals", [...new Set([...built.map((g) => g.id), ...seen])].slice(0, Math.max(0, pool.length - 3)));
     } else {
-      const seen = store.get("seen", []);
+      const seen = [].concat(store.get("seen", [])).filter((x) => typeof x === "string");
       const diff = settings.difficulty === "mix" ? "mix" : Number(settings.difficulty);
       items = pickPlayers(PLAYERS, diff, count, seen);
       store.set("seen", [...new Set([...items.map((p) => p.id), ...seen])].slice(0, PLAYERS.length - 10));
@@ -444,7 +458,7 @@
   }
 
   // ===== بطاقة اللاعب =====
-  const PHOTO_BG = ["#E03A2F", "#2849D6", "#1F9D55", "#15171A"];
+  const PHOTO_BG = ["#1F7A4A", "#2B4C8C", "#7A5A1F", "#172019"];
   function hash(s) { let h = 0; for (const c of s) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; }
   const SVG_NS = "http://www.w3.org/2000/svg";
   function svgEl(tag, attrs) {
@@ -464,7 +478,7 @@
       box.append(img);
       return;
     }
-    const shirt = ["#FFFFFF", "#FFC82E", "#FFFFFF", "#FFC82E"][h % 4];
+    const shirt = ["#E9EFEA", "#E3B23C", "#E9EFEA", "#4BE08A"][h % 4];
     const num = String((h % 22) + 2);
     const svg = svgEl("svg", { viewBox: "0 0 240 180", "aria-hidden": "true" });
     svg.append(

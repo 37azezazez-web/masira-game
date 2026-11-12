@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="رمز انتقالات">
   <title>انتقالات</title>
   <!-- النقطة الأولى = النادي القديم، السهم = الانتقال، النقطة الثانية = النادي الجديد -->
-  <circle cx="30" cy="90" r="16" fill="#F6F4EE"/>
-  <circle cx="90" cy="30" r="16" fill="#FFC82E"/>
-  <path d="M30 64 C30 40 42 32 60 31" fill="none" stroke="#F6F4EE" stroke-width="10" stroke-linecap="round"/>
-  <path d="M55 18 L68 31 L55 44" fill="none" stroke="#F6F4EE" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="30" cy="90" r="16" fill="#4BE08A"/>
+  <circle cx="90" cy="30" r="16" fill="#E3B23C"/>
+  <path d="M30 64 C30 40 42 32 60 31" fill="none" stroke="#4BE08A" stroke-width="10" stroke-linecap="round"/>
+  <path d="M55 18 L68 31 L55 44" fill="none" stroke="#4BE08A" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
