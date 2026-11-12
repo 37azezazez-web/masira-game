@@ -58,6 +58,20 @@
     let raf = 0, media = null, item = null, level = 0, pending = false;
     let ytFrame = null, ytList = [], ytIdx = 0, ytTimer = 0, ytOk = false, ytState = -1;
     let onFallback = null, revealed = false, silenced = false, muteTimer = 0;
+    // كشف الإعلان: وقت المقطع الأصلي ما يتحرك والمشغل شغال = إعلان يوتيوب، فنغطيه ونكتمه لين يخلص
+    let lastT = -1, lastMove = 0, adMode = false, adTimer = 0, moving = false;
+    // الصوت يطلع بس لما نتأكد إن المقطع نفسه يمشي (مو إعلان)
+    const wantSound = () => moving && !adMode && (revealed || !silenced);
+    function applySound() {
+      if (wantSound()) { ytCmd("unMute"); ytCmd("setVolume", [100]); } else ytCmd("mute");
+    }
+    function setAd(on) {
+      if (adMode === on) return;
+      adMode = on;
+      box.classList.toggle("is-ad", on);
+      if (on) moving = false;
+      applySound();
+    }
 
     /** نكتم الصوت بعد الثواني الأولى (أو حسب soundUntil لكل هدف) */
     function silence() {
@@ -86,7 +100,23 @@
         if (!ytOk) {
           ytOk = true; clearTimeout(ytTimer);
           const n = box.querySelector(".stage-note"); if (n) n.remove();
-          if (!silenced || revealed) { ytCmd("unMute"); ytCmd("setVolume", [100]); }
+          if (wantSound()) { ytCmd("unMute"); ytCmd("setVolume", [100]); }
+          // وصلنا المشغل: نعتمد على وقت المقطع نفسه بدل الساعة (الإعلان ما ياكل من ثواني التعليق)
+          clearTimeout(muteTimer);
+          lastMove = Date.now();
+          const okAt = Date.now();
+          let backup = false;
+          clearInterval(adTimer);
+          adTimer = setInterval(() => {
+            if (!ytFrame) return clearInterval(adTimer);
+            // المشغل ما يرسل وقت المقطع: نرجع للساعة عشان ما ينسمع الاسم
+            if (lastT < 0) {
+              if (!backup && Date.now() - okAt > 2000) { backup = true; moving = true; applySound(); muteTimer = setTimeout(silence, (soundLimit() + 1) * 1000); }
+              return;
+            }
+            const stuck = Date.now() - lastMove;
+            if (!adMode && stuck > 1800 && ytState !== 2 && ytState !== 0) setAd(true);
+          }, 400);
           ytCmd("playVideo");
           // لو علّق وما بدأ، ندفه مرة ثانية
           setTimeout(() => { if (ytState !== 1 && ytFrame) ytCmd("playVideo"); }, 2500);
@@ -98,9 +128,20 @@
         // المتصفح أحياناً يتجاهل أول أمر: كل ما وصل تحديث نتأكد إن الصوت والتشغيل مثل المطلوب
         const info = d.info && typeof d.info === "object" ? d.info : null;
         if (info) {
-          const wantSound = revealed || !silenced;
-          if (wantSound && info.muted === true) { ytCmd("unMute"); ytCmd("setVolume", [100]); }
-          if (!wantSound && info.muted === false) ytCmd("mute");
+          if (typeof info.currentTime === "number") {
+            if (Math.abs(info.currentTime - lastT) > 0.05) {
+              const first = lastT < 0;
+              lastT = info.currentTime; lastMove = Date.now();
+              if (adMode) setAd(false);
+              if (!first && !moving) { moving = true; applySound(); }
+            }
+          }
+          // مقطع غير اللي طلبناه = إعلان
+          const vid = info.videoData && info.videoData.video_id;
+          if (vid && ytList[ytIdx] && vid !== ytList[ytIdx]) setAd(true);
+          const want = wantSound();
+          if (want && info.muted === true) { ytCmd("unMute"); ytCmd("setVolume", [100]); }
+          if (!want && info.muted === false) ytCmd("mute");
           if (info.playerState === 2 || info.playerState === 5 || info.playerState === -1) ytCmd("playVideo");
         }
         if (d.info && typeof d.info.currentTime === "number" && d.info.currentTime >= startAt() + soundLimit()) silence();
@@ -114,12 +155,13 @@
 
     function clear() {
       cancelAnimationFrame(raf); raf = 0;
-      clearTimeout(ytTimer); clearTimeout(muteTimer);
+      clearTimeout(ytTimer); clearTimeout(muteTimer); clearInterval(adTimer);
+      adMode = false; lastT = -1; moving = false;
       revealed = false; silenced = false;
       if (media && media.tagName === "VIDEO") { media.pause(); media.removeAttribute("src"); media.load(); }
       media = null; ytFrame = null; ytOk = false; ytState = -1; pending = false;
       box.replaceChildren();
-      box.classList.remove("is-clip", "is-drawn", "is-yt", "is-silent", "is-revealed");
+      box.classList.remove("is-clip", "is-drawn", "is-yt", "is-silent", "is-revealed", "is-ad");
     }
 
     /** غطاء قبل ما يبدأ الدور: المقطع ما يشتغل إلا لما الفريق يضغط «جاهزين» */
@@ -155,11 +197,11 @@
     function replay() {
       if (revealed) return;
       silenced = false;
-      if (ytFrame) { ytCmd("seekTo", [startAt(), true]); ytCmd("unMute"); ytCmd("setVolume", [100]); ytCmd("playVideo"); }
+      if (ytFrame) { ytCmd("seekTo", [startAt(), true]); if (!adMode) { ytCmd("unMute"); ytCmd("setVolume", [100]); } ytCmd("playVideo"); }
       else if (media && media.tagName === "VIDEO") { media.currentTime = 0; media.muted = false; media.play().catch(() => {}); }
       box.classList.remove("is-silent");
       clearTimeout(muteTimer);
-      muteTimer = setTimeout(silence, (soundLimit() + (ytOk ? 0.5 : 3)) * 1000);
+      if (!ytFrame || !ytOk) muteTimer = setTimeout(silence, (soundLimit() + 3) * 1000);
     }
 
     function startYouTube() {
@@ -322,7 +364,7 @@
         setBlur(-1);
         box.classList.remove("is-silent");
         box.classList.add("is-revealed");
-        if (ytFrame) { ytCmd("unMute"); ytCmd("seekTo", [startAt(), true]); ytCmd("playVideo"); }
+        if (ytFrame) { if (!adMode) ytCmd("unMute"); ytCmd("seekTo", [startAt(), true]); ytCmd("playVideo"); }
         else if (media && media.tagName === "VIDEO") { media.muted = false; media.currentTime = 0; media.play().catch(() => {}); }
       },
       stop() { clear(); item = null; },

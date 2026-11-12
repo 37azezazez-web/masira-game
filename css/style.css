@@ -308,3 +308,10 @@ legend { font-weight: 800; margin-bottom: 10px; font-family: var(--display); }
 .overlay.over-video { background: transparent; place-items: end center; pointer-events: none; }
 .overlay.over-video .sheet { pointer-events: auto; }
 .player-photo[hidden] { display: none; }
+/* إعلان يوتيوب: نغطيه ونكتمه لين يخلص، حتى وقت الكشف */
+.is-ad .audio-cover, .is-revealed.is-ad .audio-cover { display: flex; }
+.is-ad .audio-cover .t::after, .is-ad.is-silent .audio-cover .t::after { content: none; }
+.is-ad .audio-cover .t { font-size: 0; }
+.is-ad .audio-cover .t::before { content: "إعلان من يوتيوب… لحظات ويبدأ ⏳"; font-size: 1.1rem; }
+.is-ad .audio-cover .r { visibility: hidden; }
+.is-ad .audio-cover .bars i { animation-play-state: paused; transform: scaleY(.15); }
