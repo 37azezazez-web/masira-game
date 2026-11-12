@@ -69,7 +69,7 @@
     }
     const startAt = () => (item && item.start) || 0;
     // أهداف الروابط: كل تلميح يزيد التعليق ٥ ثواني
-    const soundLimit = () => (item && item.soundUntil != null ? item.soundUntil : SOUND_SECS) + (item && item.kind === "ytlink" ? Math.max(0, level) * 5 : 0);
+    const soundLimit = () => (item && item.soundUntil != null ? item.soundUntil : SOUND_SECS) + (item && item.kind === "ytlink" ? Math.min(Math.max(0, level), item.extend != null ? item.extend : 99) * 5 : 0);
 
     function onMessage(e) {
       if (!ytFrame || e.source !== ytFrame.contentWindow) return;
@@ -274,7 +274,8 @@
     }
 
     function setBlur(lv) {
-      const more = item && item.kind === "ytlink" && lv > level && lv >= 0;
+      const cap = item && item.extend != null ? item.extend : 99;
+      const more = item && item.kind === "ytlink" && lv > level && lv >= 0 && level < cap;
       level = lv;
       if (more && silenced && !revealed) replay();
       if (!media) return;

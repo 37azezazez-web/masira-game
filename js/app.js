@@ -118,7 +118,7 @@
     if (go) show(go.dataset.go);
   });
 
-  const updateCount = (n) => { $("#home-count").textContent = `${AR(PLAYERS.length)} لاعب و${AR(n)} هدف في المكتبة`; };
+  const updateCount = (n) => { $("#home-count").textContent = `${AR(PLAYERS.length)} لاعب و${AR(n)} ${n >= 3 && n <= 10 ? "أهداف" : "هدف"} في المكتبة`; };
 
   let toastTimer;
   function toast(msg) {
@@ -351,7 +351,7 @@
     $("#career").hidden = goal;
     $("#stage").hidden = !goal;
     if (goal) stage.show(p, 0); else stage.stop();
-    if (p.kind === "ytlink") fetchTitle(p.yt[0]);
+    if (p.kind === "ytlink" && !p.name) fetchTitle(p.yt[0]);
     if (!stage.isVideo && musicOn && unlocked && !document.hidden) Music.start();
     const list = $("#career");
     list.replaceChildren();
@@ -481,10 +481,12 @@
   }
 
   function fillRevealInfo(p) {
-    $("#rv-name").classList.toggle("long", p.kind === "ytlink");
+    $("#rv-name").classList.toggle("long", p.kind === "ytlink" && !p.name);
     const desc = $("#rv-desc");
     desc.hidden = true;
-    if (p.kind === "ytlink") {
+    if (p.kind === "ytlink" && p.name) {
+      $("#rv-info").textContent = `هدفه على ${p.opp} · التعليق يشتغل كامل 🔊`;
+    } else if (p.kind === "ytlink") {
       $("#rv-info").textContent = "التعليق يشتغل الحين كامل من البداية 🔊";
       $("#rv-name").textContent = "…";
       fetchTitle(p.yt[0]).then((t) => { if (game.player === p) $("#rv-name").textContent = t || "شوفوا المقطع"; });

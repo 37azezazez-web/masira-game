@@ -177,7 +177,7 @@ const GOALS = [
     ball: [[0, 80, 41, 0], [0.8, 85.5, 39, 0], [1.8, 86, 38.2, 0], [2.4, 86.5, 39.2, 0], [2.8, 86.5, 39, 0], [3.4, 105, 32, 0.3]],
   },
   {
-    id: "g-henry-2006", kind: "goal", verified: true, yt: ["xXmMB3WOm6c"], name: "تييري هنري", en: "Thierry Henry", aliases: ["هنري", "henry", "تيري هنري"],
+    id: "g-henry-2006", kind: "goal", yt: ["xXmMB3WOm6c"], name: "تييري هنري", en: "Thierry Henry", aliases: ["هنري", "henry", "تيري هنري"],
     nat: "فرنسا", flag: "🇫🇷", team: "آرسنال", opp: "ريال مدريد", comp: "دوري أبطال أوروبا", year: 2006, minute: 47,
     desc: "من نص الملعب، مرّ من بين لاعبين ريال واحد ورا الثاني وسددها أرضية بيساره في البرنابيو.",
     actors: [
@@ -214,7 +214,14 @@ const GOALS = [
  * ما نعرف اسم الهداف لكل مقطع مسبقًا، فاللعبة تجيب عنوان المقطع وقت الكشف.
  * التلميحات هنا: كل تلميح يطوّل التعليق ٥ ثواني.
  */
-const GOAL_LINKS = ["8Q7e3tm7gSw", "-ckYh4-xi10", "9ePVmBfobUU", "PTOO0NDp3j4", "4uzH8RqoUA8", "tB6keo1v9W0", "bjxpM-pBerc", "W02YX8zDJrg", "-Fre9EzsIVs", "rmZU3EdNumw", "tsiKExf-pxY", "pgReJZKGMzM", "B_t8alRSSKE", "2edUkU0g-AY", "u2I6k_e8vQU", "EjkZi_sV44I", "NFXbeKPzHVE"].map((vid) => ({ id: "l-" + vid, kind: "ytlink", yt: [vid], start: 0, name: "", en: "", aliases: [], photo: `https://i.ytimg.com/vi/${vid}/hqdefault.jpg` }));
+// أهداف Aziz: رابط + الهداف + على مين سجّل (أكدها بنفسه 2026-11-12)
+const GOAL_LINKS = [
+  ["MlzjQqQg7Ts", "عبدالرحمن الغامدي", "الأهلي", ["الغامدي"]],
+  ["_z4-pd-EgTo", "دياكيتي", "الفتح", ["دياكيتي", "دياكتي"]],
+  ["Rqg5GPgdsh4", "حسين المقهوي", "الهلال", ["المقهوي"]],
+  ["6wZLB-zaXNQ", "الجبرين", "الاتحاد", ["الجبرين"]],
+  ["kxSsVlo_efY", "ليونيل ميسي", "ريال مدريد", ["ميسي", "messi"]],
+].map(([vid, name, opp, aliases]) => ({ id: "l-" + vid, kind: "ytlink", yt: [vid], start: 0, name, en: "", opp, aliases, extend: 1, photo: `https://i.ytimg.com/vi/${vid}/hqdefault.jpg` }));
 
 if (typeof module !== "undefined") module.exports = { GOALS, GOAL_LINKS };
 else { window.GOALS = GOALS; window.GOAL_LINKS = GOAL_LINKS; }

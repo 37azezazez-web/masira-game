@@ -38,7 +38,14 @@
   ];
   // أهداف يوتيوب بدون بيانات: كل تلميح يطوّل صوت التعليق
   const LISTEN_HINTS = [1, 2, 3, 4].map((n) => ({ key: "more" + n, label: "التعليق أطول", get: () => `+${n * 5} ثانية` }));
-  const hintsFor = (item) => item && item.kind === "ytlink" ? LISTEN_HINTS : (item && item.kind === "goal" ? GOAL_HINTS : item && (item.kind === "clip" || item.kind === "ytuser") ? CLIP_HINTS : HINTS);
+  // أهداف يوتيوب معروف هدافها: تعليق أطول مرة وحدة، بعدها على مين سجّل ثم من الاسم
+  const NAMED_HINTS = [
+    LISTEN_HINTS[0],
+    { key: "opp", label: "سجّل على", get: (p) => p.opp },
+    { key: "first", label: "أول حرف وعدد الحروف", get: (p) => `«${clean(p)[0]}» · ${clean(p).length} حرف` },
+    { key: "half", label: "نص الاسم", get: (p) => p.name.trim().slice(0, Math.ceil(p.name.trim().length / 2)) + "…" },
+  ];
+  const hintsFor = (item) => item && item.kind === "ytlink" ? (item.name ? NAMED_HINTS : LISTEN_HINTS) : (item && item.kind === "goal" ? GOAL_HINTS : item && (item.kind === "clip" || item.kind === "ytuser") ? CLIP_HINTS : HINTS);
   const MAX_HINTS = HINTS.length;
 
   function normalize(s) {
@@ -193,7 +200,7 @@
     }
   }
 
-  const api = { LISTEN_HINTS, Game, normalize, levenshtein, isCorrect, pickPlayers, shuffle, POINTS, HINTS, GOAL_HINTS, CLIP_HINTS, hintsFor, MAX_HINTS };
+  const api = { LISTEN_HINTS, NAMED_HINTS, Game, normalize, levenshtein, isCorrect, pickPlayers, shuffle, POINTS, HINTS, GOAL_HINTS, CLIP_HINTS, hintsFor, MAX_HINTS };
   if (typeof module !== "undefined") module.exports = api;
   else root.Engine = api;
 })(typeof window !== "undefined" ? window : globalThis);
