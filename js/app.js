@@ -76,10 +76,11 @@
   // أغنية من الجوال بدل اللحن الافتراضي
   function syncMusicName() {
     const n = Music.customName;
-    $("#music-name").textContent = n ? n.replace(/\.[a-z0-9]+$/i, "").slice(0, 40) : "اللحن الافتراضي";
+    $("#music-name").textContent = n ? n.replace(/\.[a-z0-9]+$/i, "").slice(0, 40) : Music.defaultName;
     $("#music-reset").hidden = !n;
   }
   Music.loadSaved().then(syncMusicName);
+  document.addEventListener("musicchange", syncMusicName);
   $("#music-file").addEventListener("change", async (e) => {
     const f = e.target.files[0];
     e.target.value = "";

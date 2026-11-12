@@ -38,16 +38,14 @@
   ];
   // أهداف يوتيوب بدون بيانات: كل تلميح يطوّل صوت التعليق
   const LISTEN_HINTS = [1, 2, 3, 4].map((n) => ({ key: "more" + n, label: "التعليق أطول", get: () => `+${n * 5} ثانية` }));
-  // أهداف يوتيوب معروف هدافها: تعليق أطول مرة وحدة، بعدها على مين سجّل ثم من الاسم
+  // أهداف يوتيوب معروف هدافها: التعليق يطول مرتين (٥ ثم ١٠ ثواني)، بعدها من الاسم
   const NAMED_HINTS = [
-    LISTEN_HINTS[0],
-    { key: "opp", label: "سجّل على", get: (p) => p.opp },
+    { key: "more5", label: "التعليق أطول", get: () => "+٥ ثواني" },
+    { key: "more10", label: "التعليق أطول", get: () => "+١٠ ثواني زيادة" },
     { key: "first", label: "أول حرف وعدد الحروف", get: (p) => `«${clean(p)[0]}» · ${clean(p).length} حرف` },
     { key: "half", label: "نص الاسم", get: (p) => p.name.trim().slice(0, Math.ceil(p.name.trim().length / 2)) + "…" },
   ];
-  // لو ما نعرف على مين سجّل، عدد الحروف بداله
-  const NAMED_NO_OPP = [NAMED_HINTS[0], CLIP_HINTS[0], CLIP_HINTS[2], NAMED_HINTS[3]];
-  const hintsFor = (item) => item && item.kind === "ytlink" ? (item.name ? (item.opp ? NAMED_HINTS : NAMED_NO_OPP) : LISTEN_HINTS) : (item && item.kind === "goal" ? GOAL_HINTS : item && (item.kind === "clip" || item.kind === "ytuser") ? CLIP_HINTS : HINTS);
+  const hintsFor = (item) => item && item.kind === "ytlink" ? (item.name ? NAMED_HINTS : LISTEN_HINTS) : (item && item.kind === "goal" ? GOAL_HINTS : item && (item.kind === "clip" || item.kind === "ytuser") ? CLIP_HINTS : HINTS);
   const MAX_HINTS = HINTS.length;
 
   function normalize(s) {

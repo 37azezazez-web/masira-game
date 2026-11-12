@@ -68,8 +68,13 @@
       else if (media && media.tagName === "VIDEO") media.muted = true;
     }
     const startAt = () => (item && item.start) || 0;
-    // أهداف الروابط: كل تلميح يزيد التعليق ٥ ثواني
-    const soundLimit = () => (item && item.soundUntil != null ? item.soundUntil : SOUND_SECS) + (item && item.kind === "ytlink" ? Math.min(Math.max(0, level), item.extend != null ? item.extend : 99) * 5 : 0);
+    // أهداف الروابط: تلميحات تزيد التعليق (item.extra = ثواني كل تلميح، والافتراضي ٥ لكل تلميح)
+    const extraAt = (lv) => {
+      if (!item || item.kind !== "ytlink" || lv <= 0) return 0;
+      if (Array.isArray(item.extra)) return item.extra.slice(0, lv).reduce((a, b) => a + b, 0);
+      return lv * 5;
+    };
+    const soundLimit = () => (item && item.soundUntil != null ? item.soundUntil : SOUND_SECS) + extraAt(level);
 
     function onMessage(e) {
       if (!ytFrame || e.source !== ytFrame.contentWindow) return;
@@ -90,6 +95,14 @@
         if (d.event === "onStateChange" && typeof d.info === "number") ytState = d.info;
         // نعيد المقطع إذا خلص
         if (d.info && d.info.playerState === 0) { ytCmd("seekTo", [startAt(), true]); ytCmd("playVideo"); }
+        // المتصفح أحياناً يتجاهل أول أمر: كل ما وصل تحديث نتأكد إن الصوت والتشغيل مثل المطلوب
+        const info = d.info && typeof d.info === "object" ? d.info : null;
+        if (info) {
+          const wantSound = revealed || !silenced;
+          if (wantSound && info.muted === true) { ytCmd("unMute"); ytCmd("setVolume", [100]); }
+          if (!wantSound && info.muted === false) ytCmd("mute");
+          if (info.playerState === 2 || info.playerState === 5 || info.playerState === -1) ytCmd("playVideo");
+        }
         if (d.info && typeof d.info.currentTime === "number" && d.info.currentTime >= startAt() + soundLimit()) silence();
       }
     }
@@ -274,8 +287,7 @@
     }
 
     function setBlur(lv) {
-      const cap = item && item.extend != null ? item.extend : 99;
-      const more = item && item.kind === "ytlink" && lv > level && lv >= 0 && level < cap;
+      const more = lv > level && lv >= 0 && extraAt(lv) > extraAt(level);
       level = lv;
       if (more && silenced && !revealed) replay();
       if (!media) return;

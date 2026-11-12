@@ -208,10 +208,72 @@
     if (wasPlaying) Music.start();
   }
 
+  // ===== أغنية اللعبة من يوتيوب (أغنية الشبح) =====
+  // تشتغل بمشغل يوتيوب مخفي، ولو ما اشتغل نرجع للحن المولّد
+  const SONG_ID = "L2lbhlwokPI", SONG_NAME = "أغنية الشبح";
+  const YT_HOST = "https://www.youtube-nocookie.com";
+  const RELAY_HOST = "https://37azezazez-web.github.io";
+  const DIRECT = /^https?:$/.test(location.protocol);
+  const FRAME_HOST = DIRECT ? YT_HOST : RELAY_HOST;
+  let song = null, songOk = null, songReady = false, songVol = 70;
+  function songCmd(func, args = []) {
+    if (song && song.contentWindow) song.contentWindow.postMessage(JSON.stringify({ event: "command", func, args }), FRAME_HOST);
+  }
+  function songEnsure() {
+    if (song) return;
+    const f = document.createElement("iframe");
+    const q = new URLSearchParams({ autoplay: "1", mute: "1", controls: "0", playsinline: "1", loop: "1", playlist: SONG_ID, enablejsapi: "1", origin: DIRECT ? location.origin : "" });
+    f.src = DIRECT ? `${YT_HOST}/embed/${SONG_ID}?${q}` : `${RELAY_HOST}/masira-game/yt.html?v=${SONG_ID}&start=0`;
+    f.title = "موسيقى اللعبة";
+    f.allow = "autoplay; encrypted-media";
+    f.tabIndex = -1;
+    f.setAttribute("aria-hidden", "true");
+    f.className = "song-frame";
+    f.addEventListener("load", () => {
+      const ping = setInterval(() => {
+        if (songReady || song !== f) return clearInterval(ping);
+        try { f.contentWindow.postMessage(JSON.stringify({ event: "listening", id: 2, channel: "widget" }), FRAME_HOST); } catch { /* */ }
+      }, 300);
+    });
+    window.addEventListener("message", (e) => {
+      if (e.source !== f.contentWindow) return;
+      let d; try { d = typeof e.data === "string" ? JSON.parse(e.data) : e.data; } catch { return; }
+      if (!d || !d.event) return;
+      if (d.event === "onError") { songOk = false; f.remove(); song = null; if (playing) { playing = false; Music.start(); } document.dispatchEvent(new Event("musicchange")); return; }
+      if (!songReady) { songReady = true; songOk = true; }
+      const info = d.info && typeof d.info === "object" ? d.info : null;
+      if (!info) return;
+      // نتأكد إن الحالة مثل المطلوب (المتصفح أحياناً يتجاهل أول أمر)
+      if (playing) {
+        if (info.muted === true) songCmd("unMute");
+        if (typeof info.volume === "number" && Math.abs(info.volume - songVol) > 2) songCmd("setVolume", [songVol]);
+        if (info.playerState === 2 || info.playerState === 5 || info.playerState === -1) songCmd("playVideo");
+      } else if (info.playerState === 1) songCmd("pauseVideo");
+    });
+    document.body.append(f);
+    song = f;
+    // بدون نت أو يوتيوب محجوب: نرجع للحن المولّد
+    setTimeout(() => {
+      if (songReady || song !== f) return;
+      songOk = false; f.remove(); song = null;
+      if (playing) { playing = false; Music.start(); }
+      document.dispatchEvent(new Event("musicchange"));
+    }, 10000);
+  }
+  const useSong = () => !customEl && songOk !== false;
+
   const Music = {
     get playing() { return playing; },
     get customName() { return customEl ? customName || "أغنيتك" : ""; },
+    get defaultName() { return songOk === false ? "اللحن الافتراضي" : SONG_NAME; },
     start() {
+      if (useSong()) {
+        if (playing) return;
+        playing = true; songVol = 70;
+        songEnsure();
+        songCmd("unMute"); songCmd("setVolume", [songVol]); songCmd("playVideo");
+        return;
+      }
       try {
         ensureCtx();
         if (playing) return;
@@ -226,6 +288,7 @@
       } catch { playing = false; }
     },
     stop(now) {
+      if (song && playing && useSong()) { playing = false; songCmd("pauseVideo"); return; }
       if (!ctx || !playing) return;
       playing = false;
       const el = customEl, g = out().gain;
@@ -234,6 +297,7 @@
     },
     /** يخفض الموسيقى شوي وقت آخر ثواني المؤقت */
     duck(on) {
+      if (song && playing && useSong()) { songVol = on ? 35 : 70; songCmd("setVolume", [songVol]); return; }
       if (!ctx || !playing) return;
       out().gain.setTargetAtTime(on ? LEVEL() / 2 : LEVEL(), ctx.currentTime, 0.3);
     },
