@@ -308,5 +308,3 @@ legend { font-weight: 800; margin-bottom: 10px; font-family: var(--display); }
 .overlay.over-video { background: transparent; place-items: end center; pointer-events: none; }
 .overlay.over-video .sheet { pointer-events: auto; }
 .player-photo[hidden] { display: none; }
-/* مشغل أغنية اللعبة: موجود بس ما يبان */
-.song-frame { position: fixed; left: -400px; bottom: 0; width: 200px; height: 120px; border: 0; opacity: 0; pointer-events: none; }

@@ -5,6 +5,8 @@ self.addEventListener("install", (e) => e.waitUntil(caches.open(CACHE).then((c) 
 self.addEventListener("activate", (e) => e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k))))));
 self.addEventListener("fetch", (e) => {
   if (e.request.method !== "GET") return;
+  // الصوت والفيديو يطلبون أجزاء (Range): نخليها للمتصفح مباشرة عشان سفاري يشغلها
+  if (e.request.headers.has("range") || e.request.destination === "audio" || e.request.destination === "video") return;
   // الشبكة أول عشان التحديثات توصل على طول، والتخزين للعب بدون نت
   e.respondWith(
     // no-cache: نتأكد من السيرفر كل مرة بدل ما نعتمد على كاش المتصفح (قيت هوب يخليه ١٠ دقايق)
