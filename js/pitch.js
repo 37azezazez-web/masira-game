@@ -61,9 +61,9 @@
     let ytFrame = null, ytList = [], ytIdx = 0, ytTimer = 0, ytOk = false, ytState = -1;
     let onFallback = null, revealed = false, silenced = false, muteTimer = 0;
     // كشف الإعلان: وقت المقطع الأصلي ما يتحرك والمشغل شغال = إعلان يوتيوب، فنغطيه ونكتمه لين يخلص
-    let lastT = -1, lastMove = 0, adMode = false, adTimer = 0, moving = false;
-    // الصوت يطلع بس لما نتأكد إن المقطع نفسه يمشي (مو إعلان)
-    const wantSound = () => moving && !adMode && (revealed || !silenced);
+    // القاعدة: المقطع مغطى ومكتوم (adMode) لين نشوف وقت الهدف نفسه يتقدم فعلاً. أي توقف = نغطيه من جديد
+    let lastT = -1, lastMove = 0, adMode = true, adTimer = 0, adSince = 0;
+    const wantSound = () => !adMode && (revealed || !silenced);
     function applySound() {
       if (wantSound()) { ytCmd("unMute"); ytCmd("setVolume", [100]); } else ytCmd("mute");
     }
@@ -71,7 +71,7 @@
       if (adMode === on) return;
       adMode = on;
       box.classList.toggle("is-ad", on);
-      if (on) moving = false;
+      if (on) adSince = Date.now();
       applySound();
     }
 
@@ -118,19 +118,21 @@
           // وصلنا المشغل: نعتمد على وقت المقطع نفسه بدل الساعة (الإعلان ما ياكل من ثواني التعليق)
           clearTimeout(muteTimer);
           lastMove = Date.now();
-          const okAt = Date.now();
-          let backup = false;
           clearInterval(adTimer);
+          let warned = false;
           adTimer = setInterval(() => {
             if (!ytFrame) return clearInterval(adTimer);
-            // المشغل ما يرسل وقت المقطع: نرجع للساعة عشان ما ينسمع الاسم
-            if (lastT < 0) {
-              if (!backup && Date.now() - okAt > 2000) { backup = true; moving = true; applySound(); muteTimer = setTimeout(silence, (soundLimit() + 1) * 1000); }
-              return;
+            const fresh = lastT >= 0 && Date.now() - lastMove < 1500;
+            if (!fresh && !adMode) setAd(true);
+            // طوّل وهو مغطى: نطلع تنبيه للمقدّم
+            if (adMode && !warned && Date.now() - adSince > 40000) {
+              warned = true;
+              const n = document.createElement("div");
+              n.className = "stage-note";
+              n.textContent = "المقطع ما اشتغل؟ اضغط «ورني الجواب» وبعدها «تخطي»";
+              box.append(n);
             }
-            const stuck = Date.now() - lastMove;
-            if (!adMode && stuck > 1800 && ytState !== 2 && ytState !== 0) setAd(true);
-          }, 400);
+          }, 300);
           ytCmd("playVideo");
           // لو علّق وما بدأ، ندفه مرة ثانية
           setTimeout(() => { if (ytState !== 1 && ytFrame) ytCmd("playVideo"); }, 2500);
@@ -145,9 +147,10 @@
           if (typeof info.currentTime === "number") {
             if (Math.abs(info.currentTime - lastT) > 0.05) {
               const first = lastT < 0;
-              lastT = info.currentTime; lastMove = Date.now();
-              if (adMode) setAd(false);
-              if (!first && !moving) { moving = true; applySound(); }
+              const forward = !first && info.currentTime > lastT && info.currentTime - lastT < 3;
+              lastT = info.currentTime;
+              // نعتبره يمشي بس إذا تقدم شوي شوي (مو قفزة من seek)
+              if (forward) { lastMove = Date.now(); if (adMode) setAd(false); }
             }
           }
           // مقطع غير اللي طلبناه = إعلان
@@ -170,7 +173,7 @@
     function clear() {
       cancelAnimationFrame(raf); raf = 0;
       clearTimeout(ytTimer); clearTimeout(muteTimer); clearInterval(adTimer);
-      adMode = false; lastT = -1; moving = false;
+      adMode = true; lastT = -1; adSince = Date.now();
       revealed = false; silenced = false;
       if (media && media.tagName === "VIDEO") { media.pause(); media.removeAttribute("src"); media.load(); }
       media = null; ytFrame = null; ytOk = false; ytState = -1; pending = false;
@@ -222,6 +225,7 @@
       const id = ytList[ytIdx];
       box.replaceChildren();
       box.classList.add("is-clip", "is-yt");
+      adMode = true; adSince = Date.now(); lastT = -1; box.classList.add("is-ad");
       const wrap = document.createElement("div");
       wrap.className = "yt-wrap";
       const f = document.createElement("iframe");
