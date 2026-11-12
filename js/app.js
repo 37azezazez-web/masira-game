@@ -367,6 +367,7 @@
 
   function renderRound() {
     const p = game.player;
+    hidePeek();
     const goal = isGoal(p);
     $("#round-label").textContent = `${goal ? "الهدف" : "اللاعب"} ${AR(game.round + 1)} من ${AR(game.players.length)}`;
     $("#card-title").textContent = goal ? (p.opp ? "مين صاحب الهدف وعلى مين؟" : "مين صاحب الهدف؟") : "انتقالات اللاعب";
@@ -651,6 +652,21 @@
   if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
     navigator.serviceWorker.register("sw.js").catch(() => {});
   }
+  // زر المقدّم: يشوف الجواب ثواني بسيطة بدون ما يكشفه للفرق
+  let peekTimer = 0;
+  function hidePeek() { clearTimeout(peekTimer); $("#peek").hidden = true; }
+  $("#peek-btn").addEventListener("click", () => {
+    if (!$("#peek").hidden) return hidePeek();
+    const p = game && game.player;
+    if (!p) return;
+    $("#peek-name").textContent = p.name;
+    $("#peek-info").textContent = p.opp ? `على ${p.opp}` : (p.en || "");
+    $("#peek").hidden = false;
+    clearTimeout(peekTimer);
+    peekTimer = setTimeout(hidePeek, 3000);
+  });
+  $("#peek").addEventListener("click", hidePeek);
+
   // وضع التشخيص (?debug): زر ينسخ سجل رسائل مشغل يوتيوب عشان نعرف شكل الإعلان
   if (/[?&]debug\b/.test(location.search)) {
     const b = el("button", "btn btn-sm debug-btn", "📋 انسخ السجل");

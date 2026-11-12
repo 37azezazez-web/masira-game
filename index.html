@@ -10,8 +10,8 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/icon-180.png">
-  <link rel="stylesheet" href="css/fonts.css?v=202611121318">
-  <link rel="stylesheet" href="css/style.css?v=202611121318">
+  <link rel="stylesheet" href="css/fonts.css?v=202611122221">
+  <link rel="stylesheet" href="css/style.css?v=202611122221">
 </head>
 <body>
   <main id="app">
@@ -127,9 +127,11 @@
       <header class="bar bar-game">
         <button class="icon-btn" id="quit-btn" aria-label="إنهاء اللعبة">✕</button>
         <span class="round-label" id="round-label"></span>
+        <button class="icon-btn" id="peek-btn" type="button" aria-label="الجواب للمقدّم">👁</button>
         <button class="icon-btn music-btn" type="button" aria-pressed="true" aria-label="الموسيقى"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 18V5l11-2v13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.8" fill="currentColor"/><circle cx="17.5" cy="16" r="2.8" fill="currentColor"/><path class="slash" d="M3 3l18 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
       </header>
 
+      <div class="peek" id="peek" hidden role="status"><span class="small muted">للمقدّم بس 🤫</span><b id="peek-name"></b><span id="peek-info" class="small"></span></div>
       <div class="scores" id="scores" aria-label="النتائج"></div>
 
       <div class="card career-card">
@@ -200,11 +202,11 @@
 
   <div class="toast" id="toast" role="status" hidden></div>
 
-  <script src="js/data.js?v=202611121318"></script>
-  <script src="js/goals.js?v=202611121318"></script>
-  <script src="js/engine.js?v=202611121318"></script>
-  <script src="js/pitch.js?v=202611121318"></script>
-  <script src="js/music.js?v=202611121318"></script>
-  <script src="js/app.js?v=202611121318"></script>
+  <script src="js/data.js?v=202611122221"></script>
+  <script src="js/goals.js?v=202611122221"></script>
+  <script src="js/engine.js?v=202611122221"></script>
+  <script src="js/pitch.js?v=202611122221"></script>
+  <script src="js/music.js?v=202611122221"></script>
+  <script src="js/app.js?v=202611122221"></script>
 </body>
 </html>
