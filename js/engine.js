@@ -38,14 +38,26 @@
   ];
   // أهداف يوتيوب بدون بيانات: كل تلميح يطوّل صوت التعليق
   const LISTEN_HINTS = [1, 2, 3, 4].map((n) => ({ key: "more" + n, label: "التعليق أطول", get: () => `+${n * 5} ثانية` }));
-  // أهداف يوتيوب معروف هدافها: التعليق يطول مرتين (٥ ثم ١٠ ثواني)، بعدها من الاسم
-  const NAMED_HINTS = [
+  // أهداف يوتيوب معروف هدافها: التعليق يطول مرتين (٥ ثم ١٠ ثواني)، بعدها تلميح عن صاحب الهدف وتلميح عن الخصم
+  const OPP_KIND = {
+    "الأهلي": "نادي سعودي", "الفتح": "نادي سعودي", "الهلال": "نادي سعودي", "الاتحاد": "نادي سعودي", "النصر": "نادي سعودي",
+    "تشيلسي": "نادي إنجليزي", "ليستر سيتي": "نادي إنجليزي", "مانشستر سيتي": "نادي إنجليزي", "مانشستر يونايتد": "نادي إنجليزي", "نيوكاسل": "نادي إنجليزي", "وولفرهامبتون": "نادي إنجليزي",
+    "بايرن ميونخ": "نادي ألماني", "يوفنتوس": "نادي إيطالي", "برشلونة": "نادي إسباني", "ريال مدريد": "نادي إسباني", "خيتافي": "نادي إسباني", "أتلتيكو مدريد": "نادي إسباني",
+    "باريس سان جيرمان": "نادي فرنسي", "يونغ بويز": "نادي سويسري", "كاواساكي فرونتال": "نادي ياباني", "ناغويا غرامبوس": "نادي ياباني",
+    "إسبانيا": "منتخب أوروبي", "سويسرا": "منتخب أوروبي", "فرنسا": "منتخب أوروبي", "إنجلترا": "منتخب أوروبي", "جورجيا": "منتخب أوروبي", "ألمانيا": "منتخب أوروبي",
+    "العراق": "منتخب آسيوي", "اليابان": "منتخب آسيوي",
+  };
+  const MORE = [
     { key: "more5", label: "التعليق أطول", get: () => "+٥ ثواني" },
     { key: "more10", label: "التعليق أطول", get: () => "+١٠ ثواني زيادة" },
-    { key: "first", label: "أول حرف وعدد الحروف", get: (p) => `«${clean(p)[0]}» · ${clean(p).length} حرف` },
-    { key: "half", label: "نص الاسم", get: (p) => p.name.trim().slice(0, Math.ceil(p.name.trim().length / 2)) + "…" },
   ];
-  const hintsFor = (item) => item && item.kind === "ytlink" ? (item.name ? NAMED_HINTS : LISTEN_HINTS) : (item && item.kind === "goal" ? GOAL_HINTS : item && (item.kind === "clip" || item.kind === "ytuser") ? CLIP_HINTS : HINTS);
+  const NAT_HINT = { key: "nat", label: "جنسية صاحب الهدف", get: (p) => p.nat };
+  const FIRST_HINT = { key: "first", label: "صاحب الهدف: أول حرف", get: (p) => `«${clean(p)[0]}» · ${clean(p).length} حرف` };
+  const OPP_HINT = { key: "opp", label: "الخصم", get: (p) => OPP_KIND[p.opp] || `يبدأ بـ «${p.opp.replace(/^ال/, "")[0]}»` };
+  const HALF_HINT = { key: "half", label: "نص اسم صاحب الهدف", get: (p) => p.name.trim().slice(0, Math.ceil(p.name.trim().length / 2)) + "…" };
+  const namedHints = (p) => [...MORE, p.nat ? NAT_HINT : FIRST_HINT, p.opp ? OPP_HINT : HALF_HINT];
+  const NAMED_HINTS = namedHints({ nat: "x", opp: "x" });
+  const hintsFor = (item) => item && item.kind === "ytlink" ? (item.name ? namedHints(item) : LISTEN_HINTS) : (item && item.kind === "goal" ? GOAL_HINTS : item && (item.kind === "clip" || item.kind === "ytuser") ? CLIP_HINTS : HINTS);
   const MAX_HINTS = HINTS.length;
 
   function normalize(s) {

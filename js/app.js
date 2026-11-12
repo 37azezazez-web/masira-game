@@ -5,6 +5,11 @@
   const Music = window.Music;
   // الأهداف الجاهزة: اللي تأكدنا منها بس
   const GOALS = (window.GOALS || []).filter((g) => g.verified).concat(window.GOAL_LINKS || []);
+  // أوقات بداية المقاطع اللي ضبطها المقدّم من صفحة times.html (على نفس الجهاز)
+  try {
+    const st = JSON.parse(localStorage.getItem("intiqalat:goalStarts") || "{}");
+    GOALS.forEach((g) => { const v = g.yt && st[g.yt[0]]; if (Number.isInteger(v) && v >= 0 && v < 36000) g.start = v; });
+  } catch { /* */ }
 
   // عنوان مقطع يوتيوب (فيه اسم الهداف) نجيبه وقت اللعب من noembed
   const titles = new Map();
@@ -362,7 +367,7 @@
     const p = game.player;
     const goal = isGoal(p);
     $("#round-label").textContent = `${goal ? "الهدف" : "اللاعب"} ${AR(game.round + 1)} من ${AR(game.players.length)}`;
-    $("#card-title").textContent = goal ? "مين سجّل الهدف؟" : "انتقالات اللاعب";
+    $("#card-title").textContent = goal ? (p.opp ? "مين صاحب الهدف وعلى مين؟" : "مين صاحب الهدف؟") : "انتقالات اللاعب";
     $("#career").hidden = goal;
     $("#stage").hidden = !goal;
     if (goal) stage.show(p, 0); else stage.stop();

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; frame-src https://www.youtube-nocookie.com">
+<title>ضبط بداية الأهداف</title>
+<link rel="stylesheet" href="css/check.css">
+</head>
+<body class="times">
+<h1>ضبط بداية مقاطع الأهداف</h1>
+<p>اختر هدف، شغّله، ولما يدخل الكورة المرمى اضغط «⚽ الهدف هنا». المقطع بيبدأ قبله بـ١٠ ثواني. تنحفظ على هالجهاز وتشتغل في اللعبة على طول، وإذا خلصت اضغط «انسخ الأوقات» وأرسلها لي عشان أثبتها للكل.</p>
+<div id="player" class="tplayer" hidden>
+  <div class="tframe"><iframe id="f" title="مقطع الهدف" allow="autoplay; encrypted-media"></iframe></div>
+  <div class="trow">
+    <b id="cur-name"></b> <span id="cur-time">٠:٠٠</span>
+  </div>
+  <div class="trow">
+    <button id="mark" type="button" class="big">⚽ الهدف هنا</button>
+    <button id="try" type="button">جرّب البداية</button>
+    <button id="clear" type="button">بدون وقت</button>
+  </div>
+  <p id="saved" class="ok"></p>
+</div>
+<div class="trow"><button id="copy" type="button">انسخ الأوقات</button> <span id="done"></span></div>
+<textarea id="out" readonly rows="3"></textarea>
+<ol id="list"></ol>
+<script src="js/goals.js"></script>
+<script src="js/times.js"></script>
+</body>
+</html>
