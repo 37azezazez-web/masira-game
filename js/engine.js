@@ -55,7 +55,7 @@
   const FIRST_HINT = { key: "first", label: "صاحب الهدف: أول حرف", get: (p) => `«${clean(p)[0]}» · ${clean(p).length} حرف` };
   const OPP_HINT = { key: "opp", label: "الخصم", get: (p) => OPP_KIND[p.opp] || `يبدأ بـ «${p.opp.replace(/^ال/, "")[0]}»` };
   const HALF_HINT = { key: "half", label: "نص اسم صاحب الهدف", get: (p) => p.name.trim().slice(0, Math.ceil(p.name.trim().length / 2)) + "…" };
-  const namedHints = (p) => [...MORE, p.nat ? NAT_HINT : FIRST_HINT, p.opp ? OPP_HINT : HALF_HINT];
+  const namedHints = (p) => [...MORE, FIRST_HINT, p.opp ? OPP_HINT : HALF_HINT];
   const NAMED_HINTS = namedHints({ nat: "x", opp: "x" });
   const hintsFor = (item) => item && item.kind === "ytlink" ? (item.name ? namedHints(item) : LISTEN_HINTS) : (item && item.kind === "goal" ? GOAL_HINTS : item && (item.kind === "clip" || item.kind === "ytuser") ? CLIP_HINTS : HINTS);
   const MAX_HINTS = HINTS.length;
