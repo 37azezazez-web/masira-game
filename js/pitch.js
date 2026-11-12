@@ -54,6 +54,8 @@
     );
   }
 
+  const LOG = [];
+  root.PitchLog = LOG;
   function create(box) {
     let raf = 0, media = null, item = null, level = 0, pending = false;
     let ytFrame = null, ytList = [], ytIdx = 0, ytTimer = 0, ytOk = false, ytState = -1;
@@ -95,6 +97,18 @@
       let d;
       try { d = typeof e.data === "string" ? JSON.parse(e.data) : e.data; } catch { return; }
       if (!d || !d.event) return;
+      // سجل تشخيص (آخر ٤٠٠ رسالة من المشغل) عشان نعرف شكل الإعلان
+      {
+        const inf = d.info && typeof d.info === "object" ? d.info : {};
+        const keys = Object.keys(inf).sort().join(",");
+        const vd = inf.videoData || {};
+        const row = [Date.now() % 1e7, ytList[ytIdx], adMode ? 1 : 0, revealed ? 1 : 0, d.event, inf.playerState, inf.currentTime, inf.duration, vd.video_id, vd.title && vd.title.slice(0, 30), inf.muted];
+        for (const k of Object.keys(inf)) if (/ad/i.test(k)) row.push(k + "=" + JSON.stringify(inf[k]).slice(0, 80));
+        if (!LOG.keysSeen) LOG.keysSeen = {};
+        if (!LOG.keysSeen[keys]) { LOG.keysSeen[keys] = 1; row.push("FULL=" + JSON.stringify(d).slice(0, 1500)); }
+        LOG.push(row);
+        if (LOG.length > 250) LOG.shift();
+      }
       if (d.event === "onError") return nextYouTube();
       if (d.event === "onReady" || d.event === "infoDelivery" || d.event === "initialDelivery" || d.event === "onStateChange") {
         if (!ytOk) {

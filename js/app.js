@@ -649,4 +649,18 @@
   if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
     navigator.serviceWorker.register("sw.js").catch(() => {});
   }
+  // وضع التشخيص (?debug): زر ينسخ سجل رسائل مشغل يوتيوب عشان نعرف شكل الإعلان
+  if (/[?&]debug\b/.test(location.search)) {
+    const b = el("button", "btn btn-sm debug-btn", "📋 انسخ السجل");
+    b.type = "button";
+    b.addEventListener("click", () => {
+      const txt = JSON.stringify(window.PitchLog || []);
+      const ta = el("textarea", "debug-out"); ta.value = txt; ta.readOnly = true;
+      document.body.append(ta); ta.select();
+      const ok = () => { toast("انسخ السجل ✓ الصقه لي"); };
+      if (navigator.clipboard) navigator.clipboard.writeText(txt).then(ok, () => { document.execCommand("copy"); ok(); });
+      else { document.execCommand("copy"); ok(); }
+    });
+    document.body.append(b);
+  }
 })();

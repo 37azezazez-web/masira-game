@@ -322,3 +322,5 @@ legend { font-weight: 800; margin-bottom: 10px; font-family: var(--display); }
 .is-ad .audio-cover .t::before { content: "إعلان من يوتيوب… لحظات ويبدأ ⏳"; font-size: 1.1rem; }
 .is-ad .audio-cover .r { visibility: hidden; }
 .is-ad .audio-cover .bars i { animation-play-state: paused; transform: scaleY(.15); }
+.debug-btn { position: fixed; left: 10px; bottom: 10px; z-index: 30; background: var(--yellow); color: var(--on-red); }
+.debug-out { position: fixed; left: 10px; right: 10px; bottom: 60px; height: 90px; z-index: 30; font: 11px monospace; direction: ltr; }
