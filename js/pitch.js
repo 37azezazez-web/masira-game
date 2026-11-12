@@ -382,8 +382,10 @@
         setBlur(-1);
         box.classList.remove("is-silent");
         box.classList.add("is-revealed");
-        if (ytFrame) { if (!adMode) ytCmd("unMute"); ytCmd("seekTo", [startAt(), true]); ytCmd("playVideo"); }
-        else if (media && media.tagName === "VIDEO") { media.muted = false; media.currentTime = 0; media.play().catch(() => {}); }
+        // نكمل من قبل ما انكتم الصوت بثانيتين: المعلق يكمل كلامه ويقول الاسم
+        const resume = Math.max(startAt(), startAt() + soundLimit() - 2);
+        if (ytFrame) { if (!adMode) ytCmd("unMute"); ytCmd("seekTo", [resume, true]); ytCmd("playVideo"); }
+        else if (media && media.tagName === "VIDEO") { media.muted = false; media.currentTime = Math.max(0, soundLimit() - 2); media.play().catch(() => {}); }
       },
       stop() { clear(); item = null; },
     };

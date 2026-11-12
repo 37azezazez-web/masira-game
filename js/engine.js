@@ -47,15 +47,14 @@
     "إسبانيا": "منتخب أوروبي", "سويسرا": "منتخب أوروبي", "فرنسا": "منتخب أوروبي", "إنجلترا": "منتخب أوروبي", "جورجيا": "منتخب أوروبي", "ألمانيا": "منتخب أوروبي",
     "العراق": "منتخب آسيوي", "اليابان": "منتخب آسيوي",
   };
-  const MORE = [
-    { key: "more5", label: "التعليق أطول", get: () => "+٥ ثواني" },
-    { key: "more10", label: "التعليق أطول", get: () => "+١٠ ثواني زيادة" },
-  ];
+  // كل التلميحات وقت تعليق زيادة (٥ ثم ١٠ ثم ١٠ ثم ١٠ ثواني)
+  const MORE = [["+٥ ثواني", "٥"], ["+١٠ ثواني", "١٥"], ["+١٠ ثواني", "٢٥"], ["+١٠ ثواني", "٣٥"]].map(([v, tot], i) => (
+    { key: "more" + i, label: "التعليق أطول", get: () => v }));
   const NAT_HINT = { key: "nat", label: "جنسية صاحب الهدف", get: (p) => p.nat };
   const FIRST_HINT = { key: "first", label: "صاحب الهدف: أول حرف", get: (p) => `«${clean(p)[0]}» · ${clean(p).length} حرف` };
   const OPP_HINT = { key: "opp", label: "الخصم", get: (p) => OPP_KIND[p.opp] || `يبدأ بـ «${p.opp.replace(/^ال/, "")[0]}»` };
   const HALF_HINT = { key: "half", label: "نص اسم صاحب الهدف", get: (p) => p.name.trim().slice(0, Math.ceil(p.name.trim().length / 2)) + "…" };
-  const namedHints = (p) => [...MORE, FIRST_HINT, p.opp ? OPP_HINT : HALF_HINT];
+  const namedHints = () => MORE;
   const NAMED_HINTS = namedHints({ nat: "x", opp: "x" });
   const hintsFor = (item) => item && item.kind === "ytlink" ? (item.name ? namedHints(item) : LISTEN_HINTS) : (item && item.kind === "goal" ? GOAL_HINTS : item && (item.kind === "clip" || item.kind === "ytuser") ? CLIP_HINTS : HINTS);
   const MAX_HINTS = HINTS.length;

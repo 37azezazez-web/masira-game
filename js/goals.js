@@ -269,7 +269,7 @@ const GOAL_LINKS = [
   ["rjB50xsLn0U", "سيموس", "الاتحاد", [], "", ""],
   ["WDCaMZM5dYQ", "بن يطو", "الأهلي", [], "", ""],
   ["XL-tUUS_Xg8", "كوبي ماينو", "وولفرهامبتون", ["ماينو", "mainoo"], "إنجلترا", "مانشستر يونايتد"],
-].map(([vid, name, opp, aliases, nat, team]) => ({ id: "l-" + vid, kind: "ytlink", yt: [vid], start: GOAL_STARTS[vid] || 0, name, en: "", opp, aliases, nat, team, extra: [5, 10], photo: `https://i.ytimg.com/vi/${vid}/hqdefault.jpg` }));
+].map(([vid, name, opp, aliases, nat, team]) => ({ id: "l-" + vid, kind: "ytlink", yt: [vid], start: GOAL_STARTS[vid] || 0, name, en: "", opp, aliases, nat, team, extra: [5, 10, 10, 10], photo: `https://i.ytimg.com/vi/${vid}/hqdefault.jpg` }));
 
 if (typeof module !== "undefined") module.exports = { GOALS, GOAL_LINKS };
 else { window.GOALS = GOALS; window.GOAL_LINKS = GOAL_LINKS; }
