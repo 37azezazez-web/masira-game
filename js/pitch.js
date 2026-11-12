@@ -210,6 +210,39 @@
       return c;
     }
 
+    /** أزرار المقدّم: يقدّم/يأخّر بداية المقطع لين أول صوت يكون المعلق. تنحفظ لهالهدف على الجهاز */
+    function seekControls() {
+      const w = document.createElement("div");
+      w.className = "seek-ctl";
+      const mk = (txt, d, label) => {
+        const b = document.createElement("button");
+        b.type = "button"; b.textContent = txt; b.setAttribute("aria-label", label);
+        b.addEventListener("click", (e) => { e.stopPropagation(); shiftStart(d); });
+        return b;
+      };
+      w.append(mk("⏪ ٥", -5, "رجّع البداية ٥ ثواني"), mk("قدّم ٥ ⏩", 5, "قدّم البداية ٥ ثواني"));
+      return w;
+    }
+    function shiftStart(d) {
+      if (!item || revealed) return;
+      item.start = Math.max(0, (item.start || 0) + d);
+      const vid = item.yt && item.yt[0];
+      if (vid) {
+        try {
+          const k = "intiqalat:goalStarts";
+          const st = JSON.parse(localStorage.getItem(k) || "{}") || {};
+          st[vid] = item.start;
+          localStorage.setItem(k, JSON.stringify(st));
+        } catch { /* */ }
+      }
+      let n = box.querySelector(".seek-note");
+      if (!n) { n = document.createElement("div"); n.className = "seek-note"; box.append(n); }
+      const m = Math.floor(item.start / 60), sec = item.start % 60;
+      n.textContent = `يبدأ من ${m}:${String(sec).padStart(2, "0")} · انحفظ`;
+      clearTimeout(n._t); n._t = setTimeout(() => n.remove(), 2500);
+      replay();
+    }
+
     /** يعيد المقطع من البداية، والصوت يشتغل أول الثواني من جديد */
     function replay() {
       if (revealed) return;
@@ -247,7 +280,7 @@
         }, 250);
       });
       wrap.append(f);
-      box.append(wrap, cover());
+      box.append(wrap, cover(), seekControls());
       ytFrame = f; media = wrap; ytOk = false;
       // احتياط لو ما وصلنا وقت المقطع: نكتم بعد المهلة + وقت التحميل
       clearTimeout(muteTimer);
