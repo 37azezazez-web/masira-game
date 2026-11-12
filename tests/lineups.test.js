@@ -10,6 +10,8 @@ test("أكثر من ٤٠ تشكيلة، كل وحدة ١١ لاعب ومخفي �
     assert.ok(l.hidden >= 0, "المخفي مو موجود: " + l.title);
     assert.ok([1, 2, 3].includes(l.level), l.title);
     assert.strictEqual(l.extra.length, 2, l.title);
+    assert.ok(l.club, "بدون نادي: " + l.title);
+    assert.ok(!l.extra.some(([k]) => k === "جنسيته"), "تلميح جنسية مكرر: " + l.title);
     assert.strictEqual(new Set(l.players.map((p) => p.name)).size, 11, "اسم مكرر: " + l.title);
     for (const p of l.players) assert.ok(p.x > 0 && p.x < 100 && p.y > 0 && p.y < 100, l.title);
   }
@@ -20,14 +22,22 @@ test("كل الصعوبات وكل الحقب موجودة", () => {
   assert.ok(new Set(LINEUPS.map((l) => Math.floor(l.year / 10))).size >= 6);
 });
 
-test("تلميحات التشكيلة: عدد الحروف، تلميحين، أول حرف", () => {
+test("تلميحات التشكيلة: النادي، تلميحين، أول حرف", () => {
   const l = LINEUPS[0];
   const g = new Engine.Game({ teams: ["أ"], players: [l], turnSeconds: 30 });
   for (let i = 0; i < 4; i++) g.pass();
   const h = g.revealedHints;
   assert.strictEqual(h.length, 4);
-  assert.match(h[0].value, /حروف/);
+  assert.strictEqual(h[0].label, "ناديه وقتها");
+  assert.strictEqual(h[0].value, "وست هام");
   assert.strictEqual(h[1].label, l.extra[0][0]);
   assert.strictEqual(h[2].value, l.extra[1][1]);
   assert.strictEqual(h[3].label, "أول حرف");
+});
+
+test("تشكيلة نادي: التلميح الأول منتخبه", () => {
+  const l = LINEUPS.find((x) => x.name === "بيكهام");
+  const h = Engine.hintsFor(l)[0];
+  assert.strictEqual(h.label, "منتخبه");
+  assert.strictEqual(h.get(l), "إنجلترا");
 });
