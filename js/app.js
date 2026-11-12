@@ -309,6 +309,8 @@
     if (names.some((n) => !n)) { err.textContent = "اكتب اسم لكل فريق."; err.hidden = false; return; }
     if (new Set(names).size !== names.length) { err.textContent = "أسماء الفرق لازم تكون مختلفة."; err.hidden = false; return; }
     if (settings.mode === "goals" && clips.some((c) => !c.name.trim())) { err.textContent = "اكتب اسم صاحب الهدف لكل مقطع."; err.hidden = false; return; }
+    // مقاطع يوتيوب تحتاج نت. بدون نت: مقاطع الجوال بس، أو «انتقالات اللاعب» تشتغل عادي
+    if (settings.mode === "goals" && !navigator.onLine && !clips.length) { err.textContent = "«خمّن الهدف» يحتاج نت 📶 بدون نت العب «انتقالات اللاعب»."; err.hidden = false; return; }
     err.hidden = true;
     settings.teams = names;
     store.set("settings", settings);
