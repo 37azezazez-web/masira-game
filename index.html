@@ -10,8 +10,8 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/icon-180.png">
-  <link rel="stylesheet" href="css/fonts.css?v=202611130325">
-  <link rel="stylesheet" href="css/style.css?v=202611130325">
+  <link rel="stylesheet" href="css/fonts.css?v=202611130350">
+  <link rel="stylesheet" href="css/style.css?v=202611130350">
 </head>
 <body>
   <main id="app">
@@ -88,6 +88,14 @@
           <p class="muted small fs-note">عندك مقطع هدف في جوالك؟ أضفه واكتب اسم اللي سجّل، ويطلع للفرق مظلل ويوضح مع كل تلميح. المقاطع تبقى في جوالك ولا تنرفع لأي مكان، وتنمسح لما تقفل اللعبة.</p>
           <div id="clip-list" class="clip-list"></div>
           <label class="btn btn-ghost btn-sm file-btn">+ أضف مقطع<input type="file" id="clip-file" accept="video/*" multiple class="sr-only"></label>
+        </fieldset>
+
+        <fieldset id="fs-lu" hidden>
+          <legend>التشكيلات</legend>
+          <div class="chips chips-2" role="radiogroup" aria-label="التشكيلات" data-name="luSet">
+            <button type="button" role="radio" data-value="all">كل التشكيلات</button>
+            <button type="button" role="radio" data-value="sa">الكرة السعودية 🇸🇦</button>
+          </div>
         </fieldset>
 
         <fieldset id="fs-diff">
@@ -210,12 +218,12 @@
 
   <div class="toast" id="toast" role="status" hidden></div>
 
-  <script src="js/data.js?v=202611130325"></script>
-  <script src="js/lineups.js?v=202611130325"></script>
-  <script src="js/goals.js?v=202611130325"></script>
-  <script src="js/engine.js?v=202611130325"></script>
-  <script src="js/pitch.js?v=202611130325"></script>
-  <script src="js/music.js?v=202611130325"></script>
-  <script src="js/app.js?v=202611130325"></script>
+  <script src="js/data.js?v=202611130350"></script>
+  <script src="js/lineups.js?v=202611130350"></script>
+  <script src="js/goals.js?v=202611130350"></script>
+  <script src="js/engine.js?v=202611130350"></script>
+  <script src="js/pitch.js?v=202611130350"></script>
+  <script src="js/music.js?v=202611130350"></script>
+  <script src="js/app.js?v=202611130350"></script>
 </body>
 </html>

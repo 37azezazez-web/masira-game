@@ -41,3 +41,7 @@ test("تشكيلة نادي: التلميح الأول منتخبه", () => {
   assert.strictEqual(h.label, "منتخبه");
   assert.strictEqual(h.get(l), "إنجلترا");
 });
+
+test("تشكيلات الكرة السعودية موجودة", () => {
+  assert.ok(LINEUPS.filter((l) => l.saudi).length >= 10);
+});

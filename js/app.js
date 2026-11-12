@@ -139,7 +139,7 @@
   // ===== الإعدادات =====
   // الإعدادات المحفوظة ممكن تكون خربانة أو معدّلة: نقبل بس القيم المعروفة
   const settings = (() => {
-    const def = { teams: DEFAULT_TEAMS.slice(0, 2), mode: "career", difficulty: "1", seconds: "30", rounds: "10" };
+    const def = { teams: DEFAULT_TEAMS.slice(0, 2), mode: "career", luSet: "all", difficulty: "1", seconds: "30", rounds: "10" };
     const raw = store.get("settings", {});
     if (!raw || typeof raw !== "object") return def;
     const pick = (k, ok) => (ok.includes(String(raw[k])) ? String(raw[k]) : def[k]);
@@ -147,6 +147,7 @@
     return {
       teams: teams.length >= 2 ? teams : def.teams,
       mode: pick("mode", ["career", "goals", "lineup"]),
+      luSet: pick("luSet", ["all", "sa"]),
       difficulty: pick("difficulty", ["1", "2", "3", "mix"]),
       seconds: pick("seconds", ["20", "30", "45", "60"]),
       rounds: pick("rounds", ["5", "10", "15"]),
@@ -194,7 +195,7 @@
       b.tabIndex = on ? 0 : -1;
     });
     buttons.forEach((b, idx) => {
-      b.addEventListener("click", () => { settings[key] = b.dataset.value; sync(); if (key === "mode") syncMode(); });
+      b.addEventListener("click", () => { settings[key] = b.dataset.value; sync(); if (key === "mode" || key === "luSet") syncMode(); });
       b.addEventListener("keydown", (e) => {
         const dir = { ArrowLeft: 1, ArrowRight: -1, ArrowDown: 1, ArrowUp: -1 }[e.key];
         if (!dir) return;
@@ -210,7 +211,10 @@
   // ===== نوع التحدي ومقاطع المستخدم =====
   function syncMode() {
     const goals = settings.mode === "goals";
-    $("#fs-diff").hidden = goals;
+    const lu = settings.mode === "lineup";
+    $("#fs-lu").hidden = !lu;
+    // التشكيلات السعودية قليلة، فنخلطها كلها بدون اختيار صعوبة
+    $("#fs-diff").hidden = goals || (lu && settings.luSet === "sa");
     $("#fs-clips").hidden = !goals;
     $("#fs-yt").hidden = !goals;
     $("#rounds-legend").textContent = goals ? "عدد الأهداف في الجولة" : settings.mode === "lineup" ? "عدد التشكيلات في الجولة" : "عدد اللاعبين في الجولة";
@@ -326,8 +330,9 @@
     let items;
     if (settings.mode === "lineup") {
       const seen = [].concat(store.get("seenLineups", [])).filter((x) => typeof x === "string");
-      const diff = settings.difficulty === "mix" ? "mix" : Number(settings.difficulty);
-      items = pickPlayers(LINEUPS, diff, count, seen);
+      const sa = settings.luSet === "sa";
+      const diff = sa || settings.difficulty === "mix" ? "mix" : Number(settings.difficulty);
+      items = pickPlayers(sa ? LINEUPS.filter((l) => l.saudi) : LINEUPS, diff, count, seen);
       store.set("seenLineups", [...new Set([...items.map((p) => p.id), ...seen])].slice(0, Math.max(0, LINEUPS.length - 10)));
     } else if (settings.mode === "goals") {
       const seen = [].concat(store.get("seenGoals", [])).filter((x) => typeof x === "string");
