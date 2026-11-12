@@ -304,3 +304,7 @@ legend { font-weight: 800; margin-bottom: 10px; font-family: var(--display); }
 .yt-tag { width: 34px; height: 34px; border-radius: 8px; background: var(--red); color: #fff; display: grid; place-items: center; border: 2px solid var(--ink); font-size: .8rem; }
 .yt-name { font-weight: 700; overflow-wrap: anywhere; }
 #rv-name.long { font-size: 1.05rem; line-height: 1.5; }
+/* كشف هدف فيديو: المقطع يبان فوق والبطاقة تحت بدون تعتيم */
+.overlay.over-video { background: transparent; place-items: end center; pointer-events: none; }
+.overlay.over-video .sheet { pointer-events: auto; }
+.player-photo[hidden] { display: none; }

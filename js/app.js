@@ -485,7 +485,7 @@
     const desc = $("#rv-desc");
     desc.hidden = true;
     if (p.kind === "ytlink" && p.name) {
-      $("#rv-info").textContent = `${p.opp ? "هدفه على " + p.opp + " · " : ""}التعليق يشتغل كامل 🔊`;
+      $("#rv-info").textContent = p.opp ? `سجّل على ${p.opp}` : "";
     } else if (p.kind === "ytlink") {
       $("#rv-info").textContent = "التعليق يشتغل الحين كامل من البداية 🔊";
       $("#rv-name").textContent = "…";
@@ -507,7 +507,11 @@
     stopTimer();
     sfx.reveal(); buzz(30);
     const p = game.player;
-    playerPhoto(p);
+    // أهداف الفيديو: بدون صورة، والمقطع نفسه يبان فوق البطاقة
+    const vid = isGoal(p) && stage.isVideo;
+    $("#reveal").classList.toggle("over-video", vid);
+    $("#rv-photo").hidden = vid;
+    if (!vid) playerPhoto(p);
     $("#rv-name").textContent = p.name;
     $("#rv-en").textContent = p.en;
     fillRevealInfo(p);
@@ -565,7 +569,11 @@
   // بعد آخر تلميح: نعرض البطاقة بدون أزرار الفرق
   function openRevealAfterHints() {
     const p = game.player;
-    playerPhoto(p);
+    // أهداف الفيديو: بدون صورة، والمقطع نفسه يبان فوق البطاقة
+    const vid = isGoal(p) && stage.isVideo;
+    $("#reveal").classList.toggle("over-video", vid);
+    $("#rv-photo").hidden = vid;
+    if (!vid) playerPhoto(p);
     $("#rv-name").textContent = p.name;
     $("#rv-en").textContent = p.en;
     fillRevealInfo(p);
