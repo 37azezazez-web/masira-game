@@ -34,7 +34,7 @@
   });
   $("mark").addEventListener("click", function () {
     if (!cur) return;
-    starts[cur.yt[0]] = Math.max(0, Math.floor(t) - BEFORE);
+    starts[cur.yt[0]] = Math.min(25, Math.max(0, Math.floor(t) - BEFORE));
     $("saved").textContent = "✓ الهدف عند " + fmt(t) + "، المقطع يبدأ من " + fmt(starts[cur.yt[0]]);
     save();
   });

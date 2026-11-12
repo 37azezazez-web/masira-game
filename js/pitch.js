@@ -18,6 +18,7 @@
   const FRAME_HOST = DIRECT ? YT_HOST : RELAY_HOST;
   // صوت التعليق يشتغل أول كم ثانية بس، وبعدها ينكتم لين الكشف عشان المعلق ما يقول الاسم
   const SOUND_SECS = 10;
+  const MAX_SKIP = 25; // المقدّم ما يقدر يقدّم المقطع أكثر من كذا
   const YT_TIMEOUT = 8000; // لو المشغل ما رد خلال هالوقت نطلع تنبيه
   const PAUSE = 1.6; // ثواني قبل ما يعيد اللقطة
 
@@ -225,7 +226,10 @@
     }
     function shiftStart(d) {
       if (!item || revealed) return;
-      item.start = Math.max(0, (item.start || 0) + d);
+      // أقصى تقديم ٢٥ ثانية من أول المقطع
+      const next = Math.min(MAX_SKIP, Math.max(0, (item.start || 0) + d));
+      if (next === (item.start || 0)) { flash(d > 0 ? "أقصى تقديم ٢٥ ثانية" : "هذي بداية المقطع"); return; }
+      item.start = next;
       const vid = item.yt && item.yt[0];
       if (vid) {
         try {
@@ -235,12 +239,14 @@
           localStorage.setItem(k, JSON.stringify(st));
         } catch { /* */ }
       }
+      flash(`يبدأ من 0:${String(item.start).padStart(2, "0")} · انحفظ`);
+      replay();
+    }
+    function flash(text) {
       let n = box.querySelector(".seek-note");
       if (!n) { n = document.createElement("div"); n.className = "seek-note"; box.append(n); }
-      const m = Math.floor(item.start / 60), sec = item.start % 60;
-      n.textContent = `يبدأ من ${m}:${String(sec).padStart(2, "0")} · انحفظ`;
+      n.textContent = text;
       clearTimeout(n._t); n._t = setTimeout(() => n.remove(), 2500);
-      replay();
     }
 
     /** يعيد المقطع من البداية، والصوت يشتغل أول الثواني من جديد */

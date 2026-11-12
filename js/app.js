@@ -8,7 +8,7 @@
   // أوقات بداية المقاطع اللي ضبطها المقدّم من صفحة times.html (على نفس الجهاز)
   try {
     const st = JSON.parse(localStorage.getItem("intiqalat:goalStarts") || "{}");
-    GOALS.forEach((g) => { const v = g.yt && st[g.yt[0]]; if (Number.isInteger(v) && v >= 0 && v < 36000) g.start = v; });
+    GOALS.forEach((g) => { const v = g.yt && st[g.yt[0]]; if (Number.isInteger(v) && v >= 0 && v <= 25) g.start = v; });
   } catch { /* */ }
 
   // عنوان مقطع يوتيوب (فيه اسم الهداف) نجيبه وقت اللعب من noembed
