@@ -58,12 +58,12 @@
   const NAMED_HINTS = namedHints({ nat: "x", opp: "x" });
   // «من الناقص؟»: ناديه (أو منتخبه لو التشكيلة نادي)، تلميحين خاصة بالمخفي، وأول حرف
   const LINEUP_HINTS = [
-    { key: "club", label: "ناديه وقتها", get: (p) => p.club.replace(/^منتخب /, "") },
+    { key: "club", label: "ناديه وقتها", get: (p) => p.club.replace(/^(منتخب|جنسية) /, "") },
     { key: "x1", label: "", get: (p) => p.extra[0][1] },
     { key: "x2", label: "", get: (p) => p.extra[1][1] },
     { key: "first", label: "أول حرف", get: (p) => `«${clean(p)[0]}»` },
   ];
-  const lineupHints = (p) => LINEUP_HINTS.map((h, i) => (i === 1 || i === 2 ? { ...h, label: p.extra[i - 1][0] } : i === 0 && /^منتخب /.test(p.club) ? { ...h, label: "منتخبه" } : h));
+  const lineupHints = (p) => LINEUP_HINTS.map((h, i) => (i === 1 || i === 2 ? { ...h, label: p.extra[i - 1][0] } : i === 0 && /^منتخب /.test(p.club) ? { ...h, label: "منتخبه" } : i === 0 && /^جنسية /.test(p.club) ? { ...h, label: "جنسيته" } : h));
   const hintsFor = (item) => item && item.kind === "lineup" ? lineupHints(item) : item && item.kind === "ytlink" ? (item.name ? namedHints(item) : LISTEN_HINTS) : (item && item.kind === "goal" ? GOAL_HINTS : item && (item.kind === "clip" || item.kind === "ytuser") ? CLIP_HINTS : HINTS);
   const MAX_HINTS = HINTS.length;
 
