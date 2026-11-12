@@ -213,8 +213,7 @@
     const goals = settings.mode === "goals";
     const lu = settings.mode === "lineup";
     $("#fs-lu").hidden = !lu;
-    // التشكيلات السعودية قليلة، فنخلطها كلها بدون اختيار صعوبة
-    $("#fs-diff").hidden = goals || (lu && settings.luSet === "sa");
+    $("#fs-diff").hidden = goals;
     $("#fs-clips").hidden = !goals;
     $("#fs-yt").hidden = !goals;
     $("#rounds-legend").textContent = goals ? "عدد الأهداف في الجولة" : settings.mode === "lineup" ? "عدد التشكيلات في الجولة" : "عدد اللاعبين في الجولة";
@@ -331,8 +330,11 @@
     if (settings.mode === "lineup") {
       const seen = [].concat(store.get("seenLineups", [])).filter((x) => typeof x === "string");
       const sa = settings.luSet === "sa";
-      const diff = sa || settings.difficulty === "mix" ? "mix" : Number(settings.difficulty);
-      items = pickPlayers(sa ? LINEUPS.filter((l) => l.saudi) : LINEUPS, diff, count, seen);
+      const diff = settings.difficulty === "mix" ? "mix" : Number(settings.difficulty);
+      const set = sa ? LINEUPS.filter((l) => l.saudi) : LINEUPS;
+      items = pickPlayers(set, diff, count, seen);
+      // لو الصعوبة المختارة ما فيها تشكيلات كفاية نكمّل من باقي الصعوبات
+      if (items.length < count) items = items.concat(pickPlayers(set.filter((l) => !items.includes(l)), "mix", count - items.length, seen));
       store.set("seenLineups", [...new Set([...items.map((p) => p.id), ...seen])].slice(0, Math.max(0, LINEUPS.length - 10)));
     } else if (settings.mode === "goals") {
       const seen = [].concat(store.get("seenGoals", [])).filter((x) => typeof x === "string");
