@@ -485,7 +485,7 @@
     const desc = $("#rv-desc");
     desc.hidden = true;
     if (p.kind === "ytlink" && p.name) {
-      $("#rv-info").textContent = `هدفه على ${p.opp} · التعليق يشتغل كامل 🔊`;
+      $("#rv-info").textContent = `${p.opp ? "هدفه على " + p.opp + " · " : ""}التعليق يشتغل كامل 🔊`;
     } else if (p.kind === "ytlink") {
       $("#rv-info").textContent = "التعليق يشتغل الحين كامل من البداية 🔊";
       $("#rv-name").textContent = "…";

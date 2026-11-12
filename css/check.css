@@ -1,0 +1,9 @@
+body{margin:0;padding:16px;font:16px/1.5 system-ui,sans-serif;background:#EDEFE8;color:#15171A}
+h1{font-size:22px;margin:0 0 8px}
+#sum{font-weight:700}
+#slots{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+#slots iframe{width:160px;height:90px;border:2px solid #15171A}
+ol{padding-inline-start:28px}
+li{padding:6px 0;border-bottom:1px solid #15171A22}
+.ok{color:#1F9D55}.bad{color:#E03A2F;font-weight:700}.wait{color:#666}
+a{color:#2849D6}

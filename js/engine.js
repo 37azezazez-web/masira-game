@@ -45,7 +45,9 @@
     { key: "first", label: "أول حرف وعدد الحروف", get: (p) => `«${clean(p)[0]}» · ${clean(p).length} حرف` },
     { key: "half", label: "نص الاسم", get: (p) => p.name.trim().slice(0, Math.ceil(p.name.trim().length / 2)) + "…" },
   ];
-  const hintsFor = (item) => item && item.kind === "ytlink" ? (item.name ? NAMED_HINTS : LISTEN_HINTS) : (item && item.kind === "goal" ? GOAL_HINTS : item && (item.kind === "clip" || item.kind === "ytuser") ? CLIP_HINTS : HINTS);
+  // لو ما نعرف على مين سجّل، عدد الحروف بداله
+  const NAMED_NO_OPP = [NAMED_HINTS[0], CLIP_HINTS[0], CLIP_HINTS[2], NAMED_HINTS[3]];
+  const hintsFor = (item) => item && item.kind === "ytlink" ? (item.name ? (item.opp ? NAMED_HINTS : NAMED_NO_OPP) : LISTEN_HINTS) : (item && item.kind === "goal" ? GOAL_HINTS : item && (item.kind === "clip" || item.kind === "ytuser") ? CLIP_HINTS : HINTS);
   const MAX_HINTS = HINTS.length;
 
   function normalize(s) {
