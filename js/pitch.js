@@ -64,6 +64,19 @@
     // كشف الإعلان: وقت المقطع الأصلي ما يتحرك والمشغل شغال = إعلان يوتيوب، فنغطيه ونكتمه لين يخلص
     // القاعدة: المقطع مغطى ومكتوم (adMode) لين نشوف وقت الهدف نفسه يتقدم فعلاً. أي توقف = نغطيه من جديد
     let lastT = -1, lastMove = 0, adMode = true, adTimer = 0, adSince = 0;
+    // علامات الإعلان من يوتيوب نفسه: رقم مقطع غير مقطعنا، أو مدة غير مدة مقطعنا، أو حالة إعلان
+    let lastVid = "", lastDur = 0, adFlag = false, fwdAt = 0;
+    const DUR_KEY = "intiqalat:ytDur";
+    const knownDur = (id) => { try { return (JSON.parse(localStorage.getItem(DUR_KEY) || "{}") || {})[id] || 0; } catch { return 0; } };
+    const saveDur = (id, d) => { try { const m = JSON.parse(localStorage.getItem(DUR_KEY) || "{}") || {}; if (!(m[id] >= d)) { m[id] = d; localStorage.setItem(DUR_KEY, JSON.stringify(m)); } } catch { /* */ } };
+    function adSignal() {
+      const id = ytList[ytIdx];
+      if (adFlag) return true;
+      if (lastVid && id && lastVid !== id) return true;
+      const kd = knownDur(id);
+      if (kd && lastDur && Math.abs(lastDur - kd) > 1.5) return true;
+      return false;
+    }
     const wantSound = () => !adMode && (revealed || !silenced);
     function applySound() {
       if (wantSound()) { ytCmd("unMute"); ytCmd("setVolume", [100]); } else ytCmd("mute");
@@ -123,8 +136,8 @@
           let warned = false;
           adTimer = setInterval(() => {
             if (!ytFrame) return clearInterval(adTimer);
-            const fresh = lastT >= 0 && Date.now() - lastMove < 1500;
-            if (!fresh && !adMode) setAd(true);
+            const fresh = fwdAt && Date.now() - fwdAt < 1500;
+            if ((!fresh || adSignal()) && !adMode) setAd(true);
             // طوّل وهو مغطى: نطلع تنبيه للمقدّم
             if (adMode && !warned && Date.now() - adSince > 40000) {
               warned = true;
@@ -151,12 +164,23 @@
               const forward = !first && info.currentTime > lastT && info.currentTime - lastT < 3;
               lastT = info.currentTime;
               // نعتبره يمشي بس إذا تقدم شوي شوي (مو قفزة من seek)
-              if (forward) { lastMove = Date.now(); if (adMode) setAd(false); }
+              if (forward) { lastMove = Date.now(); fwdAt = lastMove; }
             }
           }
-          // مقطع غير اللي طلبناه = إعلان
-          const vid = info.videoData && info.videoData.video_id;
-          if (vid && ytList[ytIdx] && vid !== ytList[ytIdx]) setAd(true);
+          // علامات الإعلان
+          if (info.videoData && info.videoData.video_id) lastVid = info.videoData.video_id;
+          if (typeof info.duration === "number" && info.duration > 0) lastDur = info.duration;
+          for (const k in info) {
+            if (/^ad/i.test(k) || /AdState|adPlaying|isAd/i.test(k)) {
+              const v = info[k];
+              adFlag = !!(v && v !== -1 && v !== "0" && v !== 0 && !(typeof v === "object" && !Object.keys(v).length));
+            }
+          }
+          const sig = adSignal();
+          if (sig && !adMode) setAd(true);
+          // المقطع نفسه يمشي ومافيه علامة إعلان: نكشفه، ونحفظ مدته الحقيقية عشان نميّز الإعلانات بعدين
+          if (!sig && adMode && fwdAt && Date.now() - fwdAt < 1500) setAd(false);
+          if (!sig && !adMode && lastDur > 0 && (!lastVid || lastVid === ytList[ytIdx])) saveDur(ytList[ytIdx], lastDur);
           const want = wantSound();
           if (want && info.muted === true) { ytCmd("unMute"); ytCmd("setVolume", [100]); }
           if (!want && info.muted === false) ytCmd("mute");
@@ -174,7 +198,7 @@
     function clear() {
       cancelAnimationFrame(raf); raf = 0;
       clearTimeout(ytTimer); clearTimeout(muteTimer); clearInterval(adTimer);
-      adMode = true; lastT = -1; adSince = Date.now();
+      adMode = true; lastT = -1; adSince = Date.now(); lastVid = ""; lastDur = 0; adFlag = false; fwdAt = 0;
       revealed = false; silenced = false;
       if (media && media.tagName === "VIDEO") { media.pause(); media.removeAttribute("src"); media.load(); }
       media = null; ytFrame = null; ytOk = false; ytState = -1; pending = false;
@@ -264,7 +288,7 @@
       const id = ytList[ytIdx];
       box.replaceChildren();
       box.classList.add("is-clip", "is-yt");
-      adMode = true; adSince = Date.now(); lastT = -1; box.classList.add("is-ad");
+      adMode = true; adSince = Date.now(); lastT = -1; lastVid = ""; lastDur = 0; adFlag = false; fwdAt = 0; box.classList.add("is-ad");
       const wrap = document.createElement("div");
       wrap.className = "yt-wrap";
       const f = document.createElement("iframe");
