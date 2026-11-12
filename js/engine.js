@@ -56,7 +56,15 @@
   const HALF_HINT = { key: "half", label: "نص اسم صاحب الهدف", get: (p) => p.name.trim().slice(0, Math.ceil(p.name.trim().length / 2)) + "…" };
   const namedHints = () => MORE;
   const NAMED_HINTS = namedHints({ nat: "x", opp: "x" });
-  const hintsFor = (item) => item && item.kind === "ytlink" ? (item.name ? namedHints(item) : LISTEN_HINTS) : (item && item.kind === "goal" ? GOAL_HINTS : item && (item.kind === "clip" || item.kind === "ytuser") ? CLIP_HINTS : HINTS);
+  // «من الناقص؟»: المركز، تلميحين خاصة بالمخفي، وأول حرف
+  const LINEUP_HINTS = [
+    { key: "pos", label: "مركزه", get: (p) => p.pos },
+    { key: "x1", label: "", get: (p) => p.extra[0][1] },
+    { key: "x2", label: "", get: (p) => p.extra[1][1] },
+    letterHint,
+  ];
+  const lineupHints = (p) => LINEUP_HINTS.map((h, i) => (i === 1 || i === 2 ? { ...h, label: p.extra[i - 1][0] } : h));
+  const hintsFor = (item) => item && item.kind === "lineup" ? lineupHints(item) : item && item.kind === "ytlink" ? (item.name ? namedHints(item) : LISTEN_HINTS) : (item && item.kind === "goal" ? GOAL_HINTS : item && (item.kind === "clip" || item.kind === "ytuser") ? CLIP_HINTS : HINTS);
   const MAX_HINTS = HINTS.length;
 
   function normalize(s) {
@@ -211,7 +219,7 @@
     }
   }
 
-  const api = { LISTEN_HINTS, NAMED_HINTS, Game, normalize, levenshtein, isCorrect, pickPlayers, shuffle, POINTS, HINTS, GOAL_HINTS, CLIP_HINTS, hintsFor, MAX_HINTS };
+  const api = { LINEUP_HINTS, LISTEN_HINTS, NAMED_HINTS, Game, normalize, levenshtein, isCorrect, pickPlayers, shuffle, POINTS, HINTS, GOAL_HINTS, CLIP_HINTS, hintsFor, MAX_HINTS };
   if (typeof module !== "undefined") module.exports = api;
   else root.Engine = api;
 })(typeof window !== "undefined" ? window : globalThis);

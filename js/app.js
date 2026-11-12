@@ -124,7 +124,8 @@
     if (go) show(go.dataset.go);
   });
 
-  const updateCount = (n) => { $("#home-count").textContent = `${AR(PLAYERS.length)} لاعب و${AR(n)} ${n >= 3 && n <= 10 ? "أهداف" : "هدف"} في المكتبة`; };
+  const LINEUPS = window.LINEUPS || [];
+  const updateCount = (n) => { $("#home-count").textContent = `${AR(PLAYERS.length)} لاعب و${AR(n)} ${n >= 3 && n <= 10 ? "أهداف" : "هدف"} و${AR(LINEUPS.length)} تشكيلة في المكتبة`; };
 
   let toastTimer;
   function toast(msg) {
@@ -145,7 +146,7 @@
     const teams = Array.isArray(raw.teams) ? raw.teams.filter((t) => typeof t === "string").map((t) => t.slice(0, 18)).slice(0, TEAM_COLORS.length) : [];
     return {
       teams: teams.length >= 2 ? teams : def.teams,
-      mode: pick("mode", ["career", "goals"]),
+      mode: pick("mode", ["career", "goals", "lineup"]),
       difficulty: pick("difficulty", ["1", "2", "3", "mix"]),
       seconds: pick("seconds", ["20", "30", "45", "60"]),
       rounds: pick("rounds", ["5", "10", "15"]),
@@ -212,7 +213,7 @@
     $("#fs-diff").hidden = goals;
     $("#fs-clips").hidden = !goals;
     $("#fs-yt").hidden = !goals;
-    $("#rounds-legend").textContent = goals ? "عدد الأهداف في الجولة" : "عدد اللاعبين في الجولة";
+    $("#rounds-legend").textContent = goals ? "عدد الأهداف في الجولة" : settings.mode === "lineup" ? "عدد التشكيلات في الجولة" : "عدد اللاعبين في الجولة";
   }
   syncMode();
 
@@ -323,7 +324,12 @@
   function startGame() {
     const count = Number(settings.rounds);
     let items;
-    if (settings.mode === "goals") {
+    if (settings.mode === "lineup") {
+      const seen = [].concat(store.get("seenLineups", [])).filter((x) => typeof x === "string");
+      const diff = settings.difficulty === "mix" ? "mix" : Number(settings.difficulty);
+      items = pickPlayers(LINEUPS, diff, count, seen);
+      store.set("seenLineups", [...new Set([...items.map((p) => p.id), ...seen])].slice(0, Math.max(0, LINEUPS.length - 10)));
+    } else if (settings.mode === "goals") {
       const seen = [].concat(store.get("seenGoals", [])).filter((x) => typeof x === "string");
       const mine = clips.map((c) => ({ ...c, name: c.name.trim().slice(0, 30) }));
       const pool = GOALS.concat(ytGoals.map(ytItem));
@@ -369,8 +375,11 @@
     const p = game.player;
     hidePeek();
     const goal = isGoal(p);
-    $("#round-label").textContent = `${goal ? "الهدف" : "اللاعب"} ${AR(game.round + 1)} من ${AR(game.players.length)}`;
-    $("#card-title").textContent = goal ? (p.opp ? "مين صاحب الهدف وعلى مين؟" : "مين صاحب الهدف؟") : "انتقالات اللاعب";
+    const lu = p.kind === "lineup";
+    $("#round-label").textContent = `${goal ? "الهدف" : lu ? "التشكيلة" : "اللاعب"} ${AR(game.round + 1)} من ${AR(game.players.length)}`;
+    $("#card-title").textContent = goal ? (p.opp ? "مين صاحب الهدف وعلى مين؟" : "مين صاحب الهدف؟") : lu ? "مين اللاعب الناقص؟" : "انتقالات اللاعب";
+    $("#lineup").hidden = !lu;
+    if (lu) { renderLineup(p, false); $("#career").hidden = true; $("#stage").hidden = true; stage.stop(); if (musicOn && unlocked && !document.hidden) Music.start(); renderHints(); renderTurn(); return; }
     $("#career").hidden = goal;
     $("#stage").hidden = !goal;
     if (goal) stage.show(p, 0); else stage.stop();
@@ -387,6 +396,29 @@
     });
     renderHints();
     renderTurn();
+  }
+
+  // ===== «من الناقص؟»: الملعب والتشكيلة =====
+  function luShirt() {
+    const s = svgEl("svg", { viewBox: "0 0 40 36", class: "lu-shirt", "aria-hidden": "true" });
+    s.append(svgEl("path", { d: "M13 2 L6 5 L1 13 L7 17 L9 14 L9 34 L31 34 L31 14 L33 17 L39 13 L34 5 L27 2 Q20 7 13 2 Z", "stroke-width": "1.5", "stroke-linejoin": "round" }));
+    return s;
+  }
+  function renderLineup(p, found) {
+    $("#lu-title").textContent = p.title;
+    $("#lu-sub").textContent = `${p.sub} · \u2066${AR(p.formation)}\u2069`;
+    const pitch = $("#lu-pitch");
+    pitch.querySelectorAll(".lu-pl").forEach((n) => n.remove());
+    p.players.forEach((pl, i) => {
+      const hid = i === p.hidden;
+      const d = el("div", "lu-pl" + (hid ? (found ? " found" : " hidden") : ""));
+      d.style.setProperty("left", pl.x + "%");
+      d.style.setProperty("top", pl.y + "%");
+      d.append(luShirt());
+      if (hid && !found) d.append(el("b", "lu-q", "؟"));
+      d.append(el("span", null, hid && !found ? "؟؟" : pl.name));
+      pitch.append(d);
+    });
   }
 
   function renderHints(newIndex = -1) {
@@ -515,6 +547,11 @@
       fetchTitle(p.yt[0]).then((t) => { if (game.player === p) $("#rv-name").textContent = t || "شوفوا المقطع"; });
     } else if (p.kind === "clip" || p.kind === "ytuser") {
       $("#rv-info").textContent = p.kind === "clip" ? "من مقاطعك" : "من أهدافك";
+    } else if (p.kind === "lineup") {
+      $("#rv-info").textContent = p.title;
+      desc.textContent = p.sub;
+      desc.hidden = false;
+      renderLineup(p, true);
     } else if (p.kind === "goal") {
       $("#rv-info").textContent = `${p.team} ضد ${p.opp} · ${p.comp} ${AR(p.year)}`;
       desc.textContent = p.desc;
@@ -531,7 +568,7 @@
     sfx.reveal(); buzz(30);
     const p = game.player;
     // أهداف الفيديو: بدون صورة، والمقطع نفسه يبان فوق البطاقة
-    const vid = isGoal(p) && stage.isVideo;
+    const vid = (isGoal(p) && stage.isVideo) || p.kind === "lineup";
     $("#reveal").classList.toggle("over-video", vid);
     $("#rv-photo").hidden = vid;
     if (!vid) playerPhoto(p);
@@ -593,7 +630,7 @@
   function openRevealAfterHints() {
     const p = game.player;
     // أهداف الفيديو: بدون صورة، والمقطع نفسه يبان فوق البطاقة
-    const vid = isGoal(p) && stage.isVideo;
+    const vid = (isGoal(p) && stage.isVideo) || p.kind === "lineup";
     $("#reveal").classList.toggle("over-video", vid);
     $("#rv-photo").hidden = vid;
     if (!vid) playerPhoto(p);
@@ -660,7 +697,7 @@
     const p = game && game.player;
     if (!p) return;
     $("#peek-name").textContent = p.name;
-    $("#peek-info").textContent = p.opp ? `على ${p.opp}` : (p.en || "");
+    $("#peek-info").textContent = p.opp ? `على ${p.opp}` : p.kind === "lineup" ? p.title : (p.en || "");
     $("#peek").hidden = false;
     clearTimeout(peekTimer);
     peekTimer = setTimeout(hidePeek, 3000);
