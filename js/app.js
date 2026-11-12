@@ -4,7 +4,19 @@
   const { Game, pickPlayers, shuffle, MAX_HINTS } = window.Engine;
   const Music = window.Music;
   // الأهداف الجاهزة: اللي تأكدنا منها بس
-  const GOALS = (window.GOALS || []).filter((g) => g.verified);
+  const GOALS = (window.GOALS || []).filter((g) => g.verified).concat(window.GOAL_LINKS || []);
+
+  // عنوان مقطع يوتيوب (فيه اسم الهداف) نجيبه وقت اللعب من noembed
+  const titles = new Map();
+  function fetchTitle(vid) {
+    if (titles.has(vid)) return titles.get(vid);
+    const pr = fetch(`https://noembed.com/embed?url=${encodeURIComponent("https://www.youtube.com/watch?v=" + vid)}`)
+      .then((r) => r.json())
+      .then((j) => (j && typeof j.title === "string" ? j.title.slice(0, 120) : ""))
+      .catch(() => "");
+    titles.set(vid, pr);
+    return pr;
+  }
   const $ = (s) => document.querySelector(s);
   const el = (tag, cls, text) => {
     const e = document.createElement(tag);
@@ -329,7 +341,7 @@
   const stage = window.Pitch.create($("#stage"));
   // المقطع ما اشتغل وطلع الرسم بداله: نرجع الموسيقى
   stage.onFallback = () => { if (musicOn && unlocked) Music.start(); };
-  const isGoal = (p) => p.kind === "goal" || p.kind === "clip";
+  const isGoal = (p) => ["goal", "clip", "ytuser", "ytlink"].includes(p.kind);
 
   function renderRound() {
     const p = game.player;
@@ -339,6 +351,7 @@
     $("#career").hidden = goal;
     $("#stage").hidden = !goal;
     if (goal) stage.show(p, 0); else stage.stop();
+    if (p.kind === "ytlink") fetchTitle(p.yt[0]);
     if (!stage.isVideo && musicOn && unlocked && !document.hidden) Music.start();
     const list = $("#career");
     list.replaceChildren();
@@ -468,9 +481,14 @@
   }
 
   function fillRevealInfo(p) {
+    $("#rv-name").classList.toggle("long", p.kind === "ytlink");
     const desc = $("#rv-desc");
     desc.hidden = true;
-    if (p.kind === "clip" || p.kind === "ytuser") {
+    if (p.kind === "ytlink") {
+      $("#rv-info").textContent = "التعليق يشتغل الحين كامل من البداية 🔊";
+      $("#rv-name").textContent = "…";
+      fetchTitle(p.yt[0]).then((t) => { if (game.player === p) $("#rv-name").textContent = t || "شوفوا المقطع"; });
+    } else if (p.kind === "clip" || p.kind === "ytuser") {
       $("#rv-info").textContent = p.kind === "clip" ? "من مقاطعك" : "من أهدافك";
     } else if (p.kind === "goal") {
       $("#rv-info").textContent = `${p.team} ضد ${p.opp} · ${p.comp} ${AR(p.year)}`;

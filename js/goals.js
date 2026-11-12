@@ -208,5 +208,13 @@ const GOALS = [
     ball: [[0, 87, 58, 0], [1, 90.5, 56, 0], [1.2, 90, 53, 2.5], [1.8, 92, 42, 4], [2.3, 92.5, 34.5, 2.4], [2.7, 105, 31.3, 2]],
   },
 ];
-if (typeof module !== "undefined") module.exports = { GOALS };
-else window.GOALS = GOALS;
+
+/*
+ * أهداف اختارها Aziz بنفسه من يوتيوب (جرّبها وتأكد إنها لقطة الهدف بتعليق عربي) — ١٢ نوفمبر ٢٠٢٦.
+ * ما نعرف اسم الهداف لكل مقطع مسبقًا، فاللعبة تجيب عنوان المقطع وقت الكشف.
+ * التلميحات هنا: كل تلميح يطوّل التعليق ٥ ثواني.
+ */
+const GOAL_LINKS = ["8Q7e3tm7gSw", "-ckYh4-xi10", "9ePVmBfobUU", "PTOO0NDp3j4", "4uzH8RqoUA8", "tB6keo1v9W0", "bjxpM-pBerc", "W02YX8zDJrg", "-Fre9EzsIVs", "rmZU3EdNumw", "tsiKExf-pxY", "pgReJZKGMzM", "B_t8alRSSKE", "2edUkU0g-AY", "u2I6k_e8vQU", "EjkZi_sV44I", "NFXbeKPzHVE"].map((vid) => ({ id: "l-" + vid, kind: "ytlink", yt: [vid], start: 0, name: "", en: "", aliases: [], photo: `https://i.ytimg.com/vi/${vid}/hqdefault.jpg` }));
+
+if (typeof module !== "undefined") module.exports = { GOALS, GOAL_LINKS };
+else { window.GOALS = GOALS; window.GOAL_LINKS = GOAL_LINKS; }
