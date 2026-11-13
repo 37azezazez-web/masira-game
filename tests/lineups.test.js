@@ -45,3 +45,12 @@ test("تشكيلة نادي: التلميح الأول منتخبه", () => {
 test("تشكيلات الكرة السعودية موجودة", () => {
   assert.ok(LINEUPS.filter((l) => l.saudi).length >= 10);
 });
+
+test("isSaudi: يفرز الكرة السعودية في الأوضاع الثلاثة", () => {
+  const E = require("../js/engine.js");
+  assert.equal(E.isSaudi({ id: "x", nat: "فرنسا", career: [["ليون", "2004–2009"], ["الاتحاد (إعارة)", "2023"]] }), true);
+  assert.equal(E.isSaudi({ id: "aboutrika", nat: "مصر", career: [["الأهلي", "2004–2013"]] }), false);
+  assert.equal(E.isSaudi({ id: "y", nat: "إيطاليا", career: [["الاتفاق (الإمارات)", "2026–"]] }), false);
+  assert.equal(E.isSaudi({ id: "g", kind: "ytlink", nat: "", team: "", opp: "الفتح" }), true);
+  assert.equal(E.isSaudi({ id: "l", kind: "lineup", saudi: false, nat: "السعودية" }), false);
+});

@@ -1,4 +1,4 @@
-# مراجعة مسيرات اللاعبين (201 لاعب)
+# مراجعة مسيرات اللاعبين (284 لاعب)
 
 قارن كل لاعب بصفحته في ترانسفير ماركت، وعلّم ✓ إذا مضبوط أو اكتب التعديل.
 
@@ -404,3 +404,169 @@
   ميتروستارز 1998–2003 ← مانشستر يونايتد 2003–2007 ← إيفرتون 2006–2016 ← كولورادو رابيدز 2016–2019 ← ممفيس 901 2020
 - [ ] **علي دائي** (Ali Daei) · صعب — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Ali%20Daei)
   بيرسبوليس 1994–1996 ← السد 1996–1997 ← أرمينيا بيليفيلد 1997–1998 ← بايرن ميونخ 1998–1999 ← هيرتا برلين 1999–2002 ← الشباب الإماراتي 2002–2003 ← بيرسبوليس 2003–2004 ← صبا 2004–2006 ← سايبا 2006–2007
+- [ ] **محمد نور** (Mohammed Noor) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Mohammed%20Noor)
+  الاتحاد 1996–2013 ← النصر 2013–2014 ← الاتحاد 2014–2016
+- [ ] **حسين عبدالغني** (Hussein Abdulghani) · صعب — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Hussein%20Abdulghani)
+  الأهلي 1995–2008 ← الريان (إعارة) 2007 ← نوشاتيل زاماكس 2008–2009 ← النصر 2009–2017 ← فيريا البلغاري 2017–2018 ← أحد 2018–2019 ← الأهلي 2019–2020
+- [ ] **أسامة هوساوي** (Osama Hawsawi) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Osama%20Hawsawi)
+  الوحدة 2005–2008 ← الهلال 2008–2012 ← أندرلخت (إعارة) 2012 ← الأهلي 2012–2016 ← الهلال 2016–2018 ← الوحدة 2018
+- [ ] **تيسير الجاسم** (Taisir Al-Jassim) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Taisir%20Al-Jassim)
+  الأهلي 2002–2019 ← الغرافة (إعارة) 2007 ← قطر القطري (إعارة) 2009 ← الوحدة (إعارة) 2018–2019 ← النصر الإماراتي 2019–2020
+- [ ] **ناصر الشمراني** (Nasser Al-Shamrani) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Nasser%20Al-Shamrani)
+  الوحدة 2003–2007 ← الشباب 2007–2013 ← الهلال 2013–2017 ← العين (إعارة) 2017 ← الشباب 2017–2019 ← الاتحاد 2019 ← الحد البحريني 2021
+- [ ] **ياسر الشهراني** (Yasser Al-Shahrani) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Yasser%20Al-Shahrani)
+  القادسية 2010–2012 ← الهلال 2012–2025 ← القادسية 2025–
+- [ ] **محمد السهلاوي** (Mohammad Al-Sahlawi) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Mohammad%20Al-Sahlawi)
+  القادسية 2005–2009 ← الفتح (إعارة) 2008 ← النصر 2009–2019 ← الشباب 2019–2020 ← التعاون 2020–2021 ← معيذر القطري 2021 ← الحزم 2022 ← الصفا 2023–
+- [ ] **صالح الشهري** (Saleh Al-Shehri) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Saleh%20Al-Shehri)
+  الأهلي 2012–2015 ← مافرا البرتغالي (إعارة) 2012 ← بيرا مار (إعارة) 2012–2013 ← الرائد 2015–2020 ← الهلال 2019–2024 ← الاتحاد 2024–
+- [ ] **فراس البريكان** (Firas Al-Buraikan) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Firas%20Al-Buraikan)
+  النصر 2017–2021 ← الفتح 2021–2023 ← الأهلي 2023–
+- [ ] **محمد كنو** (Mohamed Kanno) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Mohamed%20Kanno)
+  الاتفاق 2013–2017 ← الهلال 2017–
+- [ ] **فهد المولد** (Fahad Al-Muwallad) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Fahad%20Al-Muwallad)
+  الاتحاد 2011–2022 ← ليفانتي (إعارة) 2018 ← الشباب 2022–
+- [ ] **يحيى الشهري** (Yahya Al-Shehri) · صعب — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Yahya%20Al-Shehri)
+  الاتفاق 2010–2013 ← النصر 2013–2021 ← ليغانيس (إعارة) 2018 ← الرائد 2021–2023 ← الرياض 2023–
+- [ ] **عبدالرحمن غريب** (Abdulrahman Ghareeb) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Abdulrahman%20Ghareeb)
+  الأهلي 2017–2022 ← النصر 2022–
+- [ ] **علي البليهي** (Ali Al-Bulaihi) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Ali%20Al-Bulaihi)
+  العمل 2011–2014 ← النهضة 2014–2015 ← الفتح 2015–2017 ← الهلال 2017–
+- [ ] **هتان باهبري** (Hattan Bahebri) · صعب — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Hattan%20Bahebri)
+  الاتحاد 2011–2016 ← الخليج (إعارة) 2014–2016 ← الشباب 2016–2019 ← الهلال 2019–2021 ← الشباب 2021–2024 ← التعاون 2024–2025
+- [ ] **عبدالله عطيف** (Abdullah Otayf) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Abdullah%20Otayf)
+  الشباب 2011–2012 ← لوليتانو البرتغالي 2012–2013 ← الهلال 2013–2023 ← الأهلي 2023–2024
+- [ ] **عمر هوساوي** (Omar Hawsawi) · صعب — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Omar%20Hawsawi)
+  الوشم 2008–2009 ← الشعلة 2009–2011 ← النصر 2011–2020 ← الاتحاد 2020–2024
+- [ ] **عبدالله الحمدان** (Abdullah Al-Hamdan) · صعب — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Abdullah%20Al-Hamdan)
+  الشباب 2018–2021 ← الهلال 2021–2025 ← النصر 2025–
+- [ ] **حمزة إدريس** (Hamzah Idris) · صعب — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Hamzah%20Idris)
+  أحد 1988–1997 ← الاتحاد 1997–2007
+- [ ] **أحمد الفريدي** (Ahmed Al-Fraidi) · صعب — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Ahmed%20Al-Fraidi)
+  الهلال 2007–2012 ← الاتحاد 2012–2014 ← النصر 2014–2019 ← ميليا الإسباني 2020 ← القادسية 2020–2021
+- [ ] **سعود كريري** (Saud Kariri) · صعب — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Saud%20Kariri)
+  القادسية 2000–2003 ← الاتحاد 2003–2013 ← الهلال 2013–2016 ← الشباب 2016–2018
+- [ ] **وليد عبدالله** (Waleed Abdullah) · صعب — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Waleed%20Abdullah)
+  الشباب 2006–2017 ← النصر 2017–2024 ← الدرعية 2024–
+- [ ] **محمد الشلهوب** (Mohammad Al-Shalhoub) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Mohammad%20Al-Shalhoub)
+  الهلال 1999–2020
+- [ ] **حسان تمبكتي** (Hassan Tambakti) · صعب — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Hassan%20Tambakti)
+  الشباب 2018–2023 ← الوحدة (إعارة) 2019–2020 ← الهلال 2023–
+- [ ] **أندرسون تاليسكا** (Anderson Talisca) · سهل — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Anderson%20Talisca)
+  باهيا 2013–2014 ← بنفيكا 2014–2018 ← بشكتاش (إعارة) 2016–2018 ← غوانزو إيفرغراند 2018–2021 ← النصر 2021–2025 ← فنربخشة 2025–
+- [ ] **عبدالرزاق حمدالله** (Abderrazak Hamdallah) · سهل — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Abderrazak%20Hamdallah)
+  أولمبيك آسفي 2010–2013 ← أوليسوند 2013–2014 ← غوانزو آر أند إف 2014–2015 ← الجيش القطري 2015–2017 ← الريان 2017–2018 ← النصر 2018–2021 ← الاتحاد 2021–2024 ← الشباب 2024– ← الهلال (إعارة) 2025
+- [ ] **عمر السومة** (Omar Al Somah) · سهل — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Omar%20Al%20Somah)
+  الفتوة 2008–2011 ← القادسية الكويتي 2011–2014 ← الأهلي 2014–2023 ← العربي القطري 2022–2025 ← العروبة 2025 ← الوداد 2025
+- [ ] **تياغو نيفيز** (Thiago Neves) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Thiago%20Neves)
+  بارانا 2005–2007 ← فلومينينسي 2007–2008 ← هامبورغ 2008 ← الهلال 2009–2011 ← فلامنغو (إعارة) 2011 ← فلومينينسي 2012–2013 ← الهلال 2013–2015 ← الجزيرة الإماراتي 2015–2016 ← كروزيرو 2017–2019 ← غريميو 2020 ← سبورت ريسيفي 2020–2021
+- [ ] **سيرغي ميلينكوفيتش سافيتش** (Sergej Milinković-Savić) · سهل — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Sergej%20Milinkovi%C4%87-Savi%C4%87)
+  فويفودينا 2013–2014 ← غينك 2014–2015 ← لاتسيو 2015–2023 ← الهلال 2023–
+- [ ] **مالكوم** (Malcom) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Malcom)
+  كورينثيانز 2014–2016 ← بوردو 2016–2018 ← برشلونة 2018–2019 ← زينيت 2019–2023 ← الهلال 2023–
+- [ ] **غوستافو كويار** (Gustavo Cuéllar) · صعب — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Gustavo%20Cu%C3%A9llar)
+  ديبورتيفو كالي 2009–2016 ← جونيور (إعارة) 2014–2016 ← فلامنغو 2016–2019 ← الهلال 2019–2023 ← الشباب 2023–2025 ← غريميو 2025–
+- [ ] **فرانك كيسيه** (Franck Kessié) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Franck%20Kessi%C3%A9)
+  أتالانتا 2015–2019 ← تشيزينا (إعارة) 2015–2016 ← ميلان 2017–2022 ← برشلونة 2022–2023 ← الأهلي 2023–
+- [ ] **مارسيلو بروزوفيتش** (Marcelo Brozović) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Marcelo%20Brozovi%C4%87)
+  هرفاتسكي دراغوفولياتس 2010–2011 ← لوكوموتيفا زغرب 2011–2012 ← دينامو زغرب 2012–2015 ← إنتر ميلان 2015–2023 ← النصر 2023–
+- [ ] **كاليدو كوليبالي** (Kalidou Koulibaly) · سهل — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Kalidou%20Koulibaly)
+  ميتز 2010–2012 ← غينك 2012–2014 ← نابولي 2014–2022 ← تشيلسي 2022–2023 ← الهلال 2023–
+- [ ] **روبرتو فيرمينو** (Roberto Firmino) · سهل — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Roberto%20Firmino)
+  فيغيرينسي 2009–2011 ← هوفنهايم 2011–2015 ← ليفربول 2015–2023 ← الأهلي 2023–2025 ← السد 2025–
+- [ ] **جوردان هندرسون** (Jordan Henderson) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Jordan%20Henderson)
+  سندرلاند 2008–2011 ← كوفنتري (إعارة) 2009 ← ليفربول 2011–2023 ← الاتفاق 2023–2024 ← أياكس 2024–2025 ← برينتفورد 2025–
+- [ ] **جورجينيو فينالدوم** (Georginio Wijnaldum) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Georginio%20Wijnaldum)
+  فينورد 2007–2011 ← أيندهوفن 2011–2015 ← نيوكاسل 2015–2016 ← ليفربول 2016–2021 ← باريس سان جيرمان 2021–2023 ← روما (إعارة) 2022–2023 ← الاتفاق 2023–
+- [ ] **فابينيو** (Fabinho) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Fabinho)
+  ريو آفي 2012–2013 ← ريال مدريد كاستيا (إعارة) 2012–2013 ← موناكو 2013–2018 ← ليفربول 2018–2023 ← الاتحاد 2023–
+- [ ] **إيميريك لابورت** (Aymeric Laporte) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Aymeric%20Laporte)
+  أتلتيك بلباو 2012–2018 ← مانشستر سيتي 2018–2023 ← النصر 2023–2025 ← أتلتيك بلباو 2025–
+- [ ] **بيير إيميريك أوباميانغ** (Pierre-Emerick Aubameyang) · سهل — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Pierre-Emerick%20Aubameyang)
+  ميلان 2008–2011 ← ديجون (إعارة) 2008–2009 ← ليل (إعارة) 2009–2010 ← موناكو (إعارة) 2010–2011 ← سانت إتيان 2011–2013 ← بوروسيا دورتموند 2013–2018 ← آرسنال 2018–2022 ← برشلونة 2022 ← تشيلسي 2022–2023 ← مارسيليا 2023–2024 ← القادسية 2024–2025 ← مارسيليا 2025–
+- [ ] **إيفان توني** (Ivan Toney) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Ivan%20Toney)
+  نورثامبتون 2012–2015 ← نيوكاسل 2015–2018 ← بيتربره 2018–2020 ← برينتفورد 2020–2024 ← الأهلي 2024–
+- [ ] **كينغسلي كومان** (Kingsley Coman) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Kingsley%20Coman)
+  باريس سان جيرمان 2013–2014 ← يوفنتوس 2014–2015 ← بايرن ميونخ 2015–2025 ← النصر 2025–
+- [ ] **جواو فيليكس** (João Félix) · سهل — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Jo%C3%A3o%20F%C3%A9lix)
+  بنفيكا 2018–2019 ← أتلتيكو مدريد 2019–2024 ← تشيلسي (إعارة) 2023 ← برشلونة (إعارة) 2023–2024 ← تشيلسي 2024–2025 ← ميلان (إعارة) 2025 ← النصر 2025–
+- [ ] **إينييغو مارتينيز** (Iñigo Martínez) · صعب — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=I%C3%B1igo%20Mart%C3%ADnez)
+  ريال سوسيداد 2011–2018 ← أتلتيك بلباو 2018–2023 ← برشلونة 2023–2025 ← النصر 2025–
+- [ ] **ثيو هيرنانديز** (Theo Hernández) · سهل — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Theo%20Hern%C3%A1ndez)
+  أتلتيكو مدريد 2016–2017 ← ألافيس (إعارة) 2016–2017 ← ريال مدريد 2017–2019 ← ريال سوسيداد (إعارة) 2018–2019 ← ميلان 2019–2025 ← الهلال 2025–
+- [ ] **داروين نونيز** (Darwin Núñez) · سهل — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Darwin%20N%C3%BA%C3%B1ez)
+  بينيارول 2017–2019 ← ألميريا 2019–2020 ← بنفيكا 2020–2022 ← ليفربول 2022–2025 ← الهلال 2025–
+- [ ] **جواو كانسيلو** (João Cancelo) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Jo%C3%A3o%20Cancelo)
+  بنفيكا 2012–2014 ← فالنسيا 2014–2017 ← إنتر ميلان (إعارة) 2017–2018 ← يوفنتوس 2018–2019 ← مانشستر سيتي 2019–2024 ← بايرن ميونخ (إعارة) 2023 ← برشلونة (إعارة) 2023–2024 ← الهلال 2024–
+- [ ] **موسى ديابي** (Moussa Diaby) · صعب — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Moussa%20Diaby)
+  باريس سان جيرمان 2016–2019 ← كروتوني (إعارة) 2017–2018 ← باير ليفركوزن 2019–2023 ← أستون فيلا 2023–2024 ← الاتحاد 2024–
+- [ ] **ستيفن بيرخفاين** (Steven Bergwijn) · صعب — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Steven%20Bergwijn)
+  أيندهوفن 2014–2020 ← توتنهام 2020–2022 ← أياكس 2022–2024 ← الاتحاد 2024–
+- [ ] **ماتيو ريتيغي** (Mateo Retegui) · صعب — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Mateo%20Retegui)
+  بوكا جونيورز 2018–2023 ← جنوى 2023–2024 ← أتالانتا 2024–2025 ← القادسية 2025–
+- [ ] **موسى ديمبيلي** (Moussa Dembélé) · صعب — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Moussa%20Demb%C3%A9l%C3%A9)
+  فولهام 2013–2016 ← سيلتك 2016–2018 ← ليون 2018–2023 ← أتلتيكو مدريد (إعارة) 2020–2021 ← الاتفاق 2023–
+- [ ] **سيباستيان جيوفينكو** (Sebastian Giovinco) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Sebastian%20Giovinco)
+  يوفنتوس 2006–2015 ← إمبولي (إعارة) 2007–2008 ← بارما 2010–2012 ← تورونتو 2015–2019 ← الهلال 2019–2021 ← سامبدوريا 2022
+- [ ] **إيفر بانيغا** (Éver Banega) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=%C3%89ver%20Banega)
+  بوكا جونيورز 2006–2008 ← فالنسيا 2008–2014 ← نيولز أولد بويز (إعارة) 2014 ← إشبيلية 2014–2016 ← إنتر ميلان 2016–2017 ← إشبيلية 2017–2020 ← الشباب 2020–2023 ← نيولز أولد بويز 2023–
+- [ ] **نور الدين أمرابط** (Nordin Amrabat) · صعب — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Nordin%20Amrabat)
+  فنلو 2006–2008 ← أيندهوفن 2008–2011 ← قيصري سبور 2011–2012 ← غلطة سراي 2012–2015 ← ملقا 2015–2016 ← واتفورد 2016–2018 ← ليغانيس (إعارة) 2017–2018 ← النصر 2018–2021 ← الأهلي 2021–2022 ← أيك أثينا 2022–
+- [ ] **سيرجيو راموس** (Sergio Ramos) · سهل — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Sergio%20Ramos)
+  إشبيلية 2003–2005 ← ريال مدريد 2005–2021 ← باريس سان جيرمان 2021–2023 ← إشبيلية 2023–2024 ← مونتيري 2025–
+- [ ] **روميلو لوكاكو** (Romelu Lukaku) · سهل — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Romelu%20Lukaku)
+  أندرلخت 2009–2011 ← تشيلسي 2011–2014 ← وست بروميتش (إعارة) 2012–2013 ← إيفرتون 2013–2017 ← مانشستر يونايتد 2017–2019 ← إنتر ميلان 2019–2021 ← تشيلسي 2021–2024 ← إنتر ميلان (إعارة) 2022–2023 ← روما (إعارة) 2023–2024 ← نابولي 2024–
+- [ ] **أليكسيس سانشيز** (Alexis Sánchez) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Alexis%20S%C3%A1nchez)
+  كوبريلوا 2005–2006 ← أودينيزي 2006–2011 ← كولو كولو (إعارة) 2006–2007 ← ريفر بليت (إعارة) 2007–2008 ← برشلونة 2011–2014 ← آرسنال 2014–2018 ← مانشستر يونايتد 2018–2020 ← إنتر ميلان 2019–2022 ← مارسيليا 2022–2023 ← إنتر ميلان 2023–2024 ← أودينيزي 2024–2025 ← إشبيلية 2025–
+- [ ] **أرتورو فيدال** (Arturo Vidal) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Arturo%20Vidal)
+  كولو كولو 2005–2007 ← باير ليفركوزن 2007–2011 ← يوفنتوس 2011–2015 ← بايرن ميونخ 2015–2018 ← برشلونة 2018–2020 ← إنتر ميلان 2020–2022 ← فلامنغو 2022–2023 ← أتلتيكو باراناينسي 2023 ← كولو كولو 2024–
+- [ ] **خاميس رودريغيز** (James Rodríguez) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=James%20Rodr%C3%ADguez)
+  إنفيغادو 2006–2008 ← بانفيلد 2008–2010 ← بورتو 2010–2013 ← موناكو 2013–2014 ← ريال مدريد 2014–2020 ← بايرن ميونخ (إعارة) 2017–2019 ← إيفرتون 2020–2021 ← الريان 2021–2022 ← أولمبياكوس 2022–2023 ← ساو باولو 2023–2024 ← رايو فاييكانو 2024–2025 ← ليون المكسيكي 2025–
+- [ ] **كريستيان إريكسن** (Christian Eriksen) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Christian%20Eriksen)
+  أياكس 2010–2013 ← توتنهام 2013–2020 ← إنتر ميلان 2020–2021 ← برينتفورد 2022 ← مانشستر يونايتد 2022–2025 ← فولفسبورغ 2025–
+- [ ] **فيليبي كوتينيو** (Philippe Coutinho) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Philippe%20Coutinho)
+  فاسكو دا غاما 2009–2010 ← إنتر ميلان 2010–2013 ← إسبانيول (إعارة) 2012 ← ليفربول 2013–2018 ← برشلونة 2018–2023 ← بايرن ميونخ (إعارة) 2019–2020 ← أستون فيلا 2022–2024 ← الدحيل (إعارة) 2023–2024 ← فاسكو دا غاما 2024–
+- [ ] **بول بوغبا** (Paul Pogba) · سهل — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Paul%20Pogba)
+  مانشستر يونايتد 2011–2012 ← يوفنتوس 2012–2016 ← مانشستر يونايتد 2016–2022 ← يوفنتوس 2022–2024 ← موناكو 2025–
+- [ ] **ليروي ساني** (Leroy Sané) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Leroy%20San%C3%A9)
+  شالكه 2014–2016 ← مانشستر سيتي 2016–2020 ← بايرن ميونخ 2020–2025 ← غلطة سراي 2025–
+- [ ] **ماريو غوتزه** (Mario Götze) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Mario%20G%C3%B6tze)
+  بوروسيا دورتموند 2009–2013 ← بايرن ميونخ 2013–2016 ← بوروسيا دورتموند 2016–2020 ← أيندهوفن 2020–2022 ← آينتراخت فرانكفورت 2022–
+- [ ] **رحيم ستيرلينغ** (Raheem Sterling) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Raheem%20Sterling)
+  ليفربول 2012–2015 ← مانشستر سيتي 2015–2022 ← تشيلسي 2022– ← آرسنال (إعارة) 2024–2025
+- [ ] **سانتي كازورلا** (Santi Cazorla) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Santi%20Cazorla)
+  فياريال 2003–2006 ← ريكرياتيفو 2006–2007 ← فياريال 2007–2011 ← ملقا 2011–2012 ← آرسنال 2012–2018 ← فياريال 2018–2020 ← السد 2020–2023 ← ريال أوفييدو 2023–
+- [ ] **كاسيميرو** (Casemiro) · سهل — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Casemiro)
+  ساو باولو 2010–2013 ← ريال مدريد 2013–2022 ← بورتو (إعارة) 2014–2015 ← مانشستر يونايتد 2022–
+- [ ] **تيبو كورتوا** (Thibaut Courtois) · سهل — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Thibaut%20Courtois)
+  غينك 2009–2011 ← تشيلسي 2011–2018 ← أتلتيكو مدريد (إعارة) 2011–2014 ← ريال مدريد 2018–
+- [ ] **مانويل نوير** (Manuel Neuer) · سهل — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Manuel%20Neuer)
+  شالكه 2006–2011 ← بايرن ميونخ 2011–
+- [ ] **أليسون بيكر** (Alisson Becker) · سهل — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Alisson%20Becker)
+  إنترناسيونال 2013–2016 ← روما 2016–2018 ← ليفربول 2018–
+- [ ] **جادون سانشو** (Jadon Sancho) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Jadon%20Sancho)
+  بوروسيا دورتموند 2017–2021 ← مانشستر يونايتد 2021–2025 ← بوروسيا دورتموند (إعارة) 2024 ← تشيلسي (إعارة) 2024–2025 ← أستون فيلا (إعارة) 2025–
+- [ ] **ماركوس راشفورد** (Marcus Rashford) · سهل — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Marcus%20Rashford)
+  مانشستر يونايتد 2015– ← أستون فيلا (إعارة) 2025 ← برشلونة (إعارة) 2025–
+- [ ] **لاوتارو مارتينيز** (Lautaro Martínez) · سهل — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Lautaro%20Mart%C3%ADnez)
+  راسينغ كلوب 2015–2018 ← إنتر ميلان 2018–
+- [ ] **جوليان ألفاريز** (Julián Álvarez) · سهل — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Juli%C3%A1n%20%C3%81lvarez)
+  ريفر بليت 2018–2022 ← مانشستر سيتي 2022–2024 ← أتلتيكو مدريد 2024–
+- [ ] **خفيتشا كفاراتسخيليا** (Khvicha Kvaratskhelia) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Khvicha%20Kvaratskhelia)
+  دينامو تبليسي 2017–2019 ← روبين كازان 2019–2022 ← دينامو باتومي 2022 ← نابولي 2022–2025 ← باريس سان جيرمان 2025–
+- [ ] **رافائيل لياو** (Rafael Leão) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Rafael%20Le%C3%A3o)
+  سبورتينغ لشبونة 2017–2018 ← ليل 2018–2019 ← ميلان 2019–
+- [ ] **فلوريان فيرتز** (Florian Wirtz) · سهل — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Florian%20Wirtz)
+  باير ليفركوزن 2020–2025 ← ليفربول 2025–
+- [ ] **مايكل أوليسيه** (Michael Olise) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Michael%20Olise)
+  ريدينغ 2019–2021 ← كريستال بالاس 2021–2024 ← بايرن ميونخ 2024–
+- [ ] **برونو فرنانديز** (Bruno Fernandes) · سهل — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Bruno%20Fernandes)
+  نوفارا 2012–2013 ← أودينيزي 2013–2016 ← سامبدوريا 2016–2017 ← سبورتينغ لشبونة 2017–2020 ← مانشستر يونايتد 2020–
+- [ ] **مارتن أوديغارد** (Martin Ødegaard) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Martin%20%C3%98degaard)
+  سترومسغودست 2014–2015 ← ريال مدريد 2015–2021 ← هيرينفين (إعارة) 2017–2018 ← فيتيسه (إعارة) 2018–2019 ← ريال سوسيداد (إعارة) 2019–2020 ← آرسنال 2021–
+- [ ] **رودري** (Rodri) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Rodri)
+  فياريال 2015–2018 ← أتلتيكو مدريد 2018–2019 ← مانشستر سيتي 2019–
+- [ ] **فرينكي دي يونغ** (Frenkie de Jong) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Frenkie%20de%20Jong)
+  فيليم الثاني 2015–2016 ← أياكس 2016–2019 ← برشلونة 2019–
+- [ ] **ماركينيوس** (Marquinhos) · متوسط — [ترانسفير ماركت](https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=Marquinhos)
+  كورينثيانز 2012 ← روما 2012–2013 ← باريس سان جيرمان 2013–

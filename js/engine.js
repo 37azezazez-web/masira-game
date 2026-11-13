@@ -123,6 +123,19 @@
     return a;
   }
 
+  /** أندية الدوري السعودي (الاسم مثل ما هو في المسيرة، بدون «(إعارة)») */
+  const SAUDI_CLUBS = new Set(["الهلال", "النصر", "الاتحاد", "الأهلي", "الشباب", "الاتفاق", "التعاون", "الفتح", "الفيصلي", "القادسية", "الرائد", "الفيحاء", "ضمك", "الخليج", "الرياض", "الوحدة", "الطائي", "أبها", "الحزم", "العروبة", "الأخدود", "نيوم", "العلا", "أحد", "الوشم", "الشعلة", "النهضة", "العمل", "الدرعية", "الصفا", "المنتخب السعودي"]);
+  const NOT_SAUDI = new Set(["aboutrika"]); // الأهلي المصري
+  /** هل اللاعب أو الهدف أو التشكيلة من الكرة السعودية؟ */
+  function isSaudi(p) {
+    if (!p || NOT_SAUDI.has(p.id)) return false;
+    if (p.kind === "lineup") return !!p.saudi;
+    if (p.nat === "السعودية") return true;
+    const club = (c) => SAUDI_CLUBS.has(String(c || "").replace(/\s*\(إعارة\)\s*$/, "").trim());
+    if (Array.isArray(p.career) && p.career.some((c) => club(c[0]))) return true;
+    return club(p.team) || club(p.opp);
+  }
+
   /**
    * يختار لاعبين حسب الصعوبة. difficulty: 1 | 2 | 3 | "mix"
    * seen: قائمة معرفات اللاعبين اللي طلعوا قبل، نحاول ما نكررهم.
@@ -219,7 +232,7 @@
     }
   }
 
-  const api = { LINEUP_HINTS, LISTEN_HINTS, NAMED_HINTS, Game, normalize, levenshtein, isCorrect, pickPlayers, shuffle, POINTS, HINTS, GOAL_HINTS, CLIP_HINTS, hintsFor, MAX_HINTS };
+  const api = { isSaudi, SAUDI_CLUBS, LINEUP_HINTS, LISTEN_HINTS, NAMED_HINTS, Game, normalize, levenshtein, isCorrect, pickPlayers, shuffle, POINTS, HINTS, GOAL_HINTS, CLIP_HINTS, hintsFor, MAX_HINTS };
   if (typeof module !== "undefined") module.exports = api;
   else root.Engine = api;
 })(typeof window !== "undefined" ? window : globalThis);

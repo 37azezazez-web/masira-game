@@ -1,7 +1,7 @@
 /* واجهة اللعبة. كل النصوص تنحط بـ textContent (ما نستخدم innerHTML مع مدخلات المستخدم). */
 (function () {
   "use strict";
-  const { Game, pickPlayers, shuffle, MAX_HINTS } = window.Engine;
+  const { Game, pickPlayers, shuffle, MAX_HINTS, isSaudi } = window.Engine;
   const Music = window.Music;
   // الأهداف الجاهزة: اللي تأكدنا منها بس
   const GOALS = (window.GOALS || []).filter((g) => g.verified).concat(window.GOAL_LINKS || []);
@@ -212,7 +212,6 @@
   function syncMode() {
     const goals = settings.mode === "goals";
     const lu = settings.mode === "lineup";
-    $("#fs-lu").hidden = !lu;
     $("#fs-diff").hidden = goals;
     $("#fs-clips").hidden = !goals;
     $("#fs-yt").hidden = !goals;
@@ -351,14 +350,24 @@
       const seen = [].concat(store.get("seenGoals", [])).filter((x) => typeof x === "string");
       const mine = clips.map((c) => ({ ...c, name: c.name.trim().slice(0, 30) }));
       const pool = GOALS.concat(ytGoals.map(ytItem));
-      const built = pickPlayers(pool, "mix", Math.max(0, count - mine.length), seen);
+      const need = Math.max(0, count - mine.length);
+      let built;
+      if (settings.luSet === "sa") {
+        // السعودي أول، ولو ما كفّى نكمّل من الباقي
+        const saPool = pool.filter(isSaudi);
+        built = pickPlayers(saPool, "mix", need, seen);
+        if (built.length < need) built = built.concat(pickPlayers(pool.filter((g) => !built.includes(g)), "mix", need - built.length, seen));
+      } else built = pickPlayers(pool, "mix", need, seen);
       items = shuffle(mine.slice(0, count).concat(built));
       if (!items.length) { const err = $("#setup-error"); err.textContent = "أضف هدف من يوتيوب أو مقطع من جوالك أول."; err.hidden = false; show("setup"); return; }
       store.set("seenGoals", [...new Set([...built.map((g) => g.id), ...seen])].slice(0, Math.max(0, pool.length - 3)));
     } else {
       const seen = [].concat(store.get("seen", [])).filter((x) => typeof x === "string");
       const diff = settings.difficulty === "mix" ? "mix" : Number(settings.difficulty);
-      items = pickPlayers(PLAYERS, diff, count, seen);
+      const set = settings.luSet === "sa" ? PLAYERS.filter(isSaudi) : PLAYERS;
+      items = pickPlayers(set, diff, count, seen);
+      // لو الصعوبة المختارة ما تكفي نكمّل من باقي الصعوبات
+      if (items.length < count) items = items.concat(pickPlayers(set.filter((p) => !items.includes(p)), "mix", count - items.length, seen));
       store.set("seen", [...new Set([...items.map((p) => p.id), ...seen])].slice(0, PLAYERS.length - 10));
     }
     game = new Game({ teams: settings.teams, players: items, turnSeconds: Number(settings.seconds) });
