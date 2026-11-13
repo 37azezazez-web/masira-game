@@ -355,3 +355,35 @@ legend { font-weight: 800; margin-bottom: 10px; font-family: var(--display); }
 .lu-q { position: absolute; top: 4px; font-weight: 900; color: #E3B23C; font-size: 1rem; }
 .lu-pl.found .lu-shirt path { fill: #45CF80; }
 .lu-pl.found span { background: #45CF80; color: #0B140F; }
+
+/* ===== الجوال ===== */
+/* أي عنصر مخفي يبقى مخفي حتى لو له display في CSS */
+[hidden] { display: none !important; }
+/* الدور والأزرار ثابتة تحت الشاشة عشان ما يحتاج تنزل */
+.game-foot { position: sticky; bottom: 0; margin-top: auto; z-index: 5; display: grid; gap: 10px;
+  margin-inline: -16px; padding: 14px 16px calc(env(safe-area-inset-bottom) + 6px);
+  background: linear-gradient(to bottom, transparent, var(--paper) 16px); }
+.game-foot .actions { grid-template-columns: 3fr 2fr; margin-top: 0; }
+.game-foot .actions .btn { padding-inline: 10px; }
+.game-foot #pass-btn { font-size: .92rem; }
+#screen-game { padding-bottom: 0; }
+#app:has(#screen-game.active) { padding-bottom: 0; }
+/* ملعب «من الناقص؟» يتناسب مع طول الشاشة */
+.lu-pitch { width: min(100%, calc(52dvh * .75)); max-height: none; }
+.lu-pl { width: 23%; }
+.lu-pl span { line-height: 1.1; }
+@media (max-height: 740px) {
+  #screen-home { gap: 16px; }
+  .home-hero { margin-top: 0; gap: 10px; }
+  .home-badge { width: 96px; height: 96px; border-radius: 24px; }
+  .home-badge img { width: 72px; height: 72px; }
+  .screen { gap: 12px; }
+  .hint { min-height: 48px; padding: 6px 10px; }
+  .career li { padding-block: 6px; }
+  .timer { width: 56px; height: 56px; }
+  .btn-lg { min-height: 50px; }
+  .lu-pitch { width: min(100%, calc(46dvh * .75)); }
+  .lu-shirt { width: 28px; height: 25px; }
+  .lu-pl span { font-size: .6rem; padding: 1px 3px; }
+}
+@media (max-height: 700px) { .lu-pitch { width: min(100%, calc(44dvh * .75)); } }
