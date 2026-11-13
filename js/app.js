@@ -332,9 +332,20 @@
       const sa = settings.luSet === "sa";
       const diff = settings.difficulty === "mix" ? "mix" : Number(settings.difficulty);
       const set = sa ? LINEUPS.filter((l) => l.saudi) : LINEUPS;
-      items = pickPlayers(set, diff, count, seen);
-      // لو الصعوبة المختارة ما فيها تشكيلات كفاية نكمّل من باقي الصعوبات
-      if (items.length < count) items = items.concat(pickPlayers(set.filter((l) => !items.includes(l)), "mix", count - items.length, seen));
+      // نرتّب كل المرشحين (الجديد أول)، ولو الصعوبة المختارة ما تكفي نكمّل من باقي الصعوبات
+      const ranked = pickPlayers(set, diff, set.length, seen);
+      const cands = ranked.concat(pickPlayers(set.filter((l) => !ranked.includes(l)), "mix", set.length, seen));
+      // في السعودي: الهلال ما ياخذ أكثر من ثلث الجولة
+      const cap = sa ? Math.ceil(count / 3) : count;
+      const isHilal = (l) => l.title.startsWith("الهلال");
+      items = [];
+      let hil = 0;
+      for (const l of cands) {
+        if (items.length >= count) break;
+        if (isHilal(l)) { if (hil >= cap) continue; hil++; }
+        items.push(l);
+      }
+      items = shuffle(items);
       store.set("seenLineups", [...new Set([...items.map((p) => p.id), ...seen])].slice(0, Math.max(0, LINEUPS.length - 10)));
     } else if (settings.mode === "goals") {
       const seen = [].concat(store.get("seenGoals", [])).filter((x) => typeof x === "string");
